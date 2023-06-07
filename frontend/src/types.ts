@@ -1,21 +1,28 @@
-export interface INotes {
-    title: string,
-    text: string
-}
-
-export interface IBoard {
-    title: string,
-    notes: INotes[]
-}
 
 export interface IUser {
     // role: string;
     username: string;
     email: string;
     password: string;
-    // board:IBoard[]
 }
 
+export interface Product {
+    id: string,
+    name:string,
+    image: string,
+    desc: string,
+    price: number;
+    cartQuantity?: number;
+}
+
+export interface CartItem {
+    id: string;
+    name:string,
+    image:string,
+    desc: string,
+    price: number
+    cartQuantity: number;
+  }
 
 // auth
 export interface IUserSignUp {
@@ -29,25 +36,7 @@ export interface IUserLogin {
     password: string;
 }
 
-export interface IUserForgotPassword {
-    email: string;
-}
-
-export interface IResetPassword {
-    email: string;
-}
-
 // user
 export interface IToken {
     token: string;
-}
-
-
-
-
-
-// subtask
-export interface Subtask {
-    description: string;
-    isCompleted: boolean;
 }

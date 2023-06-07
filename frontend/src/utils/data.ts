@@ -7,14 +7,14 @@ export const products = [
         price:300
     },
     {
-        id:'32423',
+        id:'2342',
         name:'Mara Mo',
         image:'phoniee.jpg',
         desc:'Lorem Ipsum dlee fhbsvuh h fshis sfh jhsfjlfj sfh hfs al',
         price:300
     },
     {
-        id:'32423',
+        id:'99403',
         name:'Pie Chart',
         image:'phoniee.jpg',
         desc:'Lorem Ipsum dlee fhbsvuh h fshis sfh jhsfjlfj sfh hfs al',
