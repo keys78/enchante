@@ -23,6 +23,11 @@ const Home = () => {
     }
   };
 
+  // if product alreay exists in cart and we want to add
+  // without navigating to cart page
+  const handleAddQuantity = (product: Product) => {
+    dispatch(addToCart(product));
+  };
 
 
   const handleDecreaseCart = (product: Product) => {
@@ -53,11 +58,11 @@ const Home = () => {
                     cart?.cartItems?.map((cartItem: Product) => (
                       <div className="cart-item" key={cartItem.id}>
                         <div className="flex">
-                          <button onClick={() => handleDecreaseCart(cartItem)}>
+                          <button className="rounded bg-red-400 py-1 px-3" onClick={() => handleDecreaseCart(cartItem)}>
                             -
                           </button>
                           <div className="count">{cartItem.cartQuantity}</div>
-                          <button onClick={() => handleAddToCart(cartItem)}>+</button>
+                          <button className="rounded bg-red-400 py-1 px-3" onClick={() => handleAddQuantity(product)}>+</button>
                         </div>
                       </div>
                     ))
