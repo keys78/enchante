@@ -1,41 +1,38 @@
 import { useNavigate } from "react-router";
 import { products } from "../utils/data";
-import { useAppDispatch } from "../network/hooks";
+import { useAppDispatch, useAppSelector } from "../network/hooks";
 import { addToCart, decreaseCart } from "../reducers/cart/cartSlice";
-import { useSelector } from "react-redux";
 import { RootState } from "../network/store";
 import { Product, CartItem } from "../types";
 
 const Home = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const handleAddToCart = (product: Product) => {
     const existingCartItem = cart.cartItems.find((item: CartItem) => item.id === product.id);
     if (existingCartItem) {
+      // Product already in cart, do not add again
       return;
     } else {
-      // we add product to the cart
+      // Add the product to the cart
       const cartItem: CartItem = {
         ...product,
-        cartQuantity: 1,
+        cartQuantity: 1, // Set the cart quantity to a valid number
       };
       dispatch(addToCart(cartItem));
     }
   };
 
-  // if product alreay exists in cart and we want to add
-  // without navigating to cart page
-  const handleAddQuantity = (product: Product) => {
+  const handleAddQuantity = (product: CartItem) => {
     dispatch(addToCart(product));
   };
 
-
-  const handleDecreaseCart = (product: Product) => {
+  const handleDecreaseCart = (product: CartItem) => {
     dispatch(decreaseCart(product));
   };
 
-  const cart = useSelector((state: RootState) => state.cart);
-  console.log('cart', cart)
+  const cart = useAppSelector((state: RootState) => state.cart);
 
   return (
     <div className="home-container">
@@ -45,7 +42,6 @@ const Home = () => {
           <div className="flex items-center justify-between">
             {products.map((product: Product) => {
               const existingCartItem = cart.cartItems.find((item: CartItem) => item.id === product.id);
-
               return (
                 <div key={product.id} className="product">
                   <h3>{product.name}</h3>
@@ -55,21 +51,24 @@ const Home = () => {
                     <span className="price">${product.price}</span>
                   </div>
                   {existingCartItem ? (
-                    cart?.cartItems?.map((cartItem: Product) => (
-                      <div className="cart-item" key={cartItem.id}>
-                        <div className="flex">
-                          <button className="rounded bg-red-400 py-1 px-3" onClick={() => handleDecreaseCart(cartItem)}>
-                            -
-                          </button>
-                          <div className="count">{cartItem.cartQuantity}</div>
-                          <button className="rounded bg-red-400 py-1 px-3" onClick={() => handleAddQuantity(product)}>+</button>
-                        </div>
-                      </div>
-                    ))
-
+                    <div className="cart-actions">
+                      <button
+                        className="rounded p-2 bg-red-500 text-white"
+                        onClick={() => handleDecreaseCart(existingCartItem)}
+                      >
+                        -
+                      </button>
+                      <span>{existingCartItem.cartQuantity}</span>
+                      <button
+                        className="rounded p-2 bg-green-500 text-white"
+                        onClick={() => handleAddQuantity(existingCartItem)}
+                      >
+                        +
+                      </button>
+                    </div>
                   ) : (
                     <button
-                      className="rounded py-2 px-4 bg-red-500 text-white"
+                      className="rounded p-4 bg-red-500 text-white"
                       onClick={() => handleAddToCart(product)}
                     >
                       Add To Cart

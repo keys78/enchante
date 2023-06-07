@@ -4,16 +4,19 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "../../network/hooks";
 import { getTotals, addToCart, decreaseCart } from "../../reducers/cart/cartSlice";
+import { RootState } from "../../network/store";
 
 const NavBar = () => {
   const dispatch = useAppDispatch();
   const { cartTotalQuantity } = useAppSelector((state) => state.cart);
+  const cart = useAppSelector((state: RootState) => state.cart);
+
   // const auth = useAppSelector((state) => state.auth);
   const auth = true
 
   useEffect(() => {
     dispatch(getTotals())
-  }, [dispatch, addToCart, decreaseCart])
+  }, [dispatch, cart])
 
   return (
     <nav className="flex items-center justify-between bg-black text-white py-2 px-3">

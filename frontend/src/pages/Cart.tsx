@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import { addToCart, clearCart, decreaseCart, getTotals, removeFromCart, } from "../reducers/cart/cartSlice"
 import { Link } from "react-router-dom";
 import CheckoutButton from "../components/CheckoutButton";
 import { RootState } from "../network/store";
+import { useAppDispatch, useAppSelector } from "../network/hooks";
 
 interface Product {
   id: string,
@@ -16,11 +16,11 @@ interface Product {
 }
 
 const Cart = () => {
-  const cart = useSelector((state: RootState) => state.cart);
+  const cart = useAppSelector((state: RootState) => state.cart);
   //   const auth = useSelector((state) => state.auth);
   const auth = true
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,7 +43,7 @@ const Cart = () => {
     dispatch(clearCart());
   };
 
-  
+
   return (
     <div className="cart-container">
       <h2>Shopping Cart</h2>
