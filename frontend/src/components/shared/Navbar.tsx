@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 // import { logoutUser } from "../slices/authSlice";
 import { toast } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "../../network/hooks";
-import { getTotals } from "../../reducers/cart/cartSlice";
+import { getTotals, addToCart, decreaseCart } from "../../reducers/cart/cartSlice";
 
 const NavBar = () => {
   const dispatch = useAppDispatch();
@@ -13,7 +13,7 @@ const NavBar = () => {
 
   useEffect(() => {
     dispatch(getTotals())
-  }, [dispatch])
+  }, [dispatch, addToCart, decreaseCart])
 
   return (
     <nav className="flex items-center justify-between bg-black text-white py-2 px-3">

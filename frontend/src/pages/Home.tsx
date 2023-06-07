@@ -1,14 +1,13 @@
 import { useNavigate } from "react-router";
 import { products } from "../utils/data";
 import { useAppDispatch } from "../network/hooks";
-import { addToCart } from "../reducers/cart/cartSlice";
+import { addToCart, decreaseCart } from "../reducers/cart/cartSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "../network/store";
 import { Product, CartItem } from "../types";
 
 const Home = () => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
   const handleAddToCart = (product: Product) => {
     const existingCartItem = cart.cartItems.find((item: CartItem) => item.id === product.id);
@@ -22,10 +21,16 @@ const Home = () => {
       };
       dispatch(addToCart(cartItem));
     }
-    navigate("/cart");
+  };
+
+
+
+  const handleDecreaseCart = (product: Product) => {
+    dispatch(decreaseCart(product));
   };
 
   const cart = useSelector((state: RootState) => state.cart);
+  console.log('cart', cart)
 
   return (
     <div className="home-container">
@@ -35,6 +40,7 @@ const Home = () => {
           <div className="flex items-center justify-between">
             {products.map((product: Product) => {
               const existingCartItem = cart.cartItems.find((item: CartItem) => item.id === product.id);
+
               return (
                 <div key={product.id} className="product">
                   <h3>{product.name}</h3>
@@ -44,12 +50,21 @@ const Home = () => {
                     <span className="price">${product.price}</span>
                   </div>
                   {existingCartItem ? (
-                    <button className="rounded p-4 bg-gray-500 text-white" disabled>
-                      Already In Cart
-                    </button>
+                    cart?.cartItems?.map((cartItem: Product) => (
+                      <div className="cart-item" key={cartItem.id}>
+                        <div className="flex">
+                          <button onClick={() => handleDecreaseCart(cartItem)}>
+                            -
+                          </button>
+                          <div className="count">{cartItem.cartQuantity}</div>
+                          <button onClick={() => handleAddToCart(cartItem)}>+</button>
+                        </div>
+                      </div>
+                    ))
+
                   ) : (
                     <button
-                      className="rounded p-4 bg-red-500 text-white"
+                      className="rounded py-2 px-4 bg-red-500 text-white"
                       onClick={() => handleAddToCart(product)}
                     >
                       Add To Cart

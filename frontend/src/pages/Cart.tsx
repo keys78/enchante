@@ -1,24 +1,24 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, clearCart, decreaseCart, getTotals, removeFromCart,} from "../reducers/cart/cartSlice"
+import { addToCart, clearCart, decreaseCart, getTotals, removeFromCart, } from "../reducers/cart/cartSlice"
 import { Link } from "react-router-dom";
 import CheckoutButton from "../components/CheckoutButton";
 import { RootState } from "../network/store";
 
 interface Product {
-    id: string,
-    name:string,
-    image: string,
-    desc: string,
-    price: number;
-    cartQuantity: number;
+  id: string,
+  name: string,
+  image: string,
+  desc: string,
+  price: number;
+  cartQuantity: number;
 }
 
 const Cart = () => {
   const cart = useSelector((state: RootState) => state.cart);
-//   const auth = useSelector((state) => state.auth);
-const auth = true
+  //   const auth = useSelector((state) => state.auth);
+  const auth = true
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -42,6 +42,8 @@ const auth = true
   const handleClearCart = () => {
     dispatch(clearCart());
   };
+
+  
   return (
     <div className="cart-container">
       <h2>Shopping Cart</h2>

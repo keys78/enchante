@@ -8,7 +8,7 @@ export interface IUser {
 
 export interface Product {
     id: string,
-    name:string,
+    name: string,
     image: string,
     desc: string,
     price: number;
@@ -17,11 +17,17 @@ export interface Product {
 
 export interface CartItem {
     id: string;
-    name:string,
-    image:string,
+    name: string,
+    image: string,
     desc: string,
     price: number
     cartQuantity: number;
+}
+
+export interface CartState {
+    cartItems: CartItem[];
+    cartTotalQuantity: number;
+    cartTotalAmount: number;
   }
 
 // auth
