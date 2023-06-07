@@ -13,13 +13,12 @@ const Home = () => {
   const handleAddToCart = (product: Product) => {
     const existingCartItem = cart.cartItems.find((item: CartItem) => item.id === product.id);
     if (existingCartItem) {
-      // Product already in cart, do not add again
       return;
     } else {
       // Add the product to the cart
       const cartItem: CartItem = {
         ...product,
-        cartQuantity: 1, // Set the cart quantity to a valid number
+        cartQuantity: 1,
       };
       dispatch(addToCart(cartItem));
     }
