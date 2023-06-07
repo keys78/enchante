@@ -10,7 +10,7 @@ const Home = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const handleAddToCart = (product: CartItem) => {
+  const handleAddToCart = (product: Product) => {
     const existingCartItem = cart.cartItems.find((item: CartItem) => item.id === product.id);
     if (existingCartItem) {
       // Product already in cart, do not add again
