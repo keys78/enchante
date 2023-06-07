@@ -15,7 +15,7 @@ const Home = () => {
     if (existingCartItem) {
       return;
     } else {
-      // Add the product to the cart
+      // we add product to the cart
       const cartItem: CartItem = {
         ...product,
         cartQuantity: 1,
