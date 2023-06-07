@@ -17,7 +17,11 @@ const Home = () => {
       return;
     } else {
       // Add the product to the cart
-      dispatch(addToCart(product));
+      const cartItem: CartItem = {
+        ...product,
+        cartQuantity: 1, // Set the cart quantity to a valid number
+      };
+      dispatch(addToCart(cartItem));
     }
     navigate("/cart");
   };
