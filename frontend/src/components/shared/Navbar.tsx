@@ -3,58 +3,61 @@ import { Link } from "react-router-dom";
 // import { logoutUser } from "../slices/authSlice";
 import { toast } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "../../network/hooks";
-import { getTotals, addToCart, decreaseCart } from "../../reducers/cart/cartSlice";
+import { getTotals } from "../../reducers/cart/cartSlice";
 import { RootState } from "../../network/store";
+import { ShoppingCartSimple } from "@phosphor-icons/react";
+import FilterSearch from "../FilterSearch";
 
 const NavBar = () => {
   const dispatch = useAppDispatch();
   const { cartTotalQuantity } = useAppSelector((state) => state.cart);
   const cart = useAppSelector((state: RootState) => state.cart);
-
-  // const auth = useAppSelector((state) => state.auth);
   const auth = true
+
+  const options = [
+    { label: 'Option 1', value: 'option1' },
+    { label: 'Option 2', value: 'option2' },
+    { label: 'Option 3', value: 'option3' },
+  ];
 
   useEffect(() => {
     dispatch(getTotals())
   }, [dispatch, cart])
 
   return (
-    <nav className="flex items-center justify-between bg-black text-white py-2 px-3">
+    <nav className="flex items-center justify-between bg-onyx text-white py-2 px-3">
+      <FilterSearch options={options} />
+
       <Link to="/">
-        <h2>pickMe</h2>
+        <h1 className="font-bold text-[40px]">PickMe</h1>
       </Link>
-      <Link to="/cart">
-        <div className="nav-bag">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="35"
-            height="35"
-            fill="currentColor"
-            className="bi bi-handbag-fill"
-            viewBox="0 0 16 16"
+
+      <div className="flex space-x-5">
+        <Link to="/cart">
+          <div className="relative">
+              <ShoppingCartSimple size={32} color="#fafafa" weight="duotone" />
+              <span className="h-[20px] w-[20px] bg-white text-black
+              flex items-center justify-center text-center rounded-full font-semibold
+              absolute -top-2 -right-2">{cartTotalQuantity}</span>
+          </div>
+        </Link>
+        {auth ? (
+          <button
+            onClick={() => {
+              // dispatch(logoutUser(null));
+              toast.warning("Logged out!", { position: "bottom-left" });
+            }}
           >
-            <path d="M8 1a2 2 0 0 0-2 2v2H5V3a3 3 0 1 1 6 0v2h-1V3a2 2 0 0 0-2-2zM5 5H3.36a1.5 1.5 0 0 0-1.483 1.277L.85 13.13A2.5 2.5 0 0 0 3.322 16h9.355a2.5 2.5 0 0 0 2.473-2.87l-1.028-6.853A1.5 1.5 0 0 0 12.64 5H11v1.5a.5.5 0 0 1-1 0V5H6v1.5a.5.5 0 0 1-1 0V5z" />
-          </svg>
-          <span className="bag-quantity">
-            <span>{cartTotalQuantity}</span>
-          </span>
-        </div>
-      </Link>
-      {auth ? (
-        <button
-          onClick={() => {
-            // dispatch(logoutUser(null));
-            toast.warning("Logged out!", { position: "bottom-left" });
-          }}
-        >
-          Logout
-        </button>
-      ) : (
-        <div>
-          <Link to="/login">Login</Link>
-          <Link to="register">Register</Link>
-        </div>
-      )}
+            Logout
+          </button>
+        ) : (
+          <div>
+            <Link to="/login">Login</Link>
+            <Link to="register">Register</Link>
+          </div>
+        )}
+      </div>
+
     </nav>
   );
 };

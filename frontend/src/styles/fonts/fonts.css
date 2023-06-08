@@ -1,0 +1,11 @@
+@font-face {
+    font-family: 'BagelFatOne-Regular';
+    src: url('BagelFatOne-Regular.eot');
+    src: url('BagelFatOne-Regular.eot?#iefix') format('embedded-opentype'),
+        url('BagelFatOne-Regular.woff') format('woff'),
+        url('BagelFatOne-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+

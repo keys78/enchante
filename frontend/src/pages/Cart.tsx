@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { addToCart, clearCart, decreaseCart, getTotals, removeFromCart, } from "../reducers/cart/cartSlice"
+import { addToCart, clearCart, decreaseCartQuantity, getTotals, removeFromCart, } from "../reducers/cart/cartSlice"
 import { Link } from "react-router-dom";
 import CheckoutButton from "../components/CheckoutButton";
 import { RootState } from "../network/store";
@@ -32,7 +32,7 @@ const Cart = () => {
   };
 
   const handleDecreaseCart = (product: Product) => {
-    dispatch(decreaseCart(product));
+    dispatch(decreaseCartQuantity(product));
   };
 
   const handleRemoveFromCart = (product: Product) => {
@@ -93,11 +93,11 @@ const Cart = () => {
                   </div>
                   <div className="cart-product-price">${cartItem.price}</div>
                   <div className="cart-product-quantity">
-                    <button onClick={() => handleDecreaseCart(cartItem)}>
+                    <button disabled={cartItem.cartQuantity <= 1} className={`${cartItem.cartQuantity <= 1 && 'cursor-not-allowed'} rounded p-2 bg-red-500 text-white`} onClick={() => handleDecreaseCart(cartItem)}>
                       -
                     </button>
                     <div className="count">{cartItem.cartQuantity}</div>
-                    <button onClick={() => handleAddToCart(cartItem)}>+</button>
+                    <button className="rounded p-2 bg-red-500 text-white" onClick={() => handleAddToCart(cartItem)}>+</button>
                   </div>
                   <div className="cart-product-total-price">
                     ${cartItem.price * cartItem.cartQuantity}
