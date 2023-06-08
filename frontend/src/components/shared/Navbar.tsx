@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "../../network/hooks";
 import { getTotals } from "../../reducers/cart/cartSlice";
 import { RootState } from "../../network/store";
-import { ShoppingCartSimple } from "@phosphor-icons/react";
+import { MagnifyingGlass, ShoppingCartSimple, Stethoscope, User, UserCircle } from "@phosphor-icons/react";
 import FilterSearch from "../FilterSearch";
 
 const NavBar = () => {
@@ -25,37 +25,52 @@ const NavBar = () => {
   }, [dispatch, cart])
 
   return (
-    <nav className="flex items-center justify-between text-black py-2 px-3">
-      <FilterSearch options={options} />
-
+    <nav className="flex items-center justify-between text-black">
       <Link to="/">
-        <h1 className="font-bold text-[30px]">Me-commerce</h1>
+        <div className="bg-black text-white p-[20px]">
+          <h1 className="text-[30px]">Emart</h1>
+        </div>
       </Link>
 
+      <div>
+        <ul className="flex">
+          <li>New Collections</li>
+          <li>Popular</li>
+          <li>Shop Now</li>
+        </ul>
+      </div>
+
       <div className="flex space-x-5">
-        <Link to="/cart">
-          <div className="relative">
-              <ShoppingCartSimple size={32} color="#fafafa" weight="duotone" />
-              <span className="h-[20px] w-[20px] bg-white text-black
+      <MagnifyingGlass size={32} color="#070707" weight="duotone"/>
+
+
+          <Link to="/cart">
+            <div className="relative">
+              <ShoppingCartSimple size={32} color="#070707" weight="duotone" />
+              <span className="h-[20px] w-[20px] bg-black text-white
               flex items-center justify-center text-center rounded-full font-semibold
               absolute -top-2 -right-2">{cartTotalQuantity}</span>
-          </div>
-        </Link>
-        {auth ? (
-          <button
-            onClick={() => {
-              // dispatch(logoutUser(null));
-              toast.warning("Logged out!", { position: "bottom-left" });
-            }}
-          >
-            Logout
-          </button>
-        ) : (
-          <div>
-            <Link to="/login">Login</Link>
-            <Link to="register">Register</Link>
-          </div>
-        )}
+            </div>
+          </Link>
+          <UserCircle size={32} color="#070707" weight="duotone" />
+
+
+
+          {/* {auth ? (
+            <button
+              onClick={() => {
+                // dispatch(logoutUser(null));
+                toast.warning("Logged out!", { position: "bottom-left" });
+              }}
+            >
+              Logout
+            </button>
+          ) : (
+            <div>
+              <Link to="/login">Login</Link>
+              <Link to="register">Register</Link>
+            </div>
+          )} */}
       </div>
 
     </nav>

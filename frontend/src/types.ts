@@ -46,3 +46,8 @@ export interface IUserLogin {
 export interface IToken {
     token: string;
 }
+
+export interface footerProps {
+    header: string,
+    links: string[]
+}

@@ -5,14 +5,18 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    fontFamily: {
+      opensans: ["Open Sans', sans-serif"],
+    },
     extend: {
       colors: {
         onyx:"#2E3532",
         resdaGreen:"#7E9181",
         frenchGray:"#C7CEDB",
-        cadetGray:"#A0AAB2",
-        battenPink:"#94849B",
+        newWhite:"#fdfdfd",
+        textGray:"#c3c3c3",
         btnGray: "#444757",
+        orangie:"#f75a2c",
       },
       letterSpacing: {
         widest: "0.15rem",
