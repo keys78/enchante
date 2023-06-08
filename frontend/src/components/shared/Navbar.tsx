@@ -25,11 +25,11 @@ const NavBar = () => {
   }, [dispatch, cart])
 
   return (
-    <nav className="flex items-center justify-between bg-onyx text-white py-2 px-3">
+    <nav className="flex items-center justify-between text-black py-2 px-3">
       <FilterSearch options={options} />
 
       <Link to="/">
-        <h1 className="font-bold text-[40px]">PickMe</h1>
+        <h1 className="font-bold text-[30px]">Me-commerce</h1>
       </Link>
 
       <div className="flex space-x-5">

@@ -12,6 +12,7 @@ export default {
         frenchGray:"#C7CEDB",
         cadetGray:"#A0AAB2",
         battenPink:"#94849B",
+        btnGray: "#444757",
       },
       letterSpacing: {
         widest: "0.15rem",
