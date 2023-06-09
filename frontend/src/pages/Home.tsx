@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "../network/hooks";
 import { addToCart, decreaseCart } from "../reducers/cart/cartSlice";
 import { RootState } from "../network/store";
 import { Product, CartItem } from "../types";
+import Hero from "../components/Hero";
 
 const Home = () => {
   const dispatch = useAppDispatch();
@@ -35,7 +36,13 @@ const Home = () => {
   const cart = useAppSelector((state: RootState) => state.cart);
 
   return (
-    <div className="home-container">
+    <>
+    <div className="app-container">
+    <Hero />
+    </div>
+
+
+    <div className="home-container mt-[1200px]">
       {products.length > 0 ? (
         <>
           <h2>New Arrivals</h2>
@@ -85,6 +92,8 @@ const Home = () => {
         <p>Unexpected error occurred...</p>
       )}
     </div>
+    </>
+  
   );
 };
 

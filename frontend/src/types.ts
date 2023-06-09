@@ -51,3 +51,9 @@ export interface footerProps {
     header: string,
     links: string[]
 }
+
+export interface heroDisplayTexts {
+    tag: number,
+    title: string,
+    desc: string
+}

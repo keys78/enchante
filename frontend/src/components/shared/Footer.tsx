@@ -12,14 +12,14 @@ const Footer = () => {
       <div className="app-container px-[120px]">
         <div className="flex items-center justify-between pt-9 pb-20">
           <h1 className="text-[40px]">pickMe</h1>
-          <div>            
+          <div>
             <div className="flex border border-btnGray rounded-br w-full">
               <input className="w-full border-none outline-none p-2 rounded-tl rounded-br text-btnGray" type="text" placeholder="Subscribe to our newsletter" />
               <button className="bg-btnGray text-white rounded-br py-1 px-4">Subscribe</button></div>
           </div>
         </div>
         <div className="">
-          <div className="flex items-start justify-between max-w-[1000px]">
+          <div className="flex space-x-5 items-start justify-between max-w-[1000px]">
             {footerLinks.map((val, i) => (
               <ul key={i}>
                 <li className="text-[16px] pb-[20px] opacity-80">{val.header}</li>
@@ -34,7 +34,6 @@ const Footer = () => {
               <FacebookLogo className="cursor-pointer" size={26} color="#a2a5b5" weight="duotone" />
               <TwitterLogo className="cursor-pointer" size={26} color="#a2a5b5" weight="duotone" />
               <InstagramLogo className="cursor-pointer" size={26} color="#a2a5b5" weight="duotone" />
-
             </div>
           </div>
         </div>

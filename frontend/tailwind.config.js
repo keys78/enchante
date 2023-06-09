@@ -7,6 +7,17 @@ export default {
   theme: {
     fontFamily: {
       opensans: ["Open Sans', sans-serif"],
+      nunitosans: ["Nunito Sans', sans-serif"],
+    },
+    screens: {
+      's-375': '375px',
+      's-400': '400px',
+      's-480': '480px',
+      's-700': '700px',
+      's-767': '767px',
+      's-991': '991px',
+      's-1024': '1024px',
+      's-1920': '1920px',
     },
     extend: {
       colors: {
@@ -16,7 +27,7 @@ export default {
         newWhite:"#fdfdfd",
         textGray:"#c3c3c3",
         btnGray: "#444757",
-        orangie:"#f75a2c",
+        orangeSkin:"#f75a2c",
       },
       letterSpacing: {
         widest: "0.15rem",

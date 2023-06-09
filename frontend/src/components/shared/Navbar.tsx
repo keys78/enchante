@@ -25,38 +25,34 @@ const NavBar = () => {
   }, [dispatch, cart])
 
   return (
-    <nav className="flex items-center justify-between text-black">
+    <nav className="flex items-center justify-between text-black relative border-b border-textGray pt-[30px] pb-[24px] app-container px-[40px]">
       <Link to="/">
-        <div className="bg-black text-white p-[20px]">
+        <div className="bg-black text-white py-[30px] px-[20px] fixed top-0 s-1920:left-[320px] left-0">
           <h1 className="text-[30px]">Emart</h1>
         </div>
       </Link>
 
-      <div>
-        <ul className="flex">
-          <li>New Collections</li>
-          <li>Popular</li>
-          <li>Shop Now</li>
-        </ul>
-      </div>
+      <ul className="flex space-x-20 uppercase">
+        <a href="#" className=""><li className="hover-underline-animation font-bold">New Collections</li></a>
+        <a href="#" className=""><li className="hover-underline-animation font-bold">Popular</li></a>
+        <a href="#" className=""><li className="hover-underline-animation font-bold">Shop Now</li></a>
+      </ul>
 
-      <div className="flex space-x-5">
-      <MagnifyingGlass size={32} color="#070707" weight="duotone"/>
-
-
-          <Link to="/cart">
-            <div className="relative">
-              <ShoppingCartSimple size={32} color="#070707" weight="duotone" />
-              <span className="h-[20px] w-[20px] bg-black text-white
+      <div className="flex space-x-8">
+        <MagnifyingGlass size={26} color="#070707" weight="thin" />
+        <Link to="/cart">
+          <div className="relative">
+            <ShoppingCartSimple size={26} color="#070707" weight="thin" />
+            <span className="h-[20px] w-[20px] bg-orangie text-white
               flex items-center justify-center text-center rounded-full font-semibold
-              absolute -top-2 -right-2">{cartTotalQuantity}</span>
-            </div>
-          </Link>
-          <UserCircle size={32} color="#070707" weight="duotone" />
+              absolute -top-2 -right-2 text-[12px]">{cartTotalQuantity}</span>
+          </div>
+        </Link>
+        <UserCircle size={26} color="#070707" weight="thin" />
 
 
 
-          {/* {auth ? (
+        {/* {auth ? (
             <button
               onClick={() => {
                 // dispatch(logoutUser(null));
