@@ -7,6 +7,7 @@ import { getTotals } from "../../reducers/cart/cartSlice";
 import { RootState } from "../../network/store";
 import { MagnifyingGlass, ShoppingCartSimple, Stethoscope, User, UserCircle } from "@phosphor-icons/react";
 import FilterSearch from "../FilterSearch";
+import Search from "./SearchFilter";
 
 const NavBar = () => {
   const dispatch = useAppDispatch();
@@ -15,7 +16,7 @@ const NavBar = () => {
   const auth = true
 
   const options = [
-    { label: 'Option 1', value: 'option1' },
+    { label: 'Men', value: 'men' },
     { label: 'Option 2', value: 'option2' },
     { label: 'Option 3', value: 'option3' },
   ];
@@ -24,22 +25,36 @@ const NavBar = () => {
     dispatch(getTotals())
   }, [dispatch, cart])
 
+  useEffect(() => {
+    window.addEventListener('scroll', isSticky);
+    return () => {
+      window.removeEventListener('scroll', isSticky);
+    };
+  });
+
+  const isSticky = () => {
+    const header: any = document.querySelector('.header-section');
+    const scrollTop = window.scrollY;
+    scrollTop >= 50 ? header?.classList.add('is-sticky') : header?.classList.remove('is-sticky');
+    scrollTop >= 600 ? header?.classList.add('robo') : header?.classList.remove('robo');
+  };
+
   return (
-    <nav className="flex items-center justify-between text-black relative border-b border-textGray pt-[30px] pb-[24px] app-container px-[40px]">
+    <header className="header-section flex items-center justify-between text-black relative border-b border-gray-200 pt-[30px] pb-[24px] app-container px-[40px]">
       <Link to="/">
         <div className="bg-black text-white py-[30px] px-[20px] fixed top-0 s-1920:left-[320px] left-0">
           <h1 className="text-[30px]">Emart</h1>
         </div>
       </Link>
 
-      <ul className="flex space-x-20 uppercase">
-        <a href="#" className=""><li className="hover-underline-animation font-bold">New Collections</li></a>
-        <a href="#" className=""><li className="hover-underline-animation font-bold">Popular</li></a>
-        <a href="#" className=""><li className="hover-underline-animation font-bold">Shop Now</li></a>
+      <ul className="flex space-x-20 uppercase -mr-[200px]">
+        <a href="/products" className=""><li className="hover-underline-animation font-bold">New Collections</li></a>
+        <a href="/products" className=""><li className="hover-underline-animation font-bold">Popular</li></a>
+        <a href="/products" className=""><li className="hover-underline-animation font-bold">Shop Now</li></a>
       </ul>
 
-      <div className="flex space-x-8">
-        <MagnifyingGlass size={26} color="#070707" weight="thin" />
+      <div className="flex items-center justify-end space-x-8 w-[300px]">
+        <FilterSearch options={options} />
         <Link to="/cart">
           <div className="relative">
             <ShoppingCartSimple size={26} color="#070707" weight="thin" />
@@ -48,7 +63,9 @@ const NavBar = () => {
               absolute -top-2 -right-2 text-[12px]">{cartTotalQuantity}</span>
           </div>
         </Link>
-        <UserCircle size={26} color="#070707" weight="thin" />
+        <div className="w-[26px]">
+          <UserCircle size={26} color="#070707" weight="thin" />
+        </div>
 
 
 
@@ -69,7 +86,7 @@ const NavBar = () => {
           )} */}
       </div>
 
-    </nav>
+    </header>
   );
 };
 

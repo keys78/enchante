@@ -8,7 +8,7 @@ interface SlideshowProps {
   slides: Slide[];
 }
 
-const delay = 5000;
+const delay = 6000;
 
 export default function Slideshow({ slides }: SlideshowProps) {
   const [index, setIndex] = useState(0);
