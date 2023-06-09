@@ -18,6 +18,8 @@
 body {font-family: 'Roboto', sans-serif; transition: all 0.3s linear; }
 .app-container { max-width: 1920px; margin: 0 auto; position: relative;}
 .ff-os { font-family: 'Open Sans', sans-serif; }
+.orange-text { color: #f75a2c !important; }
+.orange-bg { background: #f75a2c; }
 
 
 input:-webkit-autofill,

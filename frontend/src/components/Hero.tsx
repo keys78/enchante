@@ -55,7 +55,7 @@ const Hero = () => {
                             <li
                                 onClick={() => setActiveIndex(item.tag - 1)}
                                 key={item.tag}
-                                className={`${item.tag === activeIndex + 1 && 'border-l-2 border-orangeSkin text-orange-500 font-bold'} hover:cursor-pointer text-textGray pl-3 `}
+                                className={`${item.tag === activeIndex + 1 && 'text-orange-500 border-l-2 border-orangeSkin font-bold'} hover:cursor-pointer text-textGray pl-3 `}
                             >
                                 {item.tag}
                             </li>

@@ -43,7 +43,7 @@ const NavBar = () => {
         <Link to="/cart">
           <div className="relative">
             <ShoppingCartSimple size={26} color="#070707" weight="thin" />
-            <span className="h-[20px] w-[20px] bg-orangie text-white
+            <span className="h-[20px] w-[20px] text-white bg-orange-500
               flex items-center justify-center text-center rounded-full font-semibold
               absolute -top-2 -right-2 text-[12px]">{cartTotalQuantity}</span>
           </div>
