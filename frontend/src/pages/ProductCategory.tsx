@@ -11,15 +11,16 @@ import { GetProductsByCategory, filterCategoryByPrice, filterCategoryByCategory,
 const ProductGroups = () => {
     const cart = useAppSelector((state: RootState) => state.cart);
     const { products, productCategory, filteredProductCategory } = useAppSelector((state: RootState) => state.productCategory);
-    const [priceRange, setPriceRange] = useState({ min: 0, max: getMaxPrice() });
-
     const dispatch = useAppDispatch();
     const { category } = useParams();
 
+    const [priceRange, setPriceRange] = useState({ min: 0, max: getMaxPrice() });
+    const [isFreeShipment, setIsFreeShipment] = useState<boolean>(false)
+
     useEffect(() => {
-        const categoryValue = category ?? '';
-        dispatch(GetProductsByCategory({ category: categoryValue }));
+        dispatch(GetProductsByCategory({ category: category ?? '' }));
     }, [category, dispatch]);
+
 
     const handleAddToCart = (product: Product) => {
         const existingCartItem = cart.cartItems.find((item: CartItem) => item.id === product.id);
@@ -91,8 +92,10 @@ const ProductGroups = () => {
     };
 
 
+
     const handleFreeShipmentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { checked } = event.target;
+        setIsFreeShipment(checked);
         dispatch(filterCategoryByFreeShipment({ freeShipping: checked }));
     };
 
@@ -100,8 +103,7 @@ const ProductGroups = () => {
     const handleResetFilters = () => {
         dispatch(resetAllCategoryFilters());
         setPriceRange({ min: 0, max: getMaxPrice() });
-
-        dispatch(filterCategoryByFreeShipment({ freeShipping: false }));
+        setIsFreeShipment(false)
     };
 
     const getUniqueFilterValues = (product: Product[] | undefined, item: string): string[] => {
@@ -128,7 +130,7 @@ const ProductGroups = () => {
                 </div>
 
                 <div>
-                    <h1>Filter By Category</h1>
+                    <h1>Category</h1>
                     <ul>
 
                         {getUniqueFilterValues(productCategory, 'category').map((category) => (
@@ -190,7 +192,7 @@ const ProductGroups = () => {
                 </div>
 
                 <div>
-                    Free Shipping<input onChange={handleFreeShipmentChange} type="checkbox" />
+                    Free Shipping<input checked={isFreeShipment} onChange={(e) => handleFreeShipmentChange(e)} type="checkbox" />
                 </div>
 
                 <div>

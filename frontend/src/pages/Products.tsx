@@ -8,17 +8,18 @@ import { filterByFreeShipment, filterProductsByBrand, filterProductsByCategory, 
 const Products = () => {
     const cart = useAppSelector((state: RootState) => state.cart);
     const { products, filteredProducts } = useAppSelector((state: RootState) => state.products);
+
     const [priceRange, setPriceRange] = useState({ min: 0, max: getMaxPrice() });
+    const [isFreeShipment, setIsFreeShipment] = useState<boolean>(false)
+
 
     const dispatch = useAppDispatch();
 
     const handleAddToCart = (product: Product) => {
         const existingCartItem = cart.cartItems.find((item: CartItem) => item.id === product.id);
         if (existingCartItem) {
-            // Product already in cart, do not add again
             return;
         } else {
-            // Add the product to the cart
             const cartItem: CartItem = {
                 ...product,
                 cartQuantity: 1,
@@ -45,11 +46,13 @@ const Products = () => {
         return maxPrice;
     }
 
+
     const handlePriceRangeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const maxPrice = parseInt(e.target.value);
         setPriceRange((prevRange) => ({ ...prevRange, max: maxPrice }));
         dispatch(filterProductsByPrice({ priceRange: { min: 0, max: maxPrice } }));
-    };
+      };
+      
 
     const [selectedFilters, setSelectedFilters] = useState({
         category: "all",
@@ -60,7 +63,7 @@ const Products = () => {
     const handleCategoryClick = (category: Product["category"]) => {
         setSelectedFilters((prevFilters) => ({
             ...prevFilters,
-            category,
+            category
         }));
         dispatch(filterProductsByCategory({ category }));
     };
@@ -68,33 +71,34 @@ const Products = () => {
     const handleColorClick = (color: Product["color"]) => {
         setSelectedFilters((prevFilters) => ({
             ...prevFilters,
-            color,
+            color
         }));
         dispatch(filterProductsByColor({ color }));
     };
 
-    const handlebrandClick = (brand: Product["brand"]) => {
+    const handleBrandClick = (brand: Product["brand"]) => {
         setSelectedFilters((prevFilters) => ({
             ...prevFilters,
-            brand,
+            brand
         }));
         dispatch(filterProductsByBrand({ brand }));
     };
 
-    // const [pp, setPP] = useState(false)
+
+
 
     const handleFreeShipmentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { checked } = event.target;
+        setIsFreeShipment(checked);
         dispatch(filterByFreeShipment({ freeShipping: checked }));
     };
-
 
     const handleResetFilters = () => {
         dispatch(resetAllFilters());
         setPriceRange({ min: 0, max: getMaxPrice() });
-
-        dispatch(filterByFreeShipment({ freeShipping: false }));
+        setIsFreeShipment(false)
     };
+
 
     const getUniqueFilterValues = (product: Product[] | undefined, item: string): string[] => {
         if (!product) {
@@ -111,7 +115,7 @@ const Products = () => {
 
     return (
         <div className="home-container mt-[12px]">
-            <div className="py-12">
+            <div className="py-12 flex space-x-7">
                 <div>
                     <input
                         type="range"
@@ -127,7 +131,7 @@ const Products = () => {
                     <h1>Filter By Category</h1>
                     <ul>
                         <li
-                            className={selectedFilters.category === "all" ? "active-hero-text pl-2" : "pl-2 active-hero-text-before"}
+                            className={selectedFilters.category === "all" ? "active-hero-text pl-2" : "pl-2 active-hero-text-before cursor-pointer py-2"}
                             onClick={() => handleCategoryClick("all")}
                         >
                             All
@@ -135,7 +139,7 @@ const Products = () => {
                         {getUniqueFilterValues(products, 'category').map((category) => (
                             <li
                                 key={category}
-                                className={selectedFilters.category === category ? "active-hero-text pl-2" : "pl-2 active-hero-text-before"}
+                                className={selectedFilters.category === category ? "active-hero-text pl-2" : "pl-2 active-hero-text-before cursor-pointer py-2"}
                                 onClick={() => handleCategoryClick(category)}
                             >
                                 {category}
@@ -144,12 +148,11 @@ const Products = () => {
                     </ul>
                 </div>
 
-                {/* Color filter */}
                 <div>
                     <h1>Filter By Color</h1>
                     <ul>
                         <li
-                            className={selectedFilters.color === "all" ? "active-hero-text pl-2" : "pl-2 active-hero-text-before"}
+                            className={selectedFilters.color === "all" ? "active-hero-text pl-2" : "pl-2 active-hero-text-before cursor-pointer py-2"}
                             onClick={() => handleColorClick("all")}
                         >
                             All
@@ -158,7 +161,7 @@ const Products = () => {
 
                             <li
                                 key={color}
-                                className={selectedFilters.color === color ? "active-hero-text pl-2" : "pl-2 active-hero-text-before"}
+                                className={selectedFilters.color === color ? "active-hero-text pl-2" : "pl-2 active-hero-text-before cursor-pointer py-2"}
                                 onClick={() => handleColorClick(color)}
                             >
                                 {color}
@@ -172,8 +175,8 @@ const Products = () => {
                     <h1>Filter By Brand</h1>
                     <ul>
                         <li
-                            className={selectedFilters.brand === "all" ? "active-hero-text pl-2" : "pl-2 active-hero-text-before"}
-                            onClick={() => handlebrandClick("all")}
+                            className={selectedFilters.brand === "all" ? "active-hero-text pl-2" : "pl-2 active-hero-text-before cursor-pointer py-2"}
+                            onClick={() => handleBrandClick("all")}
                         >
                             All
                         </li>
@@ -181,8 +184,8 @@ const Products = () => {
 
                             <li
                                 key={brand}
-                                className={selectedFilters.brand === brand ? "active-hero-text pl-2" : "pl-2 active-hero-text-before"}
-                                onClick={() => handlebrandClick(brand)}
+                                className={selectedFilters.brand === brand ? "active-hero-text pl-2" : "pl-2 active-hero-text-before cursor-pointer py-2"}
+                                onClick={() => handleBrandClick(brand)}
                             >
                                 {brand}
                             </li>
@@ -191,13 +194,17 @@ const Products = () => {
                 </div>
 
                 <div>
-                    Free Shipping<input onChange={handleFreeShipmentChange} type="checkbox" />
+                    Free Shipping<input checked={isFreeShipment} onChange={handleFreeShipmentChange} type="checkbox" />
                 </div>
 
                 <div>
                     <button onClick={handleResetFilters}>Reset Filters</button>
                 </div>
 
+            </div>
+
+            <div className='w-full border-2 border-black'>
+                {filteredProducts.length}
             </div>
 
 

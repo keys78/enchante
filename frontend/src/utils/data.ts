@@ -24,6 +24,17 @@ export const products:Product[] = [
         price: 900
     },
     {
+        id: '3242243',
+        category: 'women',
+        name: 'WOmen Red',
+        image: image_s_2,
+        desc: 'Lorem Ipsum dlee fhbsvuh h fshis sfh jhsfjlfj sfh hfs al',
+        color: 'red',
+        free_shipping: true,
+        brand: 'Apple',
+        price: 900
+    },
+    {
         id: '23522',
         category: 'men',
         name: 'Apple Vision Pro',
