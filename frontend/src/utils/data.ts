@@ -1,4 +1,4 @@
-import { footerProps } from "../types"
+import { Product, footerProps } from "../types"
 import image_one from '../assets/png/img_one.jpg'
 import image_two from '../assets/png/img_two.jpg'
 import image_3 from '../assets/png/img_l_3.jpg'
@@ -11,32 +11,38 @@ import image_s_x from '../assets/png/img_s_x.jpg'
 import image_ss_x from '../assets/png/img_ss_x.jpg'
 import image_ss_xx from '../assets/png/img_ss_xx.jpg'
 
-export const products = [
+export const products:Product[] = [
     {
         id: '32423',
-        category:'a',
+        category: 'a',
         name: 'Iphone Pro MAX',
         image: 'phoniee.jpg',
         desc: 'Lorem Ipsum dlee fhbsvuh h fshis sfh jhsfjlfj sfh hfs al',
-        color:'red',
+        color: 'red',
+        free_shipping: true,
+        brand: 'Apple',
         price: 900
     },
     {
         id: '2342',
-        category:'b',
+        category: 'b',
         name: 'Mara Mo',
         image: 'phoniee.jpg',
         desc: 'Lorem Ipsum dlee fhbsvuh h fshis sfh jhsfjlfj sfh hfs al',
-        color:'blue',
+        color: 'blue',
+        free_shipping: false,
+        brand: 'Hulu',
         price: 340
     },
     {
         id: '99403',
-        category:'c',
+        category: 'c',
         name: 'Pie Chart',
         image: 'phoniee.jpg',
         desc: 'Lorem Ipsum dlee fhbsvuh h fshis sfh jhsfjlfj sfh hfs al',
-        color:'green',
+        color: 'green',
+        free_shipping: true,
+        brand: 'Netflix',
         price: 180
     },
 ]

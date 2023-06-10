@@ -3,7 +3,7 @@ import { addToCart, decreaseCart } from "../reducers/cart/cartSlice";
 import { useAppDispatch, useAppSelector } from "../network/hooks";
 import { RootState } from "../network/store";
 import { Product, CartItem } from "../types";
-import { filterProductsByCategory, filterProductsByColor, filterProductsByPrice, resetAllFilters } from "../reducers/products/productsSlice";
+import { filterByFreeShipment, filterProductsByBrand, filterProductsByCategory, filterProductsByColor, filterProductsByPrice, resetAllFilters } from "../reducers/products/productsSlice";
 
 const Products = () => {
     const cart = useAppSelector((state: RootState) => state.cart);
@@ -54,25 +54,49 @@ const Products = () => {
     const [selectedFilters, setSelectedFilters] = useState({
         category: "all",
         color: "all",
-      });
-      
-      const handleCategoryClick = (category: Product["category"]) => {
+        brand: "all",
+    });
+
+    const handleCategoryClick = (category: Product["category"]) => {
         setSelectedFilters((prevFilters) => ({
-          ...prevFilters,
-          category,
+            ...prevFilters,
+            category,
         }));
         dispatch(filterProductsByCategory({ category }));
-      };
-      
-      const handleColorClick = (color: Product["color"]) => {
+    };
+
+    const handleColorClick = (color: Product["color"]) => {
         setSelectedFilters((prevFilters) => ({
-          ...prevFilters,
-          color,
+            ...prevFilters,
+            color,
         }));
         dispatch(filterProductsByColor({ color }));
-      };
-      
-      
+    };
+
+    const handlebrandClick = (brand: Product["brand"]) => {
+        setSelectedFilters((prevFilters) => ({
+            ...prevFilters,
+            brand,
+        }));
+        dispatch(filterProductsByBrand({ brand }));
+    };
+
+    const [pp, setPP] = useState(false)
+
+    const handleFreeShipmentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { checked } = event.target;
+        setPP(checked)
+        dispatch(filterByFreeShipment({ freeShipping: false }));
+    };
+
+
+    const handleResetFilters = () => {
+        dispatch(resetAllFilters());
+        setPriceRange({ min: 0, max: getMaxPrice() });
+        
+        dispatch(filterByFreeShipment({ freeShipping: false }));
+    };
+
 
     return (
         <div className="home-container mt-[12px]">
@@ -132,8 +156,34 @@ const Products = () => {
                     </ul>
                 </div>
 
+
                 <div>
-                    <button onClick={() => dispatch(resetAllFilters())}>Reset Filters</button>
+                    <h1>Filter By Brand</h1>
+                    <ul>
+                        <li
+                            className={selectedFilters.brand === "all" ? "active-hero-text pl-2" : "pl-2 active-hero-text-before"}
+                            onClick={() => handlebrandClick("all")}
+                        >
+                            All
+                        </li>
+                        {products.map((val) => (
+                            <li
+                                key={val.brand}
+                                className={selectedFilters.brand === val.brand ? "active-hero-text pl-2" : "pl-2 active-hero-text-before"}
+                                onClick={() => handlebrandClick(val.brand)}
+                            >
+                                {val.brand}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+
+                <div>
+                    Free Shipping<input onChange={handleFreeShipmentChange} type="checkbox" />
+                </div>
+
+                <div>
+                    <button onClick={handleResetFilters}>Reset Filters</button>
                 </div>
 
             </div>

@@ -7,15 +7,18 @@ export interface IUser {
 }
 
 export interface Product {
-    id: string,
-    category: string,
-    name: string,
-    image: string,
-    desc: string,
+    id: string;
+    category: string;
+    name: string;
+    image: string;
+    desc: string;
     price: number;
-    color: string,
+    color: string;
+    brand: string;
+    free_shipping: boolean;
     cartQuantity?: number;
 }
+
 
 export interface CartItem {
     id: string;
@@ -30,7 +33,7 @@ export interface CartState {
     cartItems: CartItem[];
     cartTotalQuantity: number;
     cartTotalAmount: number;
-  }
+}
 
 // auth
 export interface IUserSignUp {
