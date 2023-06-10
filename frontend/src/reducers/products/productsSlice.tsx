@@ -209,6 +209,8 @@ const productsSlice = createSlice({
               delete state.filterTerms.freeShipping; // Remove the freeShipping filter term from filterTerms
             }
           },
+
+          
           
         resetAllFilters: (state) => {
             state.filteredProducts = state.products;

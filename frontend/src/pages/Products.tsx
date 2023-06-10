@@ -51,8 +51,8 @@ const Products = () => {
         const maxPrice = parseInt(e.target.value);
         setPriceRange((prevRange) => ({ ...prevRange, max: maxPrice }));
         dispatch(filterProductsByPrice({ priceRange: { min: 0, max: maxPrice } }));
-      };
-      
+    };
+
 
     const [selectedFilters, setSelectedFilters] = useState({
         category: "all",
@@ -97,18 +97,20 @@ const Products = () => {
         dispatch(resetAllFilters());
         setPriceRange({ min: 0, max: getMaxPrice() });
         setIsFreeShipment(false)
+        setSelectedFilters((prevFilters) => ({
+            ...prevFilters,
+            brand: "all",
+            category: "all",
+            color: "all",
+        }));
     };
 
 
-    const getUniqueFilterValues = (product: Product[] | undefined, item: string): string[] => {
-        if (!product) {
-            return [];
-        }
-        const arr = product.map((val: any) => val[item]);
-        const uniqueValues = [...new Set(arr)];
+    const getUniqueFilterValues = (products: Product[], item: keyof Product): string[] => {
+        const arr = products.map((val: Product) => val[item]);
+        const uniqueValues = [...new Set(arr)] as string[];
         return uniqueValues;
     };
-
 
 
 
