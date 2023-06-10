@@ -4,6 +4,7 @@ import Layout from './components/Layout'
 import Cart from "./pages/Cart";
 import CheckoutSuccess from "./pages/CheckoutSuccess";
 import NotFound from "./pages/NotFound";
+import Products from "./pages/Products";
 
 function App() {
 
@@ -12,6 +13,9 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Layout><Home /></Layout>} />
+          <Route path="/products" element={<Layout><Products /></Layout>} />
+          <Route path="/products/:id" element={<Layout><Cart /></Layout>} />
+          <Route path="/products/:category" element={<Layout><Cart /></Layout>} />
           <Route path="/cart" element={<Layout><Cart /></Layout>} />
           <Route path="/checkout-success" element={<Layout><CheckoutSuccess /></Layout>} />
           <Route path="*" element={<Layout><NotFound /></Layout>} />

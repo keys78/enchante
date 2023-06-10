@@ -7,7 +7,6 @@ import { getTotals } from "../../reducers/cart/cartSlice";
 import { RootState } from "../../network/store";
 import { MagnifyingGlass, ShoppingCartSimple, Stethoscope, User, UserCircle } from "@phosphor-icons/react";
 import FilterSearch from "../FilterSearch";
-import Search from "./SearchFilter";
 
 const NavBar = () => {
   const dispatch = useAppDispatch();
