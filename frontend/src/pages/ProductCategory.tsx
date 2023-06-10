@@ -1,16 +1,25 @@
-import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { addToCart, decreaseCart } from "../reducers/cart/cartSlice";
 import { useAppDispatch, useAppSelector } from "../network/hooks";
 import { RootState } from "../network/store";
 import { Product, CartItem } from "../types";
-import { filterByFreeShipment, filterProductsByBrand, filterProductsByCategory, filterProductsByColor, filterProductsByPrice, resetAllFilters } from "../reducers/products/productsSlice";
+import { GetProductsByCategory, filterCategoryByPrice, filterCategoryByCategory, resetAllCategoryFilters, filterCategoryByColor, filterCategoryByBrand, filterCategoryByFreeShipment, } from "../reducers/products/productCategorySlice";
 
-const Products = () => {
+
+
+const ProductGroups = () => {
     const cart = useAppSelector((state: RootState) => state.cart);
-    const { products, filteredProducts } = useAppSelector((state: RootState) => state.products);
+    const { products, productCategory, filteredProductCategory } = useAppSelector((state: RootState) => state.productCategory);
     const [priceRange, setPriceRange] = useState({ min: 0, max: getMaxPrice() });
 
     const dispatch = useAppDispatch();
+    const { category } = useParams();
+
+    useEffect(() => {
+        const categoryValue = category ?? '';
+        dispatch(GetProductsByCategory({ category: categoryValue }));
+    }, [category, dispatch]);
 
     const handleAddToCart = (product: Product) => {
         const existingCartItem = cart.cartItems.find((item: CartItem) => item.id === product.id);
@@ -48,11 +57,11 @@ const Products = () => {
     const handlePriceRangeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const maxPrice = parseInt(e.target.value);
         setPriceRange((prevRange) => ({ ...prevRange, max: maxPrice }));
-        dispatch(filterProductsByPrice({ priceRange: { min: 0, max: maxPrice } }));
+        dispatch(filterCategoryByPrice({ priceRange: { min: 0, max: maxPrice } }));
     };
 
     const [selectedFilters, setSelectedFilters] = useState({
-        category: "all",
+        category: `${category}`,
         color: "all",
         brand: "all",
     });
@@ -62,7 +71,7 @@ const Products = () => {
             ...prevFilters,
             category,
         }));
-        dispatch(filterProductsByCategory({ category }));
+        dispatch(filterCategoryByCategory({ category }));
     };
 
     const handleColorClick = (color: Product["color"]) => {
@@ -70,7 +79,7 @@ const Products = () => {
             ...prevFilters,
             color,
         }));
-        dispatch(filterProductsByColor({ color }));
+        dispatch(filterCategoryByColor({ color }));
     };
 
     const handlebrandClick = (brand: Product["brand"]) => {
@@ -78,22 +87,21 @@ const Products = () => {
             ...prevFilters,
             brand,
         }));
-        dispatch(filterProductsByBrand({ brand }));
+        dispatch(filterCategoryByBrand({ brand }));
     };
 
-    // const [pp, setPP] = useState(false)
 
     const handleFreeShipmentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { checked } = event.target;
-        dispatch(filterByFreeShipment({ freeShipping: checked }));
+        dispatch(filterCategoryByFreeShipment({ freeShipping: checked }));
     };
 
 
     const handleResetFilters = () => {
-        dispatch(resetAllFilters());
+        dispatch(resetAllCategoryFilters());
         setPriceRange({ min: 0, max: getMaxPrice() });
 
-        dispatch(filterByFreeShipment({ freeShipping: false }));
+        dispatch(filterCategoryByFreeShipment({ freeShipping: false }));
     };
 
     const getUniqueFilterValues = (product: Product[] | undefined, item: string): string[] => {
@@ -105,13 +113,9 @@ const Products = () => {
         return uniqueValues;
     };
 
-
-
-
-
     return (
         <div className="home-container mt-[12px]">
-            <div className="py-12">
+            <div className="py-12 flex items-center space-x-5">
                 <div>
                     <input
                         type="range"
@@ -126,13 +130,8 @@ const Products = () => {
                 <div>
                     <h1>Filter By Category</h1>
                     <ul>
-                        <li
-                            className={selectedFilters.category === "all" ? "active-hero-text pl-2" : "pl-2 active-hero-text-before"}
-                            onClick={() => handleCategoryClick("all")}
-                        >
-                            All
-                        </li>
-                        {getUniqueFilterValues(products, 'category').map((category) => (
+
+                        {getUniqueFilterValues(productCategory, 'category').map((category) => (
                             <li
                                 key={category}
                                 className={selectedFilters.category === category ? "active-hero-text pl-2" : "pl-2 active-hero-text-before"}
@@ -154,7 +153,7 @@ const Products = () => {
                         >
                             All
                         </li>
-                        {getUniqueFilterValues(products, 'color').map((color) => (
+                        {getUniqueFilterValues(productCategory, 'color').map((color) => (
 
                             <li
                                 key={color}
@@ -177,7 +176,7 @@ const Products = () => {
                         >
                             All
                         </li>
-                        {getUniqueFilterValues(products, 'brand').map((brand) => (
+                        {getUniqueFilterValues(productCategory, 'brand').map((brand) => (
 
                             <li
                                 key={brand}
@@ -202,10 +201,10 @@ const Products = () => {
 
 
 
-            {filteredProducts.length > 0 ? (
+            {filteredProductCategory.length > 0 ? (
                 <>
                     <div className="flex items-center justify-between">
-                        {filteredProducts.map((product: Product) => {
+                        {filteredProductCategory.map((product: Product) => {
                             const existingCartItem = cart.cartItems.find(
                                 (item: CartItem) => item.id === product.id
                             );
@@ -255,4 +254,4 @@ const Products = () => {
     );
 };
 
-export default Products;
+export default ProductGroups;

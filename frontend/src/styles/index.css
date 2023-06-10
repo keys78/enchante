@@ -37,6 +37,7 @@ select:-webkit-autofill:focus {
   transition: background-color 5000s ease-in-out 0s;
 }
 
+.header-section { z-index: 999; }
 .is-sticky { position: sticky; position: -webkit-sticky; top: 0; left: 0; right: 0; width: 100%; z-index: 999; box-shadow: 0 2px 24px 0 rgb(0 0 0 / 15%); transition: 0.4s; animation: 500ms ease-in-out 0s normal none 1 running fadeInDown; padding: 11px 40px; -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); background-color: rgba(white, 0.5);}
 
 .hover-underline-animation:hover { color:#f75a2c ; transition: 0.3s;}
@@ -194,7 +195,6 @@ select:-webkit-autofill:focus {
 
 .filter-search ul {
   position: absolute;
-  z-index: 99999999;
   top: 100%;
   left: 0;
   z-index: 1;

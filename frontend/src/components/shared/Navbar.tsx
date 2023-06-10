@@ -16,8 +16,8 @@ const NavBar = () => {
 
   const options = [
     { label: 'Men', value: 'men' },
-    { label: 'Option 2', value: 'option2' },
-    { label: 'Option 3', value: 'option3' },
+    { label: 'Women', value: 'women' },
+    { label: 'Pants', value: 'pants' },
   ];
 
   useEffect(() => {

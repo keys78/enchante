@@ -1,5 +1,3 @@
-// productsSlice.ts
-
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { products } from "../../utils/data";
 import { Product } from "../../types";
@@ -74,6 +72,7 @@ const productsSlice = createSlice({
             state.filteredProducts = state.products;
         },
 
+
     },
     extraReducers: {},
 });
@@ -84,8 +83,8 @@ export const {
     resetAllFilters,
     filterProductsByColor,
     filterProductsByBrand,
-
     filterByFreeShipment,
+
 } = productsSlice.actions;
 
 export default productsSlice.reducer;

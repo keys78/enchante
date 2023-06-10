@@ -14,9 +14,9 @@ import image_ss_xx from '../assets/png/img_ss_xx.jpg'
 export const products:Product[] = [
     {
         id: '32423',
-        category: 'a',
+        category: 'men',
         name: 'Iphone Pro MAX',
-        image: 'phoniee.jpg',
+        image: image_s_2,
         desc: 'Lorem Ipsum dlee fhbsvuh h fshis sfh jhsfjlfj sfh hfs al',
         color: 'red',
         free_shipping: true,
@@ -24,8 +24,19 @@ export const products:Product[] = [
         price: 900
     },
     {
+        id: '23522',
+        category: 'men',
+        name: 'Apple Vision Pro',
+        image: image_s_2,
+        desc: 'Lorem Ipsum dlee fhbsvuh h fshis sfh jhsfjlfj sfh hfs al',
+        color: 'indigo',
+        free_shipping: false,
+        brand: 'Moi',
+        price: 400
+    },
+    {
         id: '2342',
-        category: 'b',
+        category: 'women',
         name: 'Mara Mo',
         image: 'phoniee.jpg',
         desc: 'Lorem Ipsum dlee fhbsvuh h fshis sfh jhsfjlfj sfh hfs al',
@@ -36,7 +47,7 @@ export const products:Product[] = [
     },
     {
         id: '99403',
-        category: 'c',
+        category: 'pants',
         name: 'Pie Chart',
         image: 'phoniee.jpg',
         desc: 'Lorem Ipsum dlee fhbsvuh h fshis sfh jhsfjlfj sfh hfs al',

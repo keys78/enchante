@@ -55,7 +55,7 @@ const FilterSearch: React.FC<FilterSearchProps> = ({ options }) => {
     }
 
     return filteredOptions.map((option) => (
-      <Link to="/products" key={option.value}>
+      <Link to={`/products/${option.value}`} key={option.value}>
         <li onClick={() => handleOptionClick(option)}>{option.label}</li>
       </Link>
     ));
@@ -63,7 +63,7 @@ const FilterSearch: React.FC<FilterSearchProps> = ({ options }) => {
 
   return (
     <div ref={searchContainerRef} className="filter-search">
-      <div className="flex items-center border border-black cursor-pointer">
+      <div className="flex items-center border border-black bg-white cursor-pointer">
         <input
           type="text"
           placeholder="Search..."
