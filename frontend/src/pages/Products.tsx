@@ -3,7 +3,7 @@ import { addToCart, decreaseCart } from "../reducers/cart/cartSlice";
 import { useAppDispatch, useAppSelector } from "../network/hooks";
 import { RootState } from "../network/store";
 import { Product, CartItem } from "../types";
-import { filterProductsByCategory, filterProductsByPrice, resetAllFilters } from "../reducers/products/productsSlice";
+import { filterProductsByCategory, filterProductsByColor, filterProductsByPrice, resetAllFilters } from "../reducers/products/productsSlice";
 
 const Products = () => {
     const cart = useAppSelector((state: RootState) => state.cart);
@@ -51,12 +51,28 @@ const Products = () => {
         dispatch(filterProductsByPrice({ priceRange: { min: 0, max: maxPrice } }));
     };
 
-    const [selectedCategory, setSelectedCategory] = useState("all");
-
-    const handleCategoryClick = (category: Product["category"]) => {
-        setSelectedCategory(category);
+    const [selectedFilters, setSelectedFilters] = useState({
+        category: "all",
+        color: "all",
+      });
+      
+      const handleCategoryClick = (category: Product["category"]) => {
+        setSelectedFilters((prevFilters) => ({
+          ...prevFilters,
+          category,
+        }));
         dispatch(filterProductsByCategory({ category }));
-    };
+      };
+      
+      const handleColorClick = (color: Product["color"]) => {
+        setSelectedFilters((prevFilters) => ({
+          ...prevFilters,
+          color,
+        }));
+        dispatch(filterProductsByColor({ color }));
+      };
+      
+      
 
     return (
         <div className="home-container mt-[12px]">
@@ -72,11 +88,12 @@ const Products = () => {
                     <span>${priceRange.max}</span>
                 </div>
 
+                {/* Category filter */}
                 <div>
                     <h1>Filter By Category</h1>
                     <ul>
                         <li
-                            className={selectedCategory === "all" ? "active-hero-text pl-2" : "pl-2 active-hero-text-before"}
+                            className={selectedFilters.category === "all" ? "active-hero-text pl-2" : "pl-2 active-hero-text-before"}
                             onClick={() => handleCategoryClick("all")}
                         >
                             All
@@ -84,10 +101,32 @@ const Products = () => {
                         {products.map((val) => (
                             <li
                                 key={val.category}
-                                className={selectedCategory === val.category ? "active-hero-text pl-2" : "pl-2 active-hero-text-before"}
+                                className={selectedFilters.category === val.category ? "active-hero-text pl-2" : "pl-2 active-hero-text-before"}
                                 onClick={() => handleCategoryClick(val.category)}
                             >
                                 {val.category}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+
+                {/* Color filter */}
+                <div>
+                    <h1>Filter By Color</h1>
+                    <ul>
+                        <li
+                            className={selectedFilters.color === "all" ? "active-hero-text pl-2" : "pl-2 active-hero-text-before"}
+                            onClick={() => handleColorClick("all")}
+                        >
+                            All
+                        </li>
+                        {products.map((val) => (
+                            <li
+                                key={val.color}
+                                className={selectedFilters.color === val.color ? "active-hero-text pl-2" : "pl-2 active-hero-text-before"}
+                                onClick={() => handleColorClick(val.color)}
+                            >
+                                {val.color}
                             </li>
                         ))}
                     </ul>
@@ -103,7 +142,6 @@ const Products = () => {
 
             {filteredProducts.length > 0 ? (
                 <>
-                    <h2>New Arrivals</h2>
                     <div className="flex items-center justify-between">
                         {filteredProducts.map((product: Product) => {
                             const existingCartItem = cart.cartItems.find(
