@@ -8,10 +8,12 @@ export interface IUser {
 
 export interface Product {
     id: string,
+    category: string,
     name: string,
     image: string,
     desc: string,
     price: number;
+    color: string,
     cartQuantity?: number;
 }
 

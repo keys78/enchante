@@ -14,24 +14,30 @@ import image_ss_xx from '../assets/png/img_ss_xx.jpg'
 export const products = [
     {
         id: '32423',
+        category:'a',
         name: 'Iphone Pro MAX',
         image: 'phoniee.jpg',
         desc: 'Lorem Ipsum dlee fhbsvuh h fshis sfh jhsfjlfj sfh hfs al',
-        price: 300
+        color:'red',
+        price: 900
     },
     {
         id: '2342',
+        category:'b',
         name: 'Mara Mo',
         image: 'phoniee.jpg',
         desc: 'Lorem Ipsum dlee fhbsvuh h fshis sfh jhsfjlfj sfh hfs al',
-        price: 300
+        color:'blue',
+        price: 340
     },
     {
         id: '99403',
+        category:'c',
         name: 'Pie Chart',
         image: 'phoniee.jpg',
         desc: 'Lorem Ipsum dlee fhbsvuh h fshis sfh jhsfjlfj sfh hfs al',
-        price: 300
+        color:'green',
+        price: 180
     },
 ]
 
