@@ -1,61 +1,39 @@
 import { useState } from 'react';
-import { addToCart, decreaseCart } from "../reducers/cart/cartSlice";
 import { useAppDispatch, useAppSelector } from "../network/hooks";
 import { RootState } from "../network/store";
 import { Product, CartItem } from "../types";
-import { filterByFreeShipment, filterByStarNumberOfRatings, filterProductsByBrand, filterProductsByCategory, filterProductsByColor, filterProductsByPrice, resetAllFilters } from "../reducers/products/productsSlice";
+import { filterByFreeShipment, filterProductsByBrand, filterProductsByCategory, filterProductsByColor, filterProductsByPrice, resetAllFilters } from "../reducers/products/productsSlice";
 import ToggleFilters from '../components/Filters/ToggleFilters';
-import { Star } from '@phosphor-icons/react';
+import StartRatings from '../components/Filters/StartRatings';
+import { useAddQuantity, useAddToCart, useDecreaseCart } from '../components/hooks/CartCTABtn';
+
 
 const Products = () => {
     const cart = useAppSelector((state: RootState) => state.cart);
+    const dispatch = useAppDispatch();
     const { products, filteredProducts } = useAppSelector((state: RootState) => state.products);
-
     const [priceRange, setPriceRange] = useState({ min: 0, max: getMaxPrice() });
     const [selectedRating, setSelectedRating] = useState<number | null>(null);
     const [isFreeShipment, setIsFreeShipment] = useState<boolean>(false)
-    const starRatings = [
-        { value: 5, filledStars: 5, emptyStars: 0 },
-        { value: 4, filledStars: 4, emptyStars: 1 },
-        { value: 3, filledStars: 3, emptyStars: 2 },
-        { value: 2, filledStars: 2, emptyStars: 3 },
-        { value: 1, filledStars: 1, emptyStars: 4 },
-      ];
+    const addToCart = useAddToCart();
+    const addQuantity = useAddQuantity();
+    const decreaseCart = useDecreaseCart();
+    const [selectedFilters, setSelectedFilters] = useState({
+        category: "all",
+        color: "all",
+        brand: "all",
+        star_ratings: ''
+    });
 
 
-    const dispatch = useAppDispatch();
-
-    const handleAddToCart = (product: Product) => {
-        const existingCartItem = cart.cartItems.find((item: CartItem) => item.id === product.id);
-        if (existingCartItem) {
-            return;
-        } else {
-            const cartItem: CartItem = {
-                ...product,
-                cartQuantity: 1,
-            };
-            dispatch(addToCart(cartItem));
-        }
-    };
-
-    const handleAddQuantity = (product: CartItem) => {
-        dispatch(addToCart(product));
-    };
-
-    const handleDecreaseCart = (product: CartItem) => {
-        dispatch(decreaseCart(product));
-    };
 
     function getMaxPrice(): number {
         let maxPrice = 0;
         products.forEach((product: Product) => {
-            if (product.price > maxPrice) {
-                maxPrice = product.price;
-            }
+            if (product.price > maxPrice) {  maxPrice = product.price;  }
         });
         return maxPrice;
     }
-
 
     const handlePriceRangeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const maxPrice = parseInt(e.target.value);
@@ -63,13 +41,6 @@ const Products = () => {
         dispatch(filterProductsByPrice({ priceRange: { min: 0, max: maxPrice } }));
     };
 
-
-    const [selectedFilters, setSelectedFilters] = useState({
-        category: "all",
-        color: "all",
-        brand: "all",
-        star_ratings: ''
-    });
 
     const handleCategoryClick = (category: Product["category"]) => {
         setSelectedFilters((prevFilters) => ({
@@ -95,8 +66,6 @@ const Products = () => {
         dispatch(filterProductsByBrand({ brand }));
     };
 
-
-
     const handleFreeShipmentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { checked } = event.target;
         setIsFreeShipment(checked);
@@ -113,9 +82,8 @@ const Products = () => {
             category: "all",
             color: "all",
         }));
-        setSelectedRating(null); // Reset selected star rating
+        setSelectedRating(null);
     };
-
 
 
     const getUniqueFilterValues = (products: Product[], item: keyof Product): string[] => {
@@ -128,10 +96,7 @@ const Products = () => {
 
 
 
-    const handleRatingChange = (rating: number) => {
-        setSelectedRating(rating);
-        dispatch(filterByStarNumberOfRatings({ starNumberOfRatings: rating }));
-    };
+
 
 
 
@@ -155,7 +120,6 @@ const Products = () => {
                     options={getUniqueFilterValues(products, 'category')}
                     handleFilterClick={handleCategoryClick}
                 />
-
                 <ToggleFilters
                     title="Filter By Color"
                     selectedFilter={selectedFilters.color}
@@ -168,36 +132,11 @@ const Products = () => {
                     options={getUniqueFilterValues(products, 'brand')}
                     handleFilterClick={handleBrandClick}
                 />
+                <StartRatings selectedRating={selectedRating} setSelectedRating={setSelectedRating} />
 
 
                 <div>
-                    <h2>Filter by Star Ratings</h2>
-                    {starRatings.map((rating) => (
-                        <div className='flex space-x-3' key={rating.value}>
-                            <input
-                                type="radio"
-                                id={`rating${rating.value}`}
-                                name="starRating"
-                                value={rating.value}
-                                checked={selectedRating === rating.value}
-                                onChange={() => handleRatingChange(rating.value)}
-                            />
-                            <label htmlFor={`rating${rating.value}`}>
-                                <div className='flex'>
-                                    {Array(rating.filledStars).fill(
-                                        <Star size={20} color="#f75a2c" weight="fill" />
-                                    )}
-                                    {Array(rating.emptyStars).fill(
-                                        <Star size={20} color="#d4d4d4" weight="fill" />
-                                    )}
-                                </div>
-                            </label>
-                        </div>
-                    ))}
-                </div>
-
-                <div>
-                    Free Shipping<input checked={isFreeShipment} onChange={handleFreeShipmentChange} type="checkbox" />
+                    Free Shipping <input checked={isFreeShipment} onChange={handleFreeShipmentChange} type="checkbox" />
                 </div>
 
                 <div>
@@ -233,14 +172,14 @@ const Products = () => {
                                         <div className="cart-actions">
                                             <button
                                                 className="rounded p-2 bg-red-500 text-white"
-                                                onClick={() => handleDecreaseCart(existingCartItem)}
+                                                onClick={() => decreaseCart(existingCartItem)}
                                             >
                                                 -
                                             </button>
                                             <span>{existingCartItem.cartQuantity}</span>
                                             <button
                                                 className="rounded p-2 bg-green-500 text-white"
-                                                onClick={() => handleAddQuantity(existingCartItem)}
+                                                onClick={() => addQuantity(existingCartItem)}
                                             >
                                                 +
                                             </button>
@@ -248,7 +187,7 @@ const Products = () => {
                                     ) : (
                                         <button
                                             className="rounded p-4 bg-red-500 text-white"
-                                            onClick={() => handleAddToCart(product)}
+                                            onClick={() => addToCart(product)}
                                         >
                                             Add To Cart
                                         </button>
