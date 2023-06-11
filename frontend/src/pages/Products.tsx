@@ -3,14 +3,24 @@ import { addToCart, decreaseCart } from "../reducers/cart/cartSlice";
 import { useAppDispatch, useAppSelector } from "../network/hooks";
 import { RootState } from "../network/store";
 import { Product, CartItem } from "../types";
-import { filterByFreeShipment, filterProductsByBrand, filterProductsByCategory, filterProductsByColor, filterProductsByPrice, resetAllFilters } from "../reducers/products/productsSlice";
+import { filterByFreeShipment, filterByStarNumberOfRatings, filterProductsByBrand, filterProductsByCategory, filterProductsByColor, filterProductsByPrice, resetAllFilters } from "../reducers/products/productsSlice";
+import ToggleFilters from '../components/Filters/ToggleFilters';
+import { Star } from '@phosphor-icons/react';
 
 const Products = () => {
     const cart = useAppSelector((state: RootState) => state.cart);
     const { products, filteredProducts } = useAppSelector((state: RootState) => state.products);
 
     const [priceRange, setPriceRange] = useState({ min: 0, max: getMaxPrice() });
+    const [selectedRating, setSelectedRating] = useState<number | null>(null);
     const [isFreeShipment, setIsFreeShipment] = useState<boolean>(false)
+    const starRatings = [
+        { value: 5, filledStars: 5, emptyStars: 0 },
+        { value: 4, filledStars: 4, emptyStars: 1 },
+        { value: 3, filledStars: 3, emptyStars: 2 },
+        { value: 2, filledStars: 2, emptyStars: 3 },
+        { value: 1, filledStars: 1, emptyStars: 4 },
+      ];
 
 
     const dispatch = useAppDispatch();
@@ -58,6 +68,7 @@ const Products = () => {
         category: "all",
         color: "all",
         brand: "all",
+        star_ratings: ''
     });
 
     const handleCategoryClick = (category: Product["category"]) => {
@@ -86,7 +97,6 @@ const Products = () => {
 
 
 
-
     const handleFreeShipmentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { checked } = event.target;
         setIsFreeShipment(checked);
@@ -96,14 +106,16 @@ const Products = () => {
     const handleResetFilters = () => {
         dispatch(resetAllFilters());
         setPriceRange({ min: 0, max: getMaxPrice() });
-        setIsFreeShipment(false)
+        setIsFreeShipment(false);
         setSelectedFilters((prevFilters) => ({
             ...prevFilters,
             brand: "all",
             category: "all",
             color: "all",
         }));
+        setSelectedRating(null); // Reset selected star rating
     };
+
 
 
     const getUniqueFilterValues = (products: Product[], item: keyof Product): string[] => {
@@ -112,6 +124,14 @@ const Products = () => {
         return uniqueValues;
     };
 
+
+
+
+
+    const handleRatingChange = (rating: number) => {
+        setSelectedRating(rating);
+        dispatch(filterByStarNumberOfRatings({ starNumberOfRatings: rating }));
+    };
 
 
 
@@ -129,70 +149,51 @@ const Products = () => {
                     <span>${priceRange.max}</span>
                 </div>
 
-                <div>
-                    <h1>Filter By Category</h1>
-                    <ul>
-                        <li
-                            className={selectedFilters.category === "all" ? "active-hero-text pl-2" : "pl-2 active-hero-text-before cursor-pointer py-2"}
-                            onClick={() => handleCategoryClick("all")}
-                        >
-                            All
-                        </li>
-                        {getUniqueFilterValues(products, 'category').map((category) => (
-                            <li
-                                key={category}
-                                className={selectedFilters.category === category ? "active-hero-text pl-2" : "pl-2 active-hero-text-before cursor-pointer py-2"}
-                                onClick={() => handleCategoryClick(category)}
-                            >
-                                {category}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
+                <ToggleFilters
+                    title="Filter By Category"
+                    selectedFilter={selectedFilters.category}
+                    options={getUniqueFilterValues(products, 'category')}
+                    handleFilterClick={handleCategoryClick}
+                />
 
-                <div>
-                    <h1>Filter By Color</h1>
-                    <ul>
-                        <li
-                            className={selectedFilters.color === "all" ? "active-hero-text pl-2" : "pl-2 active-hero-text-before cursor-pointer py-2"}
-                            onClick={() => handleColorClick("all")}
-                        >
-                            All
-                        </li>
-                        {getUniqueFilterValues(products, 'color').map((color) => (
-
-                            <li
-                                key={color}
-                                className={selectedFilters.color === color ? "active-hero-text pl-2" : "pl-2 active-hero-text-before cursor-pointer py-2"}
-                                onClick={() => handleColorClick(color)}
-                            >
-                                {color}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
+                <ToggleFilters
+                    title="Filter By Color"
+                    selectedFilter={selectedFilters.color}
+                    options={getUniqueFilterValues(products, 'color')}
+                    handleFilterClick={handleColorClick}
+                />
+                <ToggleFilters
+                    title="Filter By Brand"
+                    selectedFilter={selectedFilters.brand}
+                    options={getUniqueFilterValues(products, 'brand')}
+                    handleFilterClick={handleBrandClick}
+                />
 
 
                 <div>
-                    <h1>Filter By Brand</h1>
-                    <ul>
-                        <li
-                            className={selectedFilters.brand === "all" ? "active-hero-text pl-2" : "pl-2 active-hero-text-before cursor-pointer py-2"}
-                            onClick={() => handleBrandClick("all")}
-                        >
-                            All
-                        </li>
-                        {getUniqueFilterValues(products, 'brand').map((brand) => (
-
-                            <li
-                                key={brand}
-                                className={selectedFilters.brand === brand ? "active-hero-text pl-2" : "pl-2 active-hero-text-before cursor-pointer py-2"}
-                                onClick={() => handleBrandClick(brand)}
-                            >
-                                {brand}
-                            </li>
-                        ))}
-                    </ul>
+                    <h2>Filter by Star Ratings</h2>
+                    {starRatings.map((rating) => (
+                        <div className='flex space-x-3' key={rating.value}>
+                            <input
+                                type="radio"
+                                id={`rating${rating.value}`}
+                                name="starRating"
+                                value={rating.value}
+                                checked={selectedRating === rating.value}
+                                onChange={() => handleRatingChange(rating.value)}
+                            />
+                            <label htmlFor={`rating${rating.value}`}>
+                                <div className='flex'>
+                                    {Array(rating.filledStars).fill(
+                                        <Star size={20} color="#f75a2c" weight="fill" />
+                                    )}
+                                    {Array(rating.emptyStars).fill(
+                                        <Star size={20} color="#d4d4d4" weight="fill" />
+                                    )}
+                                </div>
+                            </label>
+                        </div>
+                    ))}
                 </div>
 
                 <div>

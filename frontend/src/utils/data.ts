@@ -21,7 +21,8 @@ export const products:Product[] = [
         color: 'red',
         free_shipping: true,
         brand: 'Apple',
-        price: 900
+        price: 900,
+        star_ratings:3,
     },
     {
         id: '3242243',
@@ -32,7 +33,8 @@ export const products:Product[] = [
         color: 'red',
         free_shipping: true,
         brand: 'Apple',
-        price: 900
+        price: 900,
+        star_ratings:1,
     },
     {
         id: '23522',
@@ -43,7 +45,8 @@ export const products:Product[] = [
         color: 'indigo',
         free_shipping: false,
         brand: 'Moi',
-        price: 400
+        price: 400,
+        star_ratings:5,
     },
     {
         id: '2342',
@@ -54,7 +57,8 @@ export const products:Product[] = [
         color: 'blue',
         free_shipping: false,
         brand: 'Hulu',
-        price: 340
+        price: 340,
+        star_ratings:5,
     },
     {
         id: '99403',
@@ -65,7 +69,8 @@ export const products:Product[] = [
         color: 'green',
         free_shipping: true,
         brand: 'Netflix',
-        price: 180
+        price: 180,
+        star_ratings:2,
     },
 ]
 
