@@ -30,7 +30,7 @@ export const useAddQuantity = () => {
   };
 };
 
-export const useDecreaseCart = () => {
+export const useDecreaseQuantity = () => {
   const dispatch = useAppDispatch();
 
   return (product: CartItem) => {

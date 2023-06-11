@@ -5,19 +5,19 @@ import { Product, CartItem } from "../types";
 import { filterByFreeShipment, filterProductsByBrand, filterProductsByCategory, filterProductsByColor, filterProductsByPrice, resetAllFilters } from "../reducers/products/productsSlice";
 import ToggleFilters from '../components/Filters/ToggleFilters';
 import StartRatings from '../components/Filters/StartRatings';
-import { useAddQuantity, useAddToCart, useDecreaseCart } from '../components/hooks/CartCTABtn';
+import { useAddQuantity, useAddToCart, useDecreaseQuantity } from '../components/hooks/CartCTABtn';
 
 
 const Products = () => {
-    const cart = useAppSelector((state: RootState) => state.cart);
     const dispatch = useAppDispatch();
+    const addToCart = useAddToCart();
+    const addQuantity = useAddQuantity();
+    const decreaseQuantity = useDecreaseQuantity();
+    const cart = useAppSelector((state: RootState) => state.cart);
     const { products, filteredProducts } = useAppSelector((state: RootState) => state.products);
     const [priceRange, setPriceRange] = useState({ min: 0, max: getMaxPrice() });
     const [selectedRating, setSelectedRating] = useState<number | null>(null);
     const [isFreeShipment, setIsFreeShipment] = useState<boolean>(false)
-    const addToCart = useAddToCart();
-    const addQuantity = useAddQuantity();
-    const decreaseCart = useDecreaseCart();
     const [selectedFilters, setSelectedFilters] = useState({
         category: "all",
         color: "all",
@@ -30,7 +30,7 @@ const Products = () => {
     function getMaxPrice(): number {
         let maxPrice = 0;
         products.forEach((product: Product) => {
-            if (product.price > maxPrice) {  maxPrice = product.price;  }
+            if (product.price > maxPrice) { maxPrice = product.price; }
         });
         return maxPrice;
     }
@@ -42,29 +42,27 @@ const Products = () => {
     };
 
 
-    const handleCategoryClick = (category: Product["category"]) => {
+    const handleFilterClick = (filterType: 'category' | 'color' | 'brand', filterValue: string) => {
         setSelectedFilters((prevFilters) => ({
             ...prevFilters,
-            category
+            [filterType]: filterValue,
         }));
-        dispatch(filterProductsByCategory({ category }));
+
+        switch (filterType) {
+            case 'category':
+                dispatch(filterProductsByCategory({ category: filterValue }));
+                break;
+            case 'color':
+                dispatch(filterProductsByColor({ color: filterValue }));
+                break;
+            case 'brand':
+                dispatch(filterProductsByBrand({ brand: filterValue }));
+                break;
+            default:
+                break;
+        }
     };
 
-    const handleColorClick = (color: Product["color"]) => {
-        setSelectedFilters((prevFilters) => ({
-            ...prevFilters,
-            color
-        }));
-        dispatch(filterProductsByColor({ color }));
-    };
-
-    const handleBrandClick = (brand: Product["brand"]) => {
-        setSelectedFilters((prevFilters) => ({
-            ...prevFilters,
-            brand
-        }));
-        dispatch(filterProductsByBrand({ brand }));
-    };
 
     const handleFreeShipmentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { checked } = event.target;
@@ -95,11 +93,6 @@ const Products = () => {
 
 
 
-
-
-
-
-
     return (
         <div className="home-container mt-[12px]">
             <div className="py-12 flex space-x-7">
@@ -118,20 +111,23 @@ const Products = () => {
                     title="Filter By Category"
                     selectedFilter={selectedFilters.category}
                     options={getUniqueFilterValues(products, 'category')}
-                    handleFilterClick={handleCategoryClick}
+                    handleFilterClick={(filterValue) => handleFilterClick('category', filterValue)}
                 />
+
                 <ToggleFilters
                     title="Filter By Color"
                     selectedFilter={selectedFilters.color}
                     options={getUniqueFilterValues(products, 'color')}
-                    handleFilterClick={handleColorClick}
+                    handleFilterClick={(filterValue) => handleFilterClick('color', filterValue)}
                 />
+
                 <ToggleFilters
                     title="Filter By Brand"
                     selectedFilter={selectedFilters.brand}
                     options={getUniqueFilterValues(products, 'brand')}
-                    handleFilterClick={handleBrandClick}
+                    handleFilterClick={(filterValue) => handleFilterClick('brand', filterValue)}
                 />
+
                 <StartRatings selectedRating={selectedRating} setSelectedRating={setSelectedRating} />
 
 
@@ -172,7 +168,7 @@ const Products = () => {
                                         <div className="cart-actions">
                                             <button
                                                 className="rounded p-2 bg-red-500 text-white"
-                                                onClick={() => decreaseCart(existingCartItem)}
+                                                onClick={() => decreaseQuantity(existingCartItem)}
                                             >
                                                 -
                                             </button>
