@@ -5,11 +5,17 @@ import picks_three from '../../assets/png/picks_three.jpg';
 import picks_four from '../../assets/png/picks_four.jpg';
 import { Link } from 'react-router-dom';
 
+type CuratedItem = {
+  image: string;
+  btn_text: string;
+  route: string;
+};
+
 const CurratedPicks = () => {
-  const curratedArray = [
+  const curratedArray: CuratedItem[] = [
     { image: pickss_one, btn_text: 'best seller', route: 'products' },
-    { image: picks_two, btn_text: 'shop men', route: 'products' },
     { image: picks_three, btn_text: 'shop women', route: 'products' },
+    { image: picks_two, btn_text: 'shop men', route: 'products' },
     { image: picks_four, btn_text: 'shop casual', route: 'products' },
   ];
 
@@ -26,7 +32,7 @@ const CurratedPicks = () => {
                   <button className='flex items-center justify-center w-full space-x-2 rounded-md bg-white text-black py-2 hover:bg-[#f75a2c] transition-colors duration-300'>
                     <div className='font-medium text-lg capitalize'>{val.btn_text}</div>
                     <div className='animation-linear'>
-                      <ArrowRight size={24} color="#000" weight='bold' />
+                      <ArrowRight size={20} color="#000" weight='bold' />
                     </div>
                   </button>
                 </Link>

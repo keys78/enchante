@@ -2,6 +2,7 @@ import Brands from "../components/home/Brands";
 import CurratedPicks from "../components/home/CurratedPicks";
 import DisplayText from "../components/home/DisplayText";
 import Hero from "../components/home/Hero";
+import SelectedProducts from "../components/home/SelectedProducts";
 
 const Home = () => {
 
@@ -11,6 +12,7 @@ const Home = () => {
       <Brands />
       <DisplayText />
       <CurratedPicks />
+      <SelectedProducts />
     </div>
   );
 };
