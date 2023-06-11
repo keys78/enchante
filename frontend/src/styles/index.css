@@ -56,7 +56,7 @@ select:-webkit-autofill:focus {
 .brand-logo { width: 150px; display: inline-block;}
 
 
-
+.currated-image { height: 100%;}
 
 
 
@@ -126,21 +126,9 @@ select:-webkit-autofill:focus {
   background-color: #f0f0f0;
 }
 
-@keyframes linearMotion {
-  0% {
-      transform: translateX(0);
-  }
-  50% {
-      transform: translateX(10px);
-  }
-  100% {
-      transform: translateX(0);
-  }
-}
-
-.animation-linear {
-  animation: linearMotion 2s linear infinite;
-}
+/* btn animation - linear motion */
+@keyframes linearMotion { 0% { transform: translateX(0); } 50% { transform: translateX(10px);} 100% { transform: translateX(0); }}
+.animation-linear { animation: linearMotion 2s linear infinite;}
 
 
 
@@ -150,6 +138,8 @@ select:-webkit-autofill:focus {
 @media screen and (max-width: 1600px) {
 .slideshow { margin: 0 auto; overflow: hidden; width: 100%; max-width: 450px; position: relative; background: #000; }
 .slide { display: inline-block; max-width: 450px;}
+.currated-image { height: 450px;}
+
 }
 
 

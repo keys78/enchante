@@ -70,7 +70,7 @@ const Hero = () => {
                     </div>
                 </div>
             </div>
-            <div className='fixed bottom-0 left-0'>
+            <div className='fixed bottom-0 right-0 z-50'>
                 <div className="py-7 bg-black text-white">
                     <div className='flex space-x-14'>
                         <div className='flex flex-col space-y-3 max-w-[24px] mx-[14px]'>

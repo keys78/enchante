@@ -42,7 +42,7 @@ const NavBar = () => {
     <header className="header-section flex items-center justify-between text-black relative border-b border-gray-200 pt-[30px] pb-[24px] app-container px-[40px]">
       <Link to="/">
         <div className="bg-black text-white py-[30px] px-[20px] fixed top-0 s-1920:left-[320px] left-0">
-          <h1 className="text-[30px]">enchanteur </h1>
+          <h1 className="text-[30px]">anteur </h1>
         </div>
       </Link>
 
@@ -57,7 +57,7 @@ const NavBar = () => {
         <Link to="/cart">
           <div className="relative">
             <ShoppingCartSimple size={26} color="#070707" weight="regular" />
-            <span className="h-[20px] w-[20px] text-white bg-orange-500
+            <span className="h-[20px] w-[20px] text-white bg-orangeSkin
               flex items-center justify-center text-center rounded-full font-semibold
               absolute -top-2 -right-2 text-[12px]">{cartTotalQuantity}</span>
           </div>
