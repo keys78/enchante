@@ -78,10 +78,10 @@ const Hero = () => {
                             <InstagramLogo className="cursor-pointer" size={24} color="#a2a5b5" weight="thin" />
                             <TwitterLogo className="cursor-pointer" size={24} color="#a2a5b5" weight="thin" />
                         </div>
-                        <div className='cursor-pointer flex items-center space-x-2 pr-40'>
+                        {/* <div className='cursor-pointer flex items-center space-x-2 pr-40'>
                             <ArrowElbowDownRight size={32} color="#fafafa88" weight="fill" />
                             <span className='text-[18px] -mb-[12px] opacity-60'>Shop Now</span>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

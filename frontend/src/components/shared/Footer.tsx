@@ -11,7 +11,7 @@ const Footer = () => {
     <footer className="bg-black text-white">
       <div className="app-container px-[120px]">
         <div className="flex items-center justify-between pt-9 pb-20">
-          <h1 className="text-[40px]">pickMe</h1>
+          <h1 className="text-[40px]">Allure</h1>
           <div>
             <div className="flex border border-btnGray rounded-br w-full">
               <input className="w-full border-none outline-none p-2 rounded-tl rounded-br text-btnGray" type="text" placeholder="Subscribe to our newsletter" />

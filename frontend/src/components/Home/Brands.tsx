@@ -30,7 +30,7 @@ const marqueeVariants = {
 const Brands = () => {
     return (
         <section className="py-[200px]">
-            <h1 className="pl-[40px] text-[42px] font-nunitosans font-bold leading-tight">High End ~ Ivys </h1>
+            {/* <h1 className="pl-[40px] text-[42px] font-nunitosans font-bold leading-tight">High End ~ Ivys </h1> */}
             <div className="marquee">
                 <motion.div className="track flex items-center space-x-24" variants={marqueeVariants} animate="animate" >
                     <img className="w-[250px] inline-block" src={patek} loading="lazy" />

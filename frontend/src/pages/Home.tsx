@@ -1,5 +1,7 @@
-import Brands from "../components/Home/Brands";
-import Hero from "../components/Home/Hero";
+import Brands from "../components/home/Brands";
+import CurratedPicks from "../components/home/CurratedPicks";
+import DisplayText from "../components/home/DisplayText";
+import Hero from "../components/home/Hero";
 
 const Home = () => {
 
@@ -7,6 +9,8 @@ const Home = () => {
     <div className="app-container">
       <Hero />
       <Brands />
+      <DisplayText />
+      <CurratedPicks />
     </div>
   );
 };

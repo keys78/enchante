@@ -3,8 +3,8 @@ import { useAppDispatch, useAppSelector } from "../network/hooks";
 import { RootState } from "../network/store";
 import { Product, CartItem } from "../types";
 import { filterByFreeShipment, filterProductsByBrand, filterProductsByCategory, filterProductsByColor, filterProductsByPrice, resetAllFilters } from "../reducers/products/productsSlice";
-import ToggleFilters from '../components/Filters/ToggleFilters';
-import StartRatings from '../components/Filters/StartRatings';
+import ToggleFilters from '../components/filters/ToggleFilters';
+import StartRatings from '../components/filters/StartRatings';
 import { useAddQuantity, useAddToCart, useDecreaseQuantity } from '../components/hooks/CartCTABtn';
 
 
