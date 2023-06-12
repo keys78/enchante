@@ -29,11 +29,14 @@ const SelectedProducts = () => {
           pagination={false}
           scrollbar={false}
           breakpoints={{
-            640: {
+            0: {
               slidesPerView: 1,
             },
-            1024: {
+            768: {
               slidesPerView: 2,
+            },
+            1024: {
+              slidesPerView: 3,
             },
           }}
         >
