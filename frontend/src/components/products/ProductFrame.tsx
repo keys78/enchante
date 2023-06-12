@@ -28,7 +28,11 @@ const ProductFrame = ({ product }: Props) => {
 
         <div key={product.id} className=''>
             <Link to="/product/product-details">
+                <div className='relayive'>
                 <img className='rounded-[5px]' src={product.image} alt={'enchanté_fashon'} />
+                <div className='absolute top-4 left-4 bg-orangeSkin text-white rounded-[5px] py-1 px-3'>new</div>
+                <div className='absolute bottom-4 left-4 bg-orangeSkin text-white rounded-[5px] py-1 px-3'>free shipping</div>
+                </div>
             </Link>
             <div className='flex justify-between pt-[14px]'>
                 <div className="details">
