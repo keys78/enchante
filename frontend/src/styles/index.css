@@ -131,6 +131,33 @@ select:-webkit-autofill:focus {
 .animation-linear { animation: linearMotion 2s linear infinite;}
 
 
+/* swiper styless update */
+.swiper-button-next,
+.swiper-button-prev { background-color: #00000000 !important; opacity: 0.8; transition: 0.3s; background-position: center; background-size: 26px; background-repeat: no-repeat; padding: 16px; width: 40px; height: 40px; border-radius: 5%; border: 1px solid black;}
+/* .swiper-button-prev { background-color: #f75a2c !important; opacity: 0.8; transition: 0.3s; background-position: center; background-size: 26px; background-repeat: no-repeat; padding: 16px; width: 40px; height: 40px; border-radius: 100%;} */
+.swiper-button-prev { background-image: url("../assets/svg/chev_left.svg");}
+.swiper-button-next { background-image: url("../assets/svg/chev_right.svg");}
+.swiper-button-next::after,
+.swiper-button-prev::after {content: "";}
+
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+  opacity: 0.5; transition: 0.3s;
+}
+
+.swiper-button-next, .swiper-button-prev {
+  position: relative; float: right; clear: revert; margin-bottom: 48px; margin-top: -48px;
+}
+
+.swiper-button-prev {
+  left: -60px;
+  bottom: -7px;
+}
+.swiper-button-next {
+  right: -35px;
+  bottom: -7px;
+}
+
 
 
 /* MEDIA QUERIES */

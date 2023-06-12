@@ -174,3 +174,56 @@ export const CardSliderTwo = [
     { image: image_s_x },
     { image: image_s_2 },
 ];
+
+
+
+export const selectedProductsArray = [
+    {
+      id: '1',
+      category: 'men',
+      name: 'Iphone Pro MAX',
+      image: image_s_x,
+      desc: 'no',
+      color: 'red',
+      free_shipping: true,
+      brand: 'Apple',
+      price: 900,
+      star_ratings: 3,
+    },
+    {
+      id: '2',
+      category: 'women',
+      name: 'Lipstick',
+      image: image_s_x,
+      desc: 'yes',
+      color: 'red',
+      free_shipping: true,
+      brand: 'Apple',
+      price: 900,
+      star_ratings: 3,
+    },
+    {
+      id: '3',
+      category: 'men',
+      name: 'Shoe',
+      image: image_s_x,
+      desc: 'go',
+      color: 'red',
+      free_shipping: true,
+      brand: 'Apple',
+      price: 900,
+      star_ratings: 3,
+    },
+    {
+      id: '3',
+      category: 'men',
+      name: 'Shoe',
+      image: image_s_x,
+      desc: 'go',
+      color: 'red',
+      free_shipping: true,
+      brand: 'Apple',
+      price: 900,
+      star_ratings: 3,
+    },
+  ];
