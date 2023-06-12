@@ -17,6 +17,7 @@ export interface Product {
     brand: string;
     free_shipping: boolean;
     star_ratings: number;
+    discount?: boolean;
     cartQuantity?: number;
 }
 

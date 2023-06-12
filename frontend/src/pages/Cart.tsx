@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { addToCart, clearCart, decreaseCartQuantity, getTotals, removeFromCart, } from "../reducers/cart/cartSlice"
 import { Link } from "react-router-dom";
-import CheckoutButton from "../components/CheckoutButton";
+import CheckoutButton from "../components/UI/CheckoutButton";
 import { RootState } from "../network/store";
 import { useAppDispatch, useAppSelector } from "../network/hooks";
 

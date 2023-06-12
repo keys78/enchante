@@ -5,7 +5,7 @@ import { Product, CartItem } from "../types";
 import { filterByFreeShipment, filterProductsByBrand, filterProductsByCategory, filterProductsByColor, filterProductsByPrice, resetAllFilters } from "../reducers/products/productsSlice";
 import ToggleFilters from '../components/filters/ToggleFilters';
 import StartRatings from '../components/filters/StartRatings';
-import { useAddQuantity, useAddToCart, useDecreaseQuantity } from '../components/hooks/CartCTABtn';
+import { useAddQuantity, useAddToCart, useDecreaseQuantity } from '../components/hooks/useCartControls';
 
 
 const Products = () => {

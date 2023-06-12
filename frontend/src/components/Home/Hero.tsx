@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
 import { CardSliderOne, CardSliderTwo, SliderData, heroDisplayTexts } from '../../utils/data';
-import Slideshow from '../SlidesShow';
-import CardCarousel from '../CardCarousel';
+import Slideshow from '../UI/SlidesShow';
+import CardCarousel from '../UI/CardCarousel';
 import { ArrowElbowDownRight, FacebookLogo, InstagramLogo, TwitterLogo } from '@phosphor-icons/react';
 
 

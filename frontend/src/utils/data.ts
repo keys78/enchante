@@ -188,7 +188,9 @@ export const selectedProductsArray = [
       free_shipping: true,
       brand: 'Apple',
       price: 900,
+      discount: true,
       star_ratings: 3,
+      
     },
     {
       id: '2',
@@ -200,7 +202,9 @@ export const selectedProductsArray = [
       free_shipping: true,
       brand: 'Apple',
       price: 900,
+      discount: false,
       star_ratings: 3,
+      
     },
     {
       id: '3',
@@ -212,12 +216,14 @@ export const selectedProductsArray = [
       free_shipping: true,
       brand: 'Apple',
       price: 900,
+      discount: false,
       star_ratings: 3,
+      
     },
     {
-      id: '3',
+      id: '4',
       category: 'men',
-      name: 'Shoe',
+      name: 'hair comb',
       image: image_s_x,
       desc: 'go',
       color: 'red',
