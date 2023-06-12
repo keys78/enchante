@@ -7,6 +7,8 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import { CartItem, Product } from '../../types';
 import { selectedProductsArray } from '../../utils/data';
+import { Minus, Plus, ShoppingCart, ShoppingCartSimple } from '@phosphor-icons/react';
+import { Link } from 'react-router-dom';
 
 
 
@@ -41,43 +43,47 @@ const SelectedProducts = () => {
           }}
         >
           <h1 className="absolute top-0 left-0 text-4xl font-nunitosans font-bold leading-tight">Featured products</h1>
-
           {selectedProductsArray.map((val: Product, i: number) => {
             const existingCartItem = cart.cartItems.find((item: CartItem) => item.id === val.id);
             return (
               <SwiperSlide key={i}>
                 <div key={val.id} className='mt-40px'>
-                  <img src={val.image} alt={val.name} />
-                  <div className="details">
+                  <Link to="/product/product-details">
+                    <img className='rounded-[5px]' src={val.image} alt={'enchanté_fashon'} />
+                  </Link>
+                  <div className='flex justify-between pt-[14px]'>
+                    <div className="details">
+                      <h3 className='font-medium'>{val.name}</h3>
+                      <div className='flex items-start space-x-3'>
+                        <span className="text-[24px] font-medium montserrat">${val.price}</span>
+                        <span className='text-[16px] font-medium montserrat opacity-60 discount-strike'>$20</span>
+                      </div>
+                    </div>
                     <div>
-                      <span className="price">${val.price}</span>
-                      <h3>{val.name}</h3>
+                      {existingCartItem ? (
+                        <div className='flex items-center space-x-4'>
+                          <button
+                            className="rounded-[5px] hover:opacity-70 transition p-2 duration-300 bg-black text-white"
+                            onClick={() => decreaseQuantity(existingCartItem)}
+                          >
+                            <Minus size={22} color="#f8f8f8" weight="regular" />
+                          </button>
+                          <span className='font-bold'>{existingCartItem.cartQuantity}</span>
+                          <button
+                            className="rounded-[5px] hover:opacity-70 transition p-2 duration-300 bg-black text-white"
+                            onClick={() => addQuantity(existingCartItem)}
+                          >
+                            <Plus size={22} color="#f8f8f8" weight="regular" />
+                          </button>
+                        </div>
+                      ) : (
+                        <button className="rounded-[5px] hover:opacity-70 transition duration-300 p-3 bg-black text-white" onClick={() => addToCart(val)}>
+                          <ShoppingCartSimple size={22} color="#f8f8f8" weight="regular" />
+                        </button>
+                      )}
                     </div>
                   </div>
-                  {existingCartItem ? (
-                    <div className="cart-actions">
-                      <button
-                        className="rounded p-2 bg-red-500 text-white"
-                        onClick={() => decreaseQuantity(existingCartItem)}
-                      >
-                        -
-                      </button>
-                      <span>{existingCartItem.cartQuantity}</span>
-                      <button
-                        className="rounded p-2 bg-green-500 text-white"
-                        onClick={() => addQuantity(existingCartItem)}
-                      >
-                        +
-                      </button>
-                    </div>
-                  ) : (
-                    <button
-                      className="rounded p-4 bg-red-500 text-white"
-                      onClick={() => addToCart(val)}
-                    >
-                      Add To Cart
-                    </button>
-                  )}
+
                 </div>
               </SwiperSlide>
             );

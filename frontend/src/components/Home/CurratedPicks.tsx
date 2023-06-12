@@ -25,7 +25,7 @@ const CurratedPicks = () => {
         <h1 className="text-4xl font-nunitosans font-bold leading-tight pb-12">Currated picks</h1>
         <div className='grid grid-cols-4 gap-5'>
           {curratedArray.map((val, index) => (
-            <div className='currated-image relative overflow-hidden' key={index}>
+            <div className='rounded-md currated-image relative overflow-hidden' key={index}>
               <img src={val.image} className='rounded-md filter grayscale hover:filter-none hover:scale-150 hover:duration-500 transform transition-transform duration-300' alt='Curated Pick' />
               <div className='absolute bottom-4 left-4 right-4'>
                 <Link to={`/${val.route}`}>
