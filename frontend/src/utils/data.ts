@@ -185,9 +185,10 @@ export const selectedProductsArray = [
       image: image_s_x,
       desc: 'no',
       color: 'red',
-      free_shipping: true,
+      free_shipping: false,
       brand: 'Apple',
       price: 900,
+      new:true,
       discount: true,
       star_ratings: 3,
       
@@ -202,6 +203,7 @@ export const selectedProductsArray = [
       free_shipping: true,
       brand: 'Apple',
       price: 900,
+      new:false,
       discount: false,
       star_ratings: 3,
       
@@ -216,6 +218,7 @@ export const selectedProductsArray = [
       free_shipping: true,
       brand: 'Apple',
       price: 900,
+      new:false,
       discount: false,
       star_ratings: 3,
       
@@ -227,9 +230,10 @@ export const selectedProductsArray = [
       image: image_s_x,
       desc: 'go',
       color: 'red',
-      free_shipping: true,
+      free_shipping: false,
       brand: 'Apple',
       price: 900,
+      new:false,
       star_ratings: 3,
     },
   ];

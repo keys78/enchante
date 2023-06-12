@@ -3,6 +3,7 @@ import CurratedPicks from "../components/home/CurratedPicks";
 import DisplayText from "../components/home/DisplayText";
 import Hero from "../components/home/Hero";
 import SelectedProducts from "../components/home/FeaturedProducts";
+import NewsLetter from "../components/home/NewsLetter";
 
 const Home = () => {
 
@@ -13,6 +14,7 @@ const Home = () => {
       <DisplayText />
       <CurratedPicks />
       <SelectedProducts />
+      <NewsLetter />
     </div>
   );
 };
