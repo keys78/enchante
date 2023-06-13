@@ -47,7 +47,7 @@ const Footer = () => {
       </div>
       <div className="py-5">
         <p className="m-0 text-center text-white opacity-80 flex items-center justify-center s-480:text-[16px] text-[14px]">
-          <span className="text-[10px]">©</span>&nbsp; <span>Copyright - enchanté-online@{getYear()}</span>
+         <span>Copyright ©{getYear()} enchanté. All rights reserved</span>
         </p>
       </div>
     </footer>
