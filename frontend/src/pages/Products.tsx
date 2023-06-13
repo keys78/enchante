@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from "../network/hooks";
 import { RootState } from "../network/store";
-import { Product, CartItem } from "../types";
+import { Product } from "../types";
 import { filterByFreeShipment, filterProductsByBrand, filterProductsByCategory, filterProductsByColor, filterProductsByPrice, resetAllFilters } from "../reducers/products/productsSlice";
 import ToggleFilters from '../components/filters/ToggleFilters';
 import StartRatings from '../components/filters/StartRatings';
-import { useAddQuantity, useAddToCart, useDecreaseQuantity } from '../components/hooks/useCartControls';
 import { Link } from 'react-router-dom';
 import { CaretRight } from '@phosphor-icons/react';
 import ProductFrame from '../components/products/ProductFrame';
@@ -130,48 +129,37 @@ const Products = () => {
 
                         <StartRatings selectedRating={selectedRating} setSelectedRating={setSelectedRating} />
 
-                        {/* <div>
-                            <input
-                                type="range"
-                                min="0"
-                                max={getMaxPrice().toString()}
-                                value={priceRange.max.toString()}
-                                onChange={handlePriceRangeChange}
-                            />
-                            <span>${priceRange.max}</span>
-                        </div> */}
-                        <RangeSlider />
+                        <RangeSlider
+                            priceRange={priceRange}
+                            setPriceRange={setPriceRange}
+                        />
 
-
-                        <div>
-                            Free Shipping <input checked={isFreeShipment} onChange={handleFreeShipmentChange} type="checkbox" />
+                        <div className='flex items-center justify-between rounded-[5px] px-3 py-2 bg-gray-50 font-medium cursor-pointer'>
+                            <h1>Free Shipping</h1>
+                            <input checked={isFreeShipment} onChange={handleFreeShipmentChange} type="checkbox" />
                         </div>
 
-                        <div>
-                            <button onClick={handleResetFilters}>Reset Filters</button>
-                        </div>
+                        <button
+                            className='rounded-[5px] px-3 py-2 bg-gray-900 font-medium cursor-pointer border-2border-white text-white w-full mt-6 hover:bg-white hover:text-black transition duration-300 hover:border-2 hover:border-black'
+                            onClick={handleResetFilters}>Reset Filters</button>
 
                     </div>
 
                     <div>
-                        <div>
-                            <div className=''>
-                                Products no{filteredProducts.length}
-                            </div>
-
-
-                            {filteredProducts.length > 0 ? (
-                                <>
-                                    <div className="grid grid-cols-2">
-                                        {filteredProducts.map((product: Product, i: number) =>
-                                            <ProductFrame product={product} key={i}/>
-                                        )}
-                                    </div>
-                                </>
-                            ) : (
-                                <p>No products available.</p>
-                            )}
+                        <div className=''>
+                            Products no{filteredProducts.length}
                         </div>
+                        {filteredProducts.length > 0 ? (
+                            <>
+                                <div className="grid grid-cols-2">
+                                    {filteredProducts.map((product: Product, i: number) =>
+                                        <ProductFrame product={product} key={i} />
+                                    )}
+                                </div>
+                            </>
+                        ) : (
+                            <p>No products available.</p>
+                        )}
                     </div>
                 </div>
             </div>

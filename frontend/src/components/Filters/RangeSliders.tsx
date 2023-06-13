@@ -1,20 +1,36 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../../network/hooks';
 import { RootState } from '../../network/store';
 import { Product } from '../../types';
 import { filterProductsByPrice } from '../../reducers/products/productsSlice';
+import { CaretRight } from '@phosphor-icons/react';
 
-const RangeSlider: React.FC = () => {
+type RangerProps = {
+    priceRange: any;
+    setPriceRange: any;
+};
+
+const RangeSlider: React.FC<RangerProps> = ({ priceRange, setPriceRange }) => {
     const dispatch = useAppDispatch();
     const { products } = useAppSelector((state: RootState) => state.products);
-    const [priceRange, setPriceRange] = useState({ min: 0, max: getMaxPrice() });
+    const [isOpen, setIsOpen] = useState(false);
+    const sliderInputRef = useRef<HTMLInputElement>(null);
+    const sliderThumbRef = useRef<HTMLDivElement>(null);
+    const sliderLineRef = useRef<HTMLDivElement>(null);
+
+    const caretStyle = {
+        transform: isOpen ? 'rotate(90deg)' : 'rotate(0)',
+        transition: 'transform 0.3s ease-in-out',
+    };
 
     useEffect(() => {
-        const sliderInput = document.getElementById('slider_input') as HTMLInputElement;
-        const sliderThumb = document.getElementById('slider_thumb');
-        const sliderLine = document.getElementById('slider_line');
-
         const showSliderValue = () => {
+            const sliderInput = sliderInputRef.current;
+            const sliderThumb = sliderThumbRef.current;
+            const sliderLine = sliderLineRef.current;
+
             if (sliderThumb && sliderInput && sliderLine) {
                 sliderThumb.innerHTML = `$${sliderInput.value}`;
 
@@ -36,11 +52,11 @@ const RangeSlider: React.FC = () => {
         };
 
         window.addEventListener('resize', handleResize);
-        sliderInput.addEventListener('input', showSliderValue, false);
+        sliderInputRef.current?.addEventListener('input', showSliderValue, false);
 
         return () => {
             window.removeEventListener('resize', handleResize);
-            sliderInput.removeEventListener('input', showSliderValue);
+            sliderInputRef.current?.removeEventListener('input', showSliderValue);
         };
     }, [getMaxPrice]);
 
@@ -62,20 +78,31 @@ const RangeSlider: React.FC = () => {
     };
 
     return (
-        <div className="range-slider">
-            <div id="slider_thumb" className="range-slider_thumb"></div>
-            <div className="range-slider_line">
-                <div id="slider_line" className="range-slider_line-fill"></div>
+        <div className="pb-2 -mt-6">
+            <div
+                onClick={() => setIsOpen(!isOpen)}
+                className="flex items-center justify-between rounded-[5px] px-3 py-2 bg-gray-50 font-medium cursor-pointer"
+            >
+                <h1>Price</h1>
+                <CaretRight size={14} color="#141414" style={caretStyle} weight="bold" />
             </div>
-            <input
-                id="slider_input"
-                className="range-slider_input"
-                type="range"
-                min="0"
-                max={getMaxPrice().toString()}
-                value={priceRange.max.toString()}
-                onChange={handlePriceRangeChange}
-            />
+            {isOpen &&
+                <div className="range-slider filter-options-list border border-black my-6 ">
+                    <div ref={sliderThumbRef} className="range-slider_thumb"></div>
+                    <div className="range-slider_line">
+                        <div ref={sliderLineRef} className="range-slider_line-fill"></div>
+                    </div>
+                    <input
+                        ref={sliderInputRef}
+                        className="range-slider_input"
+                        type="range"
+                        min="0"
+                        max={getMaxPrice().toString()}
+                        value={priceRange.max.toString()}
+                        onChange={handlePriceRangeChange}
+                    />
+                </div>
+            }
         </div>
     );
 };
