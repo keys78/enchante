@@ -9,14 +9,11 @@ import { useAddQuantity, useAddToCart, useDecreaseQuantity } from '../components
 import { Link } from 'react-router-dom';
 import { CaretRight } from '@phosphor-icons/react';
 import ProductFrame from '../components/products/ProductFrame';
+import RangeSlider from '../components/filters/RangeSliders';
 
 
 const Products = () => {
     const dispatch = useAppDispatch();
-    const addToCart = useAddToCart();
-    const addQuantity = useAddQuantity();
-    const decreaseQuantity = useDecreaseQuantity();
-    const cart = useAppSelector((state: RootState) => state.cart);
     const { products, filteredProducts } = useAppSelector((state: RootState) => state.products);
     const [priceRange, setPriceRange] = useState({ min: 0, max: getMaxPrice() });
     const [selectedRating, setSelectedRating] = useState<number | null>(null);
@@ -97,7 +94,7 @@ const Products = () => {
 
 
     return (
-        <section className="home-container mt-[12px]">
+        <section className="app-container mt-[12px]">
             <div className='bg-black h-[100px] w-full mt-[30px]'>
 
             </div>
@@ -109,7 +106,7 @@ const Products = () => {
 
                 <div className='flex items-start space-x-5'>
 
-                    <div className="min-w-[200px] w-full rounded-[5px] border p-1">
+                    <div className="min-w-[200px] max-w-[200px] w-full rounded-[5px] border p-1">
                         <ToggleFilters
                             title="Category"
                             selectedFilter={selectedFilters.category}
@@ -133,7 +130,7 @@ const Products = () => {
 
                         <StartRatings selectedRating={selectedRating} setSelectedRating={setSelectedRating} />
 
-                        <div>
+                        {/* <div>
                             <input
                                 type="range"
                                 min="0"
@@ -142,7 +139,8 @@ const Products = () => {
                                 onChange={handlePriceRangeChange}
                             />
                             <span>${priceRange.max}</span>
-                        </div>
+                        </div> */}
+                        <RangeSlider />
 
 
                         <div>
@@ -165,8 +163,8 @@ const Products = () => {
                             {filteredProducts.length > 0 ? (
                                 <>
                                     <div className="grid grid-cols-2">
-                                        {filteredProducts.map((product: Product) =>
-                                            <ProductFrame product={product} />
+                                        {filteredProducts.map((product: Product, i: number) =>
+                                            <ProductFrame product={product} key={i}/>
                                         )}
                                     </div>
                                 </>

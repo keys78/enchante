@@ -60,7 +60,7 @@ select:-webkit-autofill:focus {
 .hover-underline-animation::after { content: ''; position: absolute; width: 100%; transform: scaleX(0); height: 2px; bottom: 0; left: 0; background-color: #f75b2cc7; transform-origin: bottom right; transition: transform 0.3s ease-out;}
 .hover-underline-animation:hover::after { transform: scaleX(1); transform-origin: bottom left;}
 .active-hero-text { color:#f75a2c; font-weight: bold; border-left: 2px solid #f75a2c;}
-.active-hero-text-before { border-left: 2px solid transparent;}
+.active-hero-text-before { border-left: 2px solid transparent; }
 
 .text-card-container { position: relative; width: 100%; height: 100%;}
 .text-card { position: absolute; top: -60px; left: 0; width: 100%; height: 100%; transition: all 0.75s ease; opacity: 0; transform: scale(1) translateY(50px); z-index: -1;}
@@ -105,21 +105,7 @@ select:-webkit-autofill:focus {
 
 
 .currated-image { height: 100%;}
-
-
-
-
-
-.discount-strike {
-  text-decoration-color: #f75a2c !important;
-  text-decoration: line-through;
-}
-
-
-
-
-
-
+.discount-strike { text-decoration-color: #f75a2c !important; text-decoration: line-through;}
 
 
 
@@ -147,13 +133,30 @@ select:-webkit-autofill:focus {
 
 
 
-/* MEDIA QUERIES */
 
+
+
+
+/* PRODUCTS PAGE */
+/* price range slider*/
+.range-slider { position: relative; width: 100%;}
+.range-slider_input { width: 100%; position: absolute; top: 50%; z-index: 3; transform: translateY(-50%); -webkit-appearance: none; appearance: none; width: 100%; height: 4px; opacity: 0; margin: 0;}
+.range-slider_input::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; cursor: pointer; border-radius: 50%; opacity: 0; }
+.range-slider_input::-moz-range-thumb { width: 20px; height: 20px; cursor: pointer; border-radius: 50%; opacity: 0}
+.range-slider_thumb { height: 30px; width: 30px; border: 3px solid #303030; border-radius: 50%; position: absolute; left: 0; top: 50%; transform: translateY(-50%); background-color: #f4f4f4; display: flex; justify-content: center; align-items: center; font-size: 11px; font-weight: bold; color: #303030; z-index: 2;}
+.range-slider_line { height: 4px; width: 100%; background-color: #e1e1e1; top: 50%; transform: translateY(-50%); left: 0; position: absolute; z-index: 1;}
+.range-slider_line-fill { position: absolute; height: 0.5vmin; width: 0; background-color: #303030;}
+
+
+/* MEDIA QUERIES */
 @media screen and (max-width: 1600px) {
 .slideshow { margin: 0 auto; overflow: hidden; width: 100%; max-width: 450px; position: relative; background: #000; }
 .slide { display: inline-block; max-width: 450px;}
 .currated-image { height: 450px;}
 
 }
+
+
+
 
 

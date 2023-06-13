@@ -24,7 +24,7 @@ const ToggleFilters: React.FC<FilterProps> = ({ title, selectedFilter, options, 
   };
 
   return (
-    <div className="pb-1">
+    <div className="pb-2">
       <div
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center justify-between rounded-[5px] px-3 py-2 bg-gray-50 font-medium cursor-pointer"
@@ -32,31 +32,24 @@ const ToggleFilters: React.FC<FilterProps> = ({ title, selectedFilter, options, 
         <h1>{title}</h1>
         <CaretRight size={14} color="#141414" style={caretStyle} weight="bold" />
       </div>
-      <ul className="filter-options-list" style={optionsStyle}>
+      <ul className="filter-options-list mt-1" style={optionsStyle}>
         <li
-          className={
-            selectedFilter === "all"
-              ? "active-hero-text pl-2"
-              : "pl-2 active-hero-text-before cursor-pointer py-2"
-          }
+          className={`pl-2 ${selectedFilter === "all" ? "active-hero-text" : "active-hero-text-before cursor-pointer my-2"}`}
           onClick={() => handleFilterClick("all")}
         >
           All
         </li>
-        {options.map((option) => (
+        {options.map(option => (
           <li
             key={option}
-            className={
-              selectedFilter === option
-                ? "active-hero-text pl-2"
-                : "pl-2 active-hero-text-before cursor-pointer py-2"
-            }
+            className={`pl-2 ${selectedFilter === option ? "active-hero-text" : "active-hero-text-before cursor-pointer my-2"}`}
             onClick={() => handleFilterClick(option)}
           >
             {option}
           </li>
         ))}
       </ul>
+
     </div>
   );
 };
