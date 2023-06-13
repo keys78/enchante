@@ -71,11 +71,18 @@ const RangeSlider: React.FC<RangerProps> = ({ priceRange, setPriceRange }) => {
         return maxPrice;
     }
 
+    // const handlePriceRangeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     const maxPrice = parseInt(e.target.value);
+    //     setPriceRange((prevRange) => ({ ...prevRange, max: maxPrice }));
+    //     dispatch(filterProductsByPrice({ priceRange: { min: 0, max: maxPrice } }));
+    // };
+
     const handlePriceRangeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const maxPrice = parseInt(e.target.value);
         setPriceRange((prevRange) => ({ ...prevRange, max: maxPrice }));
-        dispatch(filterProductsByPrice({ priceRange: { min: 0, max: maxPrice } }));
-    };
+        dispatch(filterProductsByPrice({ maxRange: maxPrice.toString() }));
+      };
+      
 
     return (
         <div className="pb-2 -mt-6">

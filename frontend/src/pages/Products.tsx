@@ -2,13 +2,14 @@ import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from "../network/hooks";
 import { RootState } from "../network/store";
 import { Product } from "../types";
-import { filterByFreeShipment, filterProductsByBrand, filterProductsByCategory, filterProductsByColor, filterProductsByPrice, resetAllFilters } from "../reducers/products/productsSlice";
+import { filterByFreeShipment, filterByNewProducts, filterProductsByBrand, filterProductsByCategory, filterProductsByColor, resetAllFilters } from "../reducers/products/productsSlice";
 import ToggleFilters from '../components/filters/ToggleFilters';
 import StartRatings from '../components/filters/StartRatings';
 import { Link } from 'react-router-dom';
-import { CaretRight } from '@phosphor-icons/react';
+import { CaretRight, SquaresFour, ListDashes, MagnifyingGlass } from '@phosphor-icons/react';
 import ProductFrame from '../components/products/ProductFrame';
 import RangeSlider from '../components/filters/RangeSliders';
+import FilterSearch from '../components/UI/FilterSearch';
 
 
 const Products = () => {
@@ -17,6 +18,7 @@ const Products = () => {
     const [priceRange, setPriceRange] = useState({ min: 0, max: getMaxPrice() });
     const [selectedRating, setSelectedRating] = useState<number | null>(null);
     const [isFreeShipment, setIsFreeShipment] = useState<boolean>(false)
+    const [isNewProduct, setIsNewProduct] = useState<boolean>(false)
     const [selectedFilters, setSelectedFilters] = useState({
         category: "all",
         color: "all",
@@ -24,6 +26,7 @@ const Products = () => {
         star_ratings: ''
     });
 
+    const [isFlexDisplay, setIsFlexDisplay] = useState<boolean>(false)
 
 
     function getMaxPrice(): number {
@@ -33,12 +36,6 @@ const Products = () => {
         });
         return maxPrice;
     }
-
-    const handlePriceRangeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const maxPrice = parseInt(e.target.value);
-        setPriceRange((prevRange) => ({ ...prevRange, max: maxPrice }));
-        dispatch(filterProductsByPrice({ priceRange: { min: 0, max: maxPrice } }));
-    };
 
 
     const handleFilterClick = (filterType: 'category' | 'color' | 'brand', filterValue: string) => {
@@ -63,6 +60,13 @@ const Products = () => {
     };
 
 
+    const handleFilterByNewProducts = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { checked } = event.target;
+        setIsNewProduct(checked);
+        dispatch(filterByNewProducts({ newProduct: checked }));
+    };
+
+
     const handleFreeShipmentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { checked } = event.target;
         setIsFreeShipment(checked);
@@ -73,6 +77,7 @@ const Products = () => {
         dispatch(resetAllFilters());
         setPriceRange({ min: 0, max: getMaxPrice() });
         setIsFreeShipment(false);
+        setIsNewProduct(false)
         setSelectedFilters((prevFilters) => ({
             ...prevFilters,
             brand: "all",
@@ -134,26 +139,51 @@ const Products = () => {
                             setPriceRange={setPriceRange}
                         />
 
-                        <div className='flex items-center justify-between rounded-[5px] px-3 py-2 bg-gray-50 font-medium cursor-pointer'>
+                        <div className='flex items-center justify-between rounded-[5px] px-3 py-2 mb-2 bg-gray-50 font-medium'>
+                            <h1>New Arrivals</h1>
+                            <input checked={isNewProduct} onChange={handleFilterByNewProducts} type="checkbox" className='cursor-pointer' />
+                        </div>
+
+                        <div className='flex items-center justify-between rounded-[5px] px-3 py-2 bg-gray-50 font-medium'>
                             <h1>Free Shipping</h1>
-                            <input checked={isFreeShipment} onChange={handleFreeShipmentChange} type="checkbox" />
+                            <input checked={isFreeShipment} onChange={handleFreeShipmentChange} type="checkbox" className='cursor-pointer' />
                         </div>
 
                         <button
                             className='rounded-[5px] px-3 py-2 bg-gray-900 font-medium cursor-pointer border-2border-white text-white w-full mt-6 hover:bg-white hover:text-black transition duration-300 hover:border-2 hover:border-black'
-                            onClick={handleResetFilters}>Reset Filters</button>
+                            onClick={handleResetFilters}>
+                            Reset Filters
+                        </button>
 
                     </div>
 
                     <div>
-                        <div className=''>
-                            Products no{filteredProducts.length}
+                        <div className='flex items-center justify-between space-x-3'>
+                            <div className='w-[300px] flex space-x-4 border-2 border-black'>
+                                <SquaresFour className='cursor-pointer' onClick={() => setIsFlexDisplay(false)} size={26} color="#141414" weight="fill" />
+                                <ListDashes className='cursor-pointer' onClick={() => setIsFlexDisplay(true)} size={26} color="#141414" weight="fill" />
+                                <div>{filteredProducts.length} Products</div>
+                            </div>
+                            <form className='flex space-x-3 items-center justify-center w-full mx-auto my-[25px]'>
+                                <div className='flex space-x-2 border items-center rounded-[5px] px-2 bg-[fafafa]'>
+                                    <MagnifyingGlass size={32} color="#141414" />
+                                    <input className='w-full rounded-[5px] py-2 border-0 outline-none bg-[fafafa]' type="email" placeholder='Search products, brands and categories' />
+                                </div>
+                                <button className='subscribe-buttonpy-2 px-4 bg-[#202122] text-white rounded-[5px] py-2'>Search</button>
+                            </form>
+
+                            <div>
+                                Sort By: <input type="text" />
+                            </div>
+
                         </div>
                         {filteredProducts.length > 0 ? (
                             <>
-                                <div className="grid grid-cols-2">
+                                <div className="grid grid-cols-3">
                                     {filteredProducts.map((product: Product, i: number) =>
-                                        <ProductFrame product={product} key={i} />
+                                        <div className='border-2 relative border-black'>
+                                            <ProductFrame product={product} key={i} isFlexDisplay={isFlexDisplay} />
+                                        </div>
                                     )}
                                 </div>
                             </>

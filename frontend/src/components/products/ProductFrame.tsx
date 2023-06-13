@@ -13,10 +13,11 @@ import free_shipping from '../../assets/png/free_shipping.jpg'
 
 
 interface Props {
-    product: Product
+    product: Product,
+    isFlexDisplay?: boolean
 }
 
-const ProductFrame = ({ product }: Props) => {
+const ProductFrame = ({ product, isFlexDisplay }: Props) => {
     const cart = useAppSelector((state: RootState) => state.cart);
     const addToCart = useAddToCart();
     const addQuantity = useAddQuantity();
@@ -27,7 +28,7 @@ const ProductFrame = ({ product }: Props) => {
 
     return (
 
-        <div key={product.id} className=''>
+        <div key={product.id} className={`${isFlexDisplay && 'flex'}`}>
             <Link to="/product/product-details">
                 <div className='relayive'>
                     <img className='rounded-[5px]' src={product?.image} alt={'enchanté_fashon'} />
