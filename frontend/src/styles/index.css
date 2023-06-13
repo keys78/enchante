@@ -36,6 +36,15 @@ select:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0px 1000px transparent inset;
   transition: background-color 5000s ease-in-out 0s;
 }
+
+::-webkit-scrollbar { width: 10px;}
+::-webkit-scrollbar-track { box-shadow: 0; border-radius: 10px;}
+::-webkit-scrollbar-thumb { background: #444444; border-radius: 10px;}
+
+.filter-options-list::-webkit-scrollbar { width: 5px;}
+.filter-options-list::-webkit-scrollbar-track { box-shadow: 0; border-radius: 5px;}
+.filter-options-list::-webkit-scrollbar-thumb { background: #f75a2c; border-radius: 5px;}
+
 .bg { color: #fbfbfb;}
 /* .subscribe-button:is(:hover, :focus) {
   outline-offset: 3px !important;

@@ -6,6 +6,9 @@ import { filterByFreeShipment, filterProductsByBrand, filterProductsByCategory, 
 import ToggleFilters from '../components/filters/ToggleFilters';
 import StartRatings from '../components/filters/StartRatings';
 import { useAddQuantity, useAddToCart, useDecreaseQuantity } from '../components/hooks/useCartControls';
+import { Link } from 'react-router-dom';
+import { CaretRight } from '@phosphor-icons/react';
+import ProductFrame from '../components/products/ProductFrame';
 
 
 const Products = () => {
@@ -94,109 +97,89 @@ const Products = () => {
 
 
     return (
-        <div className="home-container mt-[12px]">
-            <div className="py-12 flex space-x-7">
-                <div>
-                    <input
-                        type="range"
-                        min="0"
-                        max={getMaxPrice().toString()}
-                        value={priceRange.max.toString()}
-                        onChange={handlePriceRangeChange}
-                    />
-                    <span>${priceRange.max}</span>
-                </div>
-
-                <ToggleFilters
-                    title="Filter By Category"
-                    selectedFilter={selectedFilters.category}
-                    options={getUniqueFilterValues(products, 'category')}
-                    handleFilterClick={(filterValue) => handleFilterClick('category', filterValue)}
-                />
-
-                <ToggleFilters
-                    title="Filter By Color"
-                    selectedFilter={selectedFilters.color}
-                    options={getUniqueFilterValues(products, 'color')}
-                    handleFilterClick={(filterValue) => handleFilterClick('color', filterValue)}
-                />
-
-                <ToggleFilters
-                    title="Filter By Brand"
-                    selectedFilter={selectedFilters.brand}
-                    options={getUniqueFilterValues(products, 'brand')}
-                    handleFilterClick={(filterValue) => handleFilterClick('brand', filterValue)}
-                />
-
-                <StartRatings selectedRating={selectedRating} setSelectedRating={setSelectedRating} />
-
-
-                <div>
-                    Free Shipping <input checked={isFreeShipment} onChange={handleFreeShipmentChange} type="checkbox" />
-                </div>
-
-                <div>
-                    <button onClick={handleResetFilters}>Reset Filters</button>
-                </div>
+        <section className="home-container mt-[12px]">
+            <div className='bg-black h-[100px] w-full mt-[30px]'>
 
             </div>
 
-            <div className='w-full border-2 border-black'>
-                {filteredProducts.length}
-            </div>
+            <div className='px-[120px]'>
+                <div className='pt-[30px] pb-[18px] flex items-center space-x-2'>
+                    <span className='flex items-center space-x-2' style={{ color: '#a6a4a4' }}><Link to={'/'}>Home</Link> <CaretRight size={14} /> </span> <span className='font-medium'>Products</span>
+                </div>
+
+                <div className='flex items-start space-x-5'>
+
+                    <div className="min-w-[200px] w-full rounded-[5px] border p-1">
+                        <ToggleFilters
+                            title="Category"
+                            selectedFilter={selectedFilters.category}
+                            options={getUniqueFilterValues(products, 'category')}
+                            handleFilterClick={(filterValue) => handleFilterClick('category', filterValue)}
+                        />
+
+                        <ToggleFilters
+                            title="Color"
+                            selectedFilter={selectedFilters.color}
+                            options={getUniqueFilterValues(products, 'color')}
+                            handleFilterClick={(filterValue) => handleFilterClick('color', filterValue)}
+                        />
+
+                        <ToggleFilters
+                            title="Brand"
+                            selectedFilter={selectedFilters.brand}
+                            options={getUniqueFilterValues(products, 'brand')}
+                            handleFilterClick={(filterValue) => handleFilterClick('brand', filterValue)}
+                        />
+
+                        <StartRatings selectedRating={selectedRating} setSelectedRating={setSelectedRating} />
+
+                        <div>
+                            <input
+                                type="range"
+                                min="0"
+                                max={getMaxPrice().toString()}
+                                value={priceRange.max.toString()}
+                                onChange={handlePriceRangeChange}
+                            />
+                            <span>${priceRange.max}</span>
+                        </div>
 
 
+                        <div>
+                            Free Shipping <input checked={isFreeShipment} onChange={handleFreeShipmentChange} type="checkbox" />
+                        </div>
 
-            {filteredProducts.length > 0 ? (
-                <>
-                    <div className="flex items-center justify-between">
-                        {filteredProducts.map((product: Product) => {
-                            const existingCartItem = cart.cartItems.find(
-                                (item: CartItem) => item.id === product.id
-                            );
-                            return (
-                                <div key={product.id} className="product">
-                                    <h3>{product.name}</h3>
-                                    <img
-                                        className="w-[300px]" src={product.image} alt={product.name}
-                                    />
-                                    <div className="details">
-                                        <span>{product.desc}</span>
-                                        <span className="price">${product.price}</span>
-                                    </div>
-                                    {existingCartItem ? (
-                                        <div className="cart-actions">
-                                            <button
-                                                className="rounded p-2 bg-red-500 text-white"
-                                                onClick={() => decreaseQuantity(existingCartItem)}
-                                            >
-                                                -
-                                            </button>
-                                            <span>{existingCartItem.cartQuantity}</span>
-                                            <button
-                                                className="rounded p-2 bg-green-500 text-white"
-                                                onClick={() => addQuantity(existingCartItem)}
-                                            >
-                                                +
-                                            </button>
-                                        </div>
-                                    ) : (
-                                        <button
-                                            className="rounded p-4 bg-red-500 text-white"
-                                            onClick={() => addToCart(product)}
-                                        >
-                                            Add To Cart
-                                        </button>
-                                    )}
-                                </div>
-                            );
-                        })}
+                        <div>
+                            <button onClick={handleResetFilters}>Reset Filters</button>
+                        </div>
+
                     </div>
-                </>
-            ) : (
-                <p>No products available.</p>
-            )}
-        </div>
+
+                    <div>
+                        <div>
+                            <div className=''>
+                                Products no{filteredProducts.length}
+                            </div>
+
+
+                            {filteredProducts.length > 0 ? (
+                                <>
+                                    <div className="grid grid-cols-2">
+                                        {filteredProducts.map((product: Product) =>
+                                            <ProductFrame product={product} />
+                                        )}
+                                    </div>
+                                </>
+                            ) : (
+                                <p>No products available.</p>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </section>
     );
 };
 
