@@ -63,7 +63,7 @@ const FilterSearch: React.FC<FilterSearchProps> = ({ options }) => {
 
   return (
     <div ref={searchContainerRef} className="filter-search">
-      <div className="flex items-center border border-black bg-white cursor-pointer">
+      <div className="flex items-center rounded-[5px] bg-[#fafafa] cursor-pointer">
         <input
           type="text"
           placeholder="Search..."
