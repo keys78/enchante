@@ -19,15 +19,17 @@ const NewsLetter = () => {
                 <div className='text-center pt-[60px] pb-[30px]'>
                     <h1 className='opacity-90 font-semibold text-[24px] montserrat'>Subscribe to our newletter to get updates <br /> to our lastest collections</h1>
                     <p className='text-btnGray pt-4 text-[14px]'>Get 20% off on your first order by just subscribing to our newletter</p>
-                    <div>
-                        <div>
-                            <Envelope  />
-                            <input type="email" placeholder='Enter your email' />
+
+                    <form className='flex space-x-3 items-center justify-center w-full max-w-[600px] mx-auto my-[25px]'>
+                        <div className='flex space-x-2 border items-center rounded-[5px] px-2 bg-[#fbfbfb]'>
+                            <Envelope size={22} color="#b5b5b5" weight="bold" />
+                            <input className='w-full rounded-[5px] py-2 border-0 outline-none bg-[#fbfbfb]' type="email" placeholder='Enter your email' />
                         </div>
-                        <button className='py-2 px-4 bg-[#202122] text-white rounded-[5px]'>Subscribe</button>
-                    </div>
+                        <button className='subscribe-buttonpy-2 px-4 bg-[#202122] text-white rounded-[5px]'>Subscribe</button>
+                    </form>
+
                     <div className='text-textGray text-center text-[14px]'>
-                        <p>You will be able to unsubscribe at any time. <br /> Read our privacy Policy <a href="#"><span className='font-bold underline text-black'>here</span></a></p>
+                        <p>You will be able to unsubscribe at any time. <br /> Read our privacy Policy <a href="#"><span className='font-bold underline text-gray-600'>here</span></a></p>
                     </div>
                 </div>
             </div>

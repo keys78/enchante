@@ -42,7 +42,7 @@ const NavBar = () => {
     <header className="header-section flex items-center justify-between text-black relative border-b border-gray-200 pt-[30px] pb-[24px] app-container px-[40px]">
       <Link to="/">
         <div className="bg-black text-white py-[30px] px-[20px] fixed top-0 s-1920:left-[320px] left-0">
-          <h1 className="text-[30px]">anteur </h1>
+          <h1 className="text-[30px]">enchanté</h1>
         </div>
       </Link>
 

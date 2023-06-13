@@ -36,7 +36,10 @@ select:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0px 1000px transparent inset;
   transition: background-color 5000s ease-in-out 0s;
 }
-.bg { color: #202122;}
+.bg { color: #fbfbfb;}
+/* .subscribe-button:is(:hover, :focus) {
+  outline-offset: 3px !important;
+ } */
 
 /* HOME */
 

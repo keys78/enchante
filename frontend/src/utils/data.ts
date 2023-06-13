@@ -11,7 +11,7 @@ import image_s_x from '../assets/png/img_s_x.jpg'
 import image_ss_x from '../assets/png/img_ss_x.jpg'
 import image_ss_xx from '../assets/png/img_ss_xx.jpg'
 
-export const products:Product[] = [
+export const products: Product[] = [
     {
         id: '32423',
         category: 'men',
@@ -22,7 +22,7 @@ export const products:Product[] = [
         free_shipping: true,
         brand: 'Apple',
         price: 900,
-        star_ratings:3,
+        star_ratings: 3,
     },
     {
         id: '3242243',
@@ -34,7 +34,7 @@ export const products:Product[] = [
         free_shipping: true,
         brand: 'Apple',
         price: 900,
-        star_ratings:1,
+        star_ratings: 1,
     },
     {
         id: '23522',
@@ -46,7 +46,7 @@ export const products:Product[] = [
         free_shipping: false,
         brand: 'Moi',
         price: 400,
-        star_ratings:5,
+        star_ratings: 5,
     },
     {
         id: '2342',
@@ -58,7 +58,7 @@ export const products:Product[] = [
         free_shipping: false,
         brand: 'Hulu',
         price: 340,
-        star_ratings:5,
+        star_ratings: 5,
     },
     {
         id: '99403',
@@ -70,23 +70,23 @@ export const products:Product[] = [
         free_shipping: true,
         brand: 'Netflix',
         price: 180,
-        star_ratings:2,
+        star_ratings: 2,
     },
 ]
 
 
 export const footerLinks: footerProps[] = [
     {
-        header: 'Need Help?',
-        links: ['Contact Us', 'How to shop on Jumia', 'Delivery options and timelines', 'How to return a product on PickMe?', 'Corporate and bulk purchases', 'Report a Product', 'Ship your package anywhere in Nigeria', 'Dispute Resolution Policy', 'Returns and Refunds Policy']
+        header: 'Shop',
+        links: ['All Collections', 'Harmattan Collections', 'Discount',]
     },
     {
-        header: 'Get to Know Us',
-        links: ['Careers', 'Blogs', 'About PickMe', 'Investor Relations']
+        header: 'Company',
+        links: ['Careers', 'Blogs', 'About enchanté',]
     },
     {
-        header: 'Become a Seller with PickMe',
-        links: ['Careers', 'Blogs', 'About PickMe', 'Investor Relations']
+        header: 'Support',
+        links: ['FAQs', 'Contact Us', 'Terms of use']
     },
 ]
 
@@ -179,61 +179,61 @@ export const CardSliderTwo = [
 
 export const selectedProductsArray = [
     {
-      id: '1',
-      category: 'men',
-      name: 'Iphone Pro MAX',
-      image: image_s_x,
-      desc: 'no',
-      color: 'red',
-      free_shipping: false,
-      brand: 'Apple',
-      price: 900,
-      new:true,
-      discount: true,
-      star_ratings: 3,
-      
+        id: '1',
+        category: 'men',
+        name: 'Iphone Pro MAX',
+        image: image_s_x,
+        desc: 'no',
+        color: 'red',
+        free_shipping: false,
+        brand: 'Apple',
+        price: 900,
+        new: true,
+        discount: true,
+        star_ratings: 3,
+
     },
     {
-      id: '2',
-      category: 'women',
-      name: 'Lipstick',
-      image: image_s_x,
-      desc: 'yes',
-      color: 'red',
-      free_shipping: true,
-      brand: 'Apple',
-      price: 900,
-      new:false,
-      discount: false,
-      star_ratings: 3,
-      
+        id: '2',
+        category: 'women',
+        name: 'Lipstick',
+        image: image_s_x,
+        desc: 'yes',
+        color: 'red',
+        free_shipping: true,
+        brand: 'Apple',
+        price: 900,
+        new: false,
+        discount: false,
+        star_ratings: 3,
+
     },
     {
-      id: '3',
-      category: 'men',
-      name: 'Shoe',
-      image: image_s_x,
-      desc: 'go',
-      color: 'red',
-      free_shipping: true,
-      brand: 'Apple',
-      price: 900,
-      new:false,
-      discount: false,
-      star_ratings: 3,
-      
+        id: '3',
+        category: 'men',
+        name: 'Shoe',
+        image: image_s_x,
+        desc: 'go',
+        color: 'red',
+        free_shipping: true,
+        brand: 'Apple',
+        price: 900,
+        new: false,
+        discount: false,
+        star_ratings: 3,
+
     },
     {
-      id: '4',
-      category: 'men',
-      name: 'hair comb',
-      image: image_s_x,
-      desc: 'go',
-      color: 'red',
-      free_shipping: false,
-      brand: 'Apple',
-      price: 900,
-      new:false,
-      star_ratings: 3,
+        id: '4',
+        category: 'men',
+        name: 'hair comb',
+        image: image_s_x,
+        desc: 'go',
+        color: 'red',
+        free_shipping: false,
+        brand: 'Apple',
+        price: 900,
+        new: false,
+        star_ratings: 3,
     },
-  ];
+];
