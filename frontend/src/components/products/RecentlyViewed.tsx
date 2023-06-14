@@ -38,7 +38,7 @@ const RecentlyViewed = () => {
           }}
         >
           <h1 className="absolute top-0 left-0 text-4xl font-nunitosans font-bold leading-tight">Recently viewed</h1>
-          {selectedProductsArray.map((product: Product, i: number) => {
+          {recentlyViewed.map((product: Product, i: number) => {
             return (
               <SwiperSlide key={i}>
                 <ProductFrame product={product} price_font_size={'text-[24px]'} icon_size={22}  />

@@ -20,8 +20,8 @@ const CurratedPicks = () => {
   ];
 
   return (
-    <section className='pb-20'>
-      <div className='mx-auto px-8'>
+    <section className='pb-20 px-[80px]'>
+      <div className='mx-auto'>
         <h1 className="text-4xl font-nunitosans font-bold leading-tight pb-12">Currated picks</h1>
         <div className='grid grid-cols-4 gap-5'>
           {curratedArray.map((val, index) => (
