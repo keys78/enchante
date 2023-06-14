@@ -33,7 +33,7 @@ const ProductFrame = ({ product, isFlexDisplay }: Props) => {
                 <div className='relayive'>
                     <img className='rounded-[5px]' src={product?.image} alt={'enchanté_fashon'} />
                     {product?.new && <div className='absolute top-4 left-4 bg-orangeSkin text-white rounded-[5px] py-1 px-3'>new</div>}
-                   {product?.free_shipping &&  <img title='Free Shipping' className='absolute top-4 right-4 rounded-[10px] py-1 px-3 w-[74px]' src={free_shipping} alt="" />}
+                   {product?.free_shipping &&  <img title='Free Shipping' className='absolute top-4 right-4 rounded-[30px] py-1 px-3 w-[74px]' src={free_shipping} alt="" />}
                 </div>
             </Link>
             <div className='flex justify-between pt-[14px]'>

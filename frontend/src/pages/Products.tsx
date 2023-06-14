@@ -2,19 +2,18 @@ import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from "../network/hooks";
 import { RootState } from "../network/store";
 import { Product } from "../types";
-import { filterByFreeShipment, filterByNewProducts, filterProductsByBrand, filterProductsByCategory, filterProductsByColor, resetAllFilters } from "../reducers/products/productsSlice";
+import { filterByFreeShipment, filterByNewProducts, filterProductsByBrand, filterProductsByCategory, filterProductsByColor, resetAllFilters, sortByHighestPrice, sortByLowestPrice, sortByNameAZ, sortByNameZA } from "../reducers/products/productsSlice";
 import ToggleFilters from '../components/filters/ToggleFilters';
 import StartRatings from '../components/filters/StartRatings';
 import { Link } from 'react-router-dom';
 import { CaretRight, SquaresFour, ListDashes, MagnifyingGlass } from '@phosphor-icons/react';
 import ProductFrame from '../components/products/ProductFrame';
 import RangeSlider from '../components/filters/RangeSliders';
-import FilterSearch from '../components/UI/FilterSearch';
 
 
 const Products = () => {
     const dispatch = useAppDispatch();
-    const { products, filteredProducts } = useAppSelector((state: RootState) => state.products);
+    const { products, filteredProducts, filterTerms } = useAppSelector((state: RootState) => state.products);
     const [priceRange, setPriceRange] = useState({ min: 0, max: getMaxPrice() });
     const [selectedRating, setSelectedRating] = useState<number | null>(null);
     const [isFreeShipment, setIsFreeShipment] = useState<boolean>(false)
@@ -27,6 +26,8 @@ const Products = () => {
     });
 
     const [isFlexDisplay, setIsFlexDisplay] = useState<boolean>(false)
+
+    const [currentSelection, setCurrentSelection] = useState("Select order....")
 
 
     function getMaxPrice(): number {
@@ -94,16 +95,32 @@ const Products = () => {
         return uniqueValues;
     };
 
+    const handleSelectionChange = (selectedValue) => {
+        switch (selectedValue) {
+            case 'Price (Lowest)':
+                dispatch(sortByLowestPrice());
+                break;
+            case 'Price (Highest)':
+                dispatch(sortByHighestPrice());
+                break;
+            case 'Name (A - Z)':
+                dispatch(sortByNameAZ());
+                break;
+            case 'Name (Z - A)':
+                dispatch(sortByNameZA());
+                break;
+            default:
+                break;
+        }
+    };
+
+    const values = Object.values(filterTerms);
 
 
 
     return (
-        <section className="app-container mt-[12px]">
-            <div className='bg-black h-[100px] w-full mt-[30px]'>
-
-            </div>
-
-            <div className='px-[120px]'>
+        <section className="app-container mt-[12px] px-[120px]">
+            <div>
                 <div className='pt-[30px] pb-[18px] flex items-center space-x-2'>
                     <span className='flex items-center space-x-2' style={{ color: '#a6a4a4' }}><Link to={'/'}>Home</Link> <CaretRight size={14} /> </span> <span className='font-medium'>Products</span>
                 </div>
@@ -154,29 +171,71 @@ const Products = () => {
                             onClick={handleResetFilters}>
                             Reset Filters
                         </button>
-
                     </div>
 
                     <div>
-                        <div className='flex items-center justify-between space-x-3'>
-                            <div className='w-[300px] flex space-x-4 border-2 border-black'>
-                                <SquaresFour className='cursor-pointer' onClick={() => setIsFlexDisplay(false)} size={26} color="#141414" weight="fill" />
-                                <ListDashes className='cursor-pointer' onClick={() => setIsFlexDisplay(true)} size={26} color="#141414" weight="fill" />
-                                <div>{filteredProducts.length} Products</div>
+                        <div className='flex items-center justify-between space-x-10 -mt-8'>
+                            <div className='w-[350px] flex items-center space-x-4'>
+                                <SquaresFour className='cursor-pointer' onClick={() => setIsFlexDisplay(false)} size={30} color={`${isFlexDisplay ? "" : '#f75a2c'}`} weight="fill" />
+                                <ListDashes className='cursor-pointer' onClick={() => setIsFlexDisplay(true)} size={30} color={`${!isFlexDisplay ? "" : '#f75a2c'}`} weight="fill" />
+                                <div><span className='font-medium text-[20px]'>{filteredProducts.length}</span> Items</div>
                             </div>
                             <form className='flex space-x-3 items-center justify-center w-full mx-auto my-[25px]'>
-                                <div className='flex space-x-2 border items-center rounded-[5px] px-2 bg-[fafafa]'>
-                                    <MagnifyingGlass size={32} color="#141414" />
-                                    <input className='w-full rounded-[5px] py-2 border-0 outline-none bg-[fafafa]' type="email" placeholder='Search products, brands and categories' />
+                                <div className='flex space-x-2 border items-center rounded-[5px] px-2 w-full'>
+                                    <MagnifyingGlass size={20} color="#9e9e9e" />
+                                    <input className='w-full rounded-[5px] py-2 border-0 outline-none' type="email" placeholder='Search products, brands and categories' />
                                 </div>
-                                <button className='subscribe-buttonpy-2 px-4 bg-[#202122] text-white rounded-[5px] py-2'>Search</button>
+                                <button className='px-4 bg-[#202122] text-white rounded-[5px] py-2'>Search</button>
                             </form>
 
-                            <div>
-                                Sort By: <input type="text" />
+                            <div className="min-w-[150px]">
+                                <select
+                                    value={currentSelection}
+                                    onChange={(e) => {
+                                        setCurrentSelection(e.target.value);
+                                        handleSelectionChange(e.target.value);
+                                    }}
+                                    className="border-2 border-black rounded p-2 text-sm w-40 cursor-pointer"
+                                >
+                                    <option disabled value="Select Order">Select Order...</option>
+                                    <option value="Price (Lowest)">Price (Lowest)</option>
+                                    <option value="Price (Highest)">Price (Highest)</option>
+                                    <option value="Name (A - Z)">Name (A - Z)</option>
+                                    <option value="Name (Z - A)">Name (Z - A)</option>
+                                </select>
+
                             </div>
 
                         </div>
+                        <div className='flex items-center space-x-2 text-xs mb-[12px]'>
+                            {Object.keys(filterTerms).length > 0 && <h3 className="text-gray-400">Applied Filters:</h3>}
+                            {Object.entries(filterTerms).map(([key, value], index) => (
+                                <div
+                                    className='opacity-60 px-2 py-1 border rounded-[20px]'
+                                    key={key}
+                                    style={{ backgroundColor: `rgba(300, 300, 300, ${0.8 - (index + 1) * 0.1})` }}
+                                >
+                                    {key === 'category' && value !== null && <span className="text-gray-500">{value}</span>}
+                                    {key === 'color' && value !== null && <span className="text-gray-500">{value}</span>}
+                                    {key === 'brand' && value !== null && <span className="text-gray-500">{value}</span>}
+                                    {key === 'price' && value !== null && <span className="text-gray-500">{`prices below: ${Number(value) + 1}`}</span>}
+                                    {/* {key === 'starNumberOfRatings' && value !== null && <span className="text-gray-500">{`star(s): ${value}`}</span>} */}
+                                    {key === 'starNumberOfRatings' && value !== null && (
+  <span className="text-gray-500"> {`${value === "1" ? '1 star' : `${value} stars`}`} </span>)}
+                                    {key === 'freeShipping' && value === "true" && <span className="text-gray-500"> Free Shipping</span>}
+                                    {key === 'newProduct' && value === "true" && <span className="text-gray-500"> New Product</span>}
+                                </div>
+                            ))}
+                        </div>
+
+
+
+
+
+
+
+
+
                         {filteredProducts.length > 0 ? (
                             <>
                                 <div className="grid grid-cols-3">

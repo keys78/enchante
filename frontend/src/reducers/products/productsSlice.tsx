@@ -5,8 +5,8 @@ import { Product } from "../../types";
 interface ProductsState {
   products: Product[];
   filteredProducts: Product[];
-  filterTerms: Record<string, string | null | number>;
-  // filterTerms: Record<any, any>;
+  // filterTerms: Record<string, string | null | number>;
+  filterTerms: Record<any, any>;
 }
 
 
@@ -47,9 +47,9 @@ const productsSlice = createSlice({
       state.filterTerms.category = category === "all" ? null : category;
 
       const { category: filterCategory, brand, color, freeShipping, price } = state.filterTerms;
-      const numericPrice = typeof price === "number" ? price : price !== null ? parseFloat(price) : null
+      // const numericPrice = typeof price === "number" ? price : price !== null ? parseFloat(price) : null
       state.filteredProducts = state.products.filter((product: Product) =>
-        (numericPrice !== null ? product.price <= numericPrice : true) &&
+        // (numericPrice !== null ? product.price <= numericPrice : true) &&
         (filterCategory ? product.category === filterCategory : true) &&
         (brand ? product.brand === brand : true) &&
         (color ? product.color === color : true) &&
@@ -80,9 +80,9 @@ const productsSlice = createSlice({
       state.filterTerms.brand = brand === "all" ? null : brand;
 
       const { category, color, brand: filterBrand, freeShipping, price } = state.filterTerms;
-      const numericPrice = typeof price === "number" ? price : price !== null ? parseFloat(price) : null;
+      // const numericPrice = typeof price === "number" ? price : price !== null ? parseFloat(price) : null;
       state.filteredProducts = state.products.filter((product: Product) =>
-        (numericPrice !== null ? product.price <= numericPrice : true) &&
+        // (numericPrice !== null ? product.price <= numericPrice : true) &&
         (category ? product.category === category : true) &&
         (color ? product.color === color : true) &&
         (filterBrand ? product.brand === filterBrand : true) &&
@@ -121,7 +121,7 @@ const productsSlice = createSlice({
     filterByFreeShipment: (state, action: PayloadAction<{ freeShipping: Product["free_shipping"] }>) => {
       const { freeShipping } = action.payload;
       const { category, color, brand } = state.filterTerms;
-    
+
       if (freeShipping) {
         state.filteredProducts = state.products.filter((product: Product) =>
           (category ? product.category === category : true) &&
@@ -129,7 +129,7 @@ const productsSlice = createSlice({
           (brand ? product.brand === brand : true) &&
           product.free_shipping === true
         );
-    
+
         state.filterTerms.freeShipping = "true";
       } else {
         state.filteredProducts = state.products.filter((product: Product) =>
@@ -137,7 +137,7 @@ const productsSlice = createSlice({
           (color ? product.color === color : true) &&
           (brand ? product.brand === brand : true)
         );
-    
+
         delete state.filterTerms.freeShipping;
       }
     },
@@ -146,7 +146,7 @@ const productsSlice = createSlice({
     filterByNewProducts: (state, action: PayloadAction<{ newProduct: Product["new"] }>) => {
       const { newProduct } = action.payload;
       const { category, color, brand, free_shipping } = state.filterTerms;
-    
+
       if (newProduct) {
         state.filteredProducts = state.products.filter((product: Product) =>
           (category ? product.category === category : true) &&
@@ -154,7 +154,7 @@ const productsSlice = createSlice({
           (brand ? product.brand === brand : true) &&
           product.new === true
         );
-    
+
         state.filterTerms.newProduct = "true";
       } else {
         state.filteredProducts = state.products.filter((product: Product) =>
@@ -162,11 +162,34 @@ const productsSlice = createSlice({
           (color ? product.color === color : true) &&
           (brand ? product.brand === brand : true)
         );
-    
+
         delete state.filterTerms.newProduct;
       }
     },
-  
+
+    //SORTING PRODUCTS
+
+    sortByLowestPrice: (state) => {
+      const sortedProducts = [...state.filteredProducts].sort((a, b) => a.price - b.price);
+      state.filteredProducts = sortedProducts;
+    },
+    sortByHighestPrice: (state) => {
+      const sortedProducts = [...state.filteredProducts].sort((a, b) => b.price - a.price);
+      state.filteredProducts = sortedProducts;
+    },
+    sortByNameAZ: (state) => {
+      const sortedProducts = [...state.filteredProducts].sort((a, b) => a.name.localeCompare(b.name));
+      state.filteredProducts = sortedProducts;
+    },
+
+    sortByNameZA: (state) => {
+      const sortedProducts = [...state.filteredProducts].sort((a, b) => b.name.localeCompare(a.name));
+      state.filteredProducts = sortedProducts;
+    },
+
+
+
+
 
     resetAllFilters: (state) => {
       state.filteredProducts = state.products;
@@ -184,7 +207,13 @@ export const {
   filterProductsByBrand,
   filterByStarNumberOfRatings,
   filterByFreeShipment,
-  filterByNewProducts
+  filterByNewProducts,
+
+  sortByLowestPrice,
+  sortByHighestPrice,
+  sortByNameAZ,
+  sortByNameZA,
+
 
 } = productsSlice.actions;
 
