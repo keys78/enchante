@@ -230,9 +230,9 @@ const Products = () => {
 
                         {filteredProducts.length > 0 ? (
                             <>
-                                <div className="grid grid-cols-3">
+                                <div className={`${!isFlexDisplay && 'grid grid-cols-3 gap-[16px] bg-gray-50 p-3 rounded-[5px]'} `}>
                                     {filteredProducts.map((product: Product, i: number) =>
-                                        <div className='border-2 relative border-black'>
+                                        <div className='relative'>
                                             <ProductFrame product={product} key={i} isFlexDisplay={isFlexDisplay} />
                                         </div>
                                     )}

@@ -22,8 +22,8 @@ export const products: Product[] = [
         free_shipping: true,
         brand: 'Apple',
         price: 900,
-        new: false,
-        discount: false,
+        new: true,
+        discount: true,
         star_ratings: 3,
     },
     {
@@ -36,8 +36,8 @@ export const products: Product[] = [
         free_shipping: true,
         brand: 'Apple',
         price: 900,
-        new: false,
-        discount: false,
+        new: true,
+        discount: true,
         star_ratings: 1,
     },
     {
