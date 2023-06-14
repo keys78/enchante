@@ -15,9 +15,13 @@ import free_shipping from '../../assets/png/free_shipping.jpg'
 interface Props {
     product: Product,
     isFlexDisplay?: boolean
+    price_font_size: string,
+    discount_font_size?: string,
+    shop_button?: string,
+    icon_size: number
 }
 
-const ProductFrame = ({ product, isFlexDisplay }: Props) => {
+const ProductFrame = ({ product, isFlexDisplay, price_font_size, discount_font_size, shop_button, icon_size }: Props) => {
     const cart = useAppSelector((state: RootState) => state.cart);
     const addToCart = useAddToCart();
     const addQuantity = useAddQuantity();
@@ -26,11 +30,12 @@ const ProductFrame = ({ product, isFlexDisplay }: Props) => {
     const existingCartItem = cart.cartItems.find((item: CartItem) => item.id === product.id);
 
 
+
     return (
 
         <div key={product.id} >
             {isFlexDisplay ? (
-                <div className='flex mb-[12px] bg-gray-50 p-3 rounded-[5px]'>
+                <div className='flex mb-[16px] bg-gray-50 p-3 rounded-[5px] '>
                     <Link to="/product/product-details">
                         <div className='relative max-w-[400px] min-w-[400px]'>
                             <img className='rounded-[5px]' src={product?.image} alt={'enchanté_fashon'} />
@@ -50,7 +55,7 @@ const ProductFrame = ({ product, isFlexDisplay }: Props) => {
                                 {product?.discount && <span className='text-[16px] font-medium montserrat opacity-60 discount-strike'>${(product?.price * 0.3) + product?.price}</span>}
                             </div>
                         </div>
-                       <Link to={`/products/product/:id`}> <div className='absolute bottom-4 left-4 underline'>Read more...</div></Link>
+                        <Link to={`/products/product/${product.id}`}> <div className='absolute bottom-4 left-4 underline'>more details...</div></Link>
                         <div className='absolute bottom-4 right-4'>
                             {existingCartItem ? (
                                 <div className='flex items-center space-x-4'>
@@ -92,8 +97,8 @@ const ProductFrame = ({ product, isFlexDisplay }: Props) => {
                             <div className="details">
                                 <h3 className='font-medium capitalize'>{product?.name}</h3>
                                 <div className='flex items-start space-x-3'>
-                                    <span className="text-[24px] font-medium montserrat">${product?.price}</span>
-                                    {product?.discount && <span className='text-[16px] font-medium montserrat opacity-60 discount-strike'>${(product?.price * 0.3) + product?.price}</span>}
+                                    <span className={`font-medium montserrat ${price_font_size}`}>${product?.price}</span>
+                                    {product?.discount && <span className={`text-[16px] font-medium montserrat opacity-60 discount-strike ${discount_font_size}`}>${(product?.price * 0.3) + product?.price}</span>}
                                 </div>
                             </div>
                             <div>
@@ -101,21 +106,21 @@ const ProductFrame = ({ product, isFlexDisplay }: Props) => {
                                     <div className='flex items-center space-x-4'>
                                         <QuantityControlsBtn
                                             onClick={() => { decreaseQuantity(existingCartItem); setAnimationKey((prevKey) => prevKey + 1) }}
-                                            children={<Minus size={22} color="#f8f8f8" weight="bold" />}
-                                            className='rounded-[5px] hover:opacity-70 p-2 bg-black text-white'
+                                            children={<Minus size={icon_size} color="#f8f8f8" weight="bold" />}
+                                            className={`rounded-[5px] hover:opacity-70 p-2 bg-black text-white ${shop_button}`}
                                         />
 
                                         <motion.span key={animationKey} animate={{ scale: [1.3, 1] }} className='font-bold'>{existingCartItem.cartQuantity}</motion.span>
 
                                         <QuantityControlsBtn
                                             onClick={() => { addQuantity(existingCartItem); setAnimationKey((prevKey) => prevKey + 1) }}
-                                            children={<Plus size={22} color="#f8f8f8" weight="bold" />}
-                                            className='rounded-[5px] hover:opacity-70 p-2 bg-black text-white'
+                                            children={<Plus size={icon_size} color="#f8f8f8" weight="bold" />}
+                                            className={`rounded-[5px] hover:opacity-70 p-2 bg-black text-white ${shop_button}`}
                                         />
                                     </div>
                                 ) : (
-                                    <button className="rounded-[5px] hover:opacity-70 transition duration-300 p-3 bg-black text-white" onClick={() => addToCart(product)}>
-                                        <ShoppingCartSimple size={22} color="#f8f8f8" weight="regular" />
+                                    <button className={`rounded-[5px] hover:opacity-70 transition duration-300 p-3 bg-black text-white ${shop_button}`} onClick={() => addToCart(product)}>
+                                        <ShoppingCartSimple size={icon_size} color="#f8f8f8" weight="regular" />
                                     </button>
                                 )}
                             </div>

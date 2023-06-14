@@ -115,7 +115,6 @@ const Products = () => {
         }
     };
 
-    const values = Object.values(filterTerms);
 
 
 
@@ -174,14 +173,14 @@ const Products = () => {
                         </button>
                     </div>
 
-                    <div>
-                        <div className='flex items-center justify-between space-x-10 -mt-8'>
+                    <div className='w-full'>
+                        <div className='flex items-center justify-between space-x-10 w-full mb-3'>
                             <div className='w-[350px] flex items-center space-x-4'>
                                 <SquaresFour className='cursor-pointer' onClick={() => setIsFlexDisplay(false)} size={30} color={`${isFlexDisplay ? "" : '#f75a2c'}`} weight="fill" />
                                 <ListDashes className='cursor-pointer' onClick={() => setIsFlexDisplay(true)} size={30} color={`${!isFlexDisplay ? "" : '#f75a2c'}`} weight="fill" />
-                                <div><span className='font-medium text-[20px]'>{filteredProducts.length}</span> Items</div>
+                                <div><span className='font-medium text-[20px]'>{filteredProducts.length}</span> result{filteredProducts.length === 1 ? '' : 's'}</div>
                             </div>
-                            <form className='flex space-x-3 items-center justify-center w-full mx-auto my-[25px]'>
+                            <form className='flex space-x-3 items-center justify-center w-full mx-auto'>
                                 <div className='flex space-x-2 border items-center rounded-[5px] px-2 w-full'>
                                     <MagnifyingGlass size={20} color="#9e9e9e" />
                                     <input className='w-full rounded-[5px] py-2 border-0 outline-none' type="email" placeholder='Search products, brands and categories' />
@@ -189,14 +188,14 @@ const Products = () => {
                                 <button className='px-4 bg-[#202122] text-white rounded-[5px] py-2'>Search</button>
                             </form>
 
-                            <div className="min-w-[150px]">
+                            <div className="">
                                 <select
                                     value={currentSelection}
                                     onChange={(e) => {
                                         setCurrentSelection(e.target.value);
                                         handleSelectionChange(e.target.value);
                                     }}
-                                    className="border-2 border-black rounded p-2 text-sm w-40 cursor-pointer"
+                                    className="border-2 border-black rounded p-2 text-sm cursor-pointer"
                                 >
                                     <option disabled value="Select Order">Select Order...</option>
                                     <option value="Price (Lowest)">Price (Lowest)</option>
@@ -233,8 +232,16 @@ const Products = () => {
                             <>
                                 <div className={`${!isFlexDisplay && 'grid grid-cols-3 gap-[16px] bg-gray-50 p-3 rounded-[5px]'} `}>
                                     {filteredProducts.map((product: Product, i: number) =>
-                                        <div className='relative'>
-                                            <ProductFrame product={product} key={i} isFlexDisplay={isFlexDisplay} />
+                                        <div className='relative w-full'>
+                                            <ProductFrame 
+                                            product={product} 
+                                            key={i} 
+                                            isFlexDisplay={isFlexDisplay} 
+                                            price_font_size='text-[16px]'
+                                            discount_font_size={'text-[11px]'}
+                                            shop_button={'p-[4px]'}
+                                            icon_size={18}
+                                            />
                                         </div>
                                     )}
                                 </div>

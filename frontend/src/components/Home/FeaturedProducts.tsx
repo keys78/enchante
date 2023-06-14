@@ -38,7 +38,7 @@ const SelectedProducts = () => {
           {selectedProductsArray.map((product: Product, i: number) => {
             return (
               <SwiperSlide key={i}>
-                <ProductFrame product={product} />
+                <ProductFrame product={product} price_font_size={'text-[24px]'} icon_size={22}  />
               </SwiperSlide>
             );
           })}
