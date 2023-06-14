@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { CaretRight, SquaresFour, ListDashes, MagnifyingGlass } from '@phosphor-icons/react';
 import ProductFrame from '../components/products/ProductFrame';
 import RangeSlider from '../components/filters/RangeSliders';
+import NewsLetter from '../components/home/NewsLetter';
 
 
 const Products = () => {
@@ -244,6 +245,8 @@ const Products = () => {
                     </div>
                 </div>
             </div>
+
+            <NewsLetter />
 
 
         </section>
