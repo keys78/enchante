@@ -25,7 +25,7 @@ const NewsLetter = () => {
                             <Envelope size={22} color="#b5b5b5" weight="bold" />
                             <input className='w-full rounded-[5px] py-2 border-0 outline-none bg-[#fbfbfb]' type="email" placeholder='Enter your email' />
                         </div>
-                        <button className='subscribe-buttonpy-2 px-4 bg-[#202122] text-white rounded-[5px]'>Subscribe</button>
+                        <button className='subscribe-buttonpy-2 px-4 py-2 bg-[#202122] text-white rounded-[5px]'>Subscribe</button>
                     </form>
 
                     <div className='text-textGray text-center text-[14px]'>
