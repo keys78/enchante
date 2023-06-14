@@ -7,12 +7,17 @@ interface ProductsState {
   filteredProducts: Product[];
   // filterTerms: Record<string, string | null | number>;
   filterTerms: Record<any, any>;
+  recentlyViewed: Product[]
 }
+
+const storedRecentlyViewed = localStorage.getItem("enchante-rv");
+
 
 
 const initialState: ProductsState = {
   products: products,
   filteredProducts: products,
+  recentlyViewed: storedRecentlyViewed ? JSON.parse(storedRecentlyViewed) : [],
   filterTerms: {},
 };
 
@@ -20,6 +25,20 @@ const productsSlice = createSlice({
   name: "products",
   initialState,
   reducers: {
+    addToRecentlyViewed(state, action: PayloadAction<Product>) {
+      const { id } = action.payload;
+      const existingItem = state.recentlyViewed.find((item) => item.id === id);
+
+      if (existingItem) {
+        return;
+      } else {
+        const newlyViewedItem = { ...action.payload, cartQuantity: 1 };
+        state.recentlyViewed = [...state.recentlyViewed, newlyViewedItem];
+      }
+
+      localStorage.setItem("enchante-rv", JSON.stringify(state.recentlyViewed));
+    },
+
 
     filterProductsByPrice: (state, action: PayloadAction<{ maxRange: string }>) => {
       const { maxRange } = action.payload;
@@ -200,6 +219,8 @@ const productsSlice = createSlice({
 });
 
 export const {
+  addToRecentlyViewed,
+
   filterProductsByPrice,
   filterProductsByCategory,
   resetAllFilters,

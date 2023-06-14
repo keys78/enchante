@@ -36,7 +36,7 @@ const ProductFrame = ({ product, isFlexDisplay, price_font_size, discount_font_s
         <div key={product.id} >
             {isFlexDisplay ? (
                 <div className='flex mb-[16px] bg-gray-50 p-3 rounded-[5px] '>
-                    <Link to="/product/product-details">
+                    <Link to={`/products/product-details/${product.id}`}>
                         <div className='relative max-w-[400px] min-w-[400px]'>
                             <img className='rounded-[5px]' src={product?.image} alt={'enchanté_fashon'} />
                             {product?.new && <div className='absolute top-4 left-4 bg-orangeSkin text-white rounded-[5px] py-1 px-3'>new</div>}
@@ -85,7 +85,7 @@ const ProductFrame = ({ product, isFlexDisplay, price_font_size, discount_font_s
                 :
                 (
                     <>
-                        <Link to="/product/product-details">
+                        <Link to={`/products/product-details/${product.id}`}>
                             <div className='relative'>
                                 <img className='rounded-[5px]' src={product?.image} alt={'enchanté_fashon'} />
                                 {product?.new && <div className='absolute top-4 left-4 bg-orangeSkin text-white rounded-[5px] py-1 px-3'>new</div>}

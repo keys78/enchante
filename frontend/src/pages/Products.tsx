@@ -19,16 +19,14 @@ const Products = () => {
     const [selectedRating, setSelectedRating] = useState<number | null>(null);
     const [isFreeShipment, setIsFreeShipment] = useState<boolean>(false)
     const [isNewProduct, setIsNewProduct] = useState<boolean>(false)
+    const [isFlexDisplay, setIsFlexDisplay] = useState<boolean>(false)
+    const [currentSelection, setCurrentSelection] = useState("Select order....")
     const [selectedFilters, setSelectedFilters] = useState({
         category: "all",
         color: "all",
         brand: "all",
         star_ratings: ''
     });
-
-    const [isFlexDisplay, setIsFlexDisplay] = useState<boolean>(false)
-
-    const [currentSelection, setCurrentSelection] = useState("Select order....")
 
 
     function getMaxPrice(): number {
@@ -218,7 +216,7 @@ const Products = () => {
                                     {key === 'category' && value !== null && <span className="text-gray-500">{value}</span>}
                                     {key === 'color' && value !== null && <span className="text-gray-500">{value}</span>}
                                     {key === 'brand' && value !== null && <span className="text-gray-500">{value}</span>}
-                                    {key === 'price' && value !== null && <span className="text-gray-500">{`prices below: ${Number(value) + 1}`}</span>}
+                                    {key === 'price' && value !== null && <span className="text-gray-500">{`prices below: $${Number(value) + 1}`}</span>}
                                     {key === 'starNumberOfRatings' && value !== null && (<span className="text-gray-500"> {`${value === "1" ? '1 star' : `${value} stars`}`} </span>)}
                                     {key === 'freeShipping' && value === "true" && <span className="text-gray-500"> free shipping</span>}
                                     {key === 'newProduct' && value === "true" && <span className="text-gray-500"> new product</span>}
@@ -230,7 +228,7 @@ const Products = () => {
 
                         {filteredProducts.length > 0 ? (
                             <>
-                                <div className={`${!isFlexDisplay && 'grid grid-cols-3 gap-[16px] bg-gray-50 p-3 rounded-[5px]'} `}>
+                                <div className={`${!isFlexDisplay && 'grid grid-cols-3 gap-x-[16px] gap-y-[34px]'} `}>
                                     {filteredProducts.map((product: Product, i: number) =>
                                         <div className='relative w-full'>
                                             <ProductFrame 
@@ -245,6 +243,7 @@ const Products = () => {
                                         </div>
                                     )}
                                 </div>
+                                {/* <p>Add Pagination from backend here</p> */}
                             </>
                         ) : (
                             <p className='flex items-center justify-center h-[300px]'>No products available.</p>
