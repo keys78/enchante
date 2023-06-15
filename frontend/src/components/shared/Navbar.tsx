@@ -11,7 +11,6 @@ const NavBar = () => {
   const { cartTotalQuantity } = useAppSelector((state) => state.cart);
   const cart = useAppSelector((state: RootState) => state.cart);
   const auth = true;
-
   const options = [
     { label: 'Men', value: 'men' },
     { label: 'Women', value: 'women' },
@@ -40,6 +39,8 @@ const NavBar = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
+
+  
 
   return (
     <header className="header-section flex items-center justify-between text-black relative border-b border-gray-200 pt-[30px] pb-[24px] app-container px-[40px]">

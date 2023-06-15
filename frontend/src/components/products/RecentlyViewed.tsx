@@ -7,7 +7,6 @@ import ProductFrame from '../products/ProductFrame';
 import { useAppSelector } from '../../network/hooks';
 
 
-
 const RecentlyViewed = () => {
     const { recentlyViewed } = useAppSelector(state => state.products)
 
@@ -43,7 +42,7 @@ const RecentlyViewed = () => {
                                     <SwiperSlide key={i}>
                                         <ProductFrame product={product} 
                                         price_font_size='text-[16px]'
-                                        discount_font_size={'text-[10px]'}
+                                        discount_font_size={'text-[12px]'}
                                         shop_button={'p-[4px]'}
                                         icon_size={18}
                                         showControls={false}/>

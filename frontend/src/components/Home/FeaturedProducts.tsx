@@ -3,7 +3,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import { Product } from '../../types';
-import { selectedProductsArray } from '../../utils/data';
+import { products } from '../../utils/data';
 import ProductFrame from '../products/ProductFrame';
 
 
@@ -35,10 +35,10 @@ const SelectedProducts = () => {
           }}
         >
           <h1 className="absolute top-0 left-0 text-4xl font-nunitosans font-bold leading-tight">Featured products</h1>
-          {selectedProductsArray.map((product: Product, i: number) => {
+          {products.map((product: Product, i: number) => {
             return (
               <SwiperSlide key={i}>
-                <ProductFrame product={product} price_font_size={'text-[24px]'} icon_size={22}  />
+                <ProductFrame product={product} price_font_size={'text-[24px]'} icon_size={22} showControls={false}/>
               </SwiperSlide>
             );
           })}

@@ -10,6 +10,7 @@ import { CaretRight, SquaresFour, ListDashes, MagnifyingGlass } from '@phosphor-
 import ProductFrame from '../components/products/ProductFrame';
 import RangeSlider from '../components/filters/RangeSliders';
 import NewsLetter from '../components/home/NewsLetter';
+import RecentlyViewed from '../components/products/RecentlyViewed';
 
 
 const Products = () => {
@@ -231,19 +232,20 @@ const Products = () => {
                                 <div className={`${!isFlexDisplay && 'grid grid-cols-3 gap-x-[16px] gap-y-[34px]'} `}>
                                     {filteredProducts.map((product: Product, i: number) =>
                                         <div className='relative w-full'>
-                                            <ProductFrame 
-                                            product={product} 
-                                            key={i} 
-                                            isFlexDisplay={isFlexDisplay} 
-                                            price_font_size='text-[16px]'
-                                            discount_font_size={'text-[11px]'}
-                                            shop_button={'p-[4px]'}
-                                            icon_size={18}
+                                            <ProductFrame
+                                                product={product}
+                                                showControls={true}
+                                                key={i}
+                                                isFlexDisplay={isFlexDisplay}
+                                                price_font_size='text-[16px] font-bold'
+                                                discount_font_size={'text-[12px]'}
+                                                shop_button={'p-[4px]'}
+                                                icon_size={18}
                                             />
                                         </div>
                                     )}
                                 </div>
-                                {/* <p>Add Pagination from backend here</p> */}
+                                <p className='pt-[30px]'>Add Pagination from backend here</p>
                             </>
                         ) : (
                             <p className='flex items-center justify-center h-[300px]'>No products available.</p>
@@ -252,7 +254,8 @@ const Products = () => {
                 </div>
             </div>
 
-            <NewsLetter />
+            <RecentlyViewed />
+            <NewsLetter newsletter_extras={'pt-[20px]'} />
 
 
         </section>

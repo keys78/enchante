@@ -36,21 +36,22 @@ const ProductFrame = ({ product, isFlexDisplay, price_font_size, discount_font_s
 
     const addToRecentlyViewedAction = (product: Product) => {
         const existingRecentlyViewedItem = recentlyViewed.find((item) => item.id === product.id);
-        
+
         if (!existingRecentlyViewedItem) {
-          const recentlyViewedItem: Product = {
-            ...product,
-            cartQuantity: 1,
-          };
-          dispatch(addToRecentlyViewed(recentlyViewedItem));
+            const recentlyViewedItem: Product = {
+                ...product,
+                cartQuantity: 1,
+            };
+            dispatch(addToRecentlyViewed(recentlyViewedItem));
         }
-      };
+    };
 
 
     return (
 
         <div key={product.id} >
             {isFlexDisplay ? (
+                //flex View Display
                 <div className='flex mb-[16px] bg-gray-50 p-3 rounded-[5px] '>
                     <Link to={`/products/product-details/${product.id}`}>
                         <div className='relative max-w-[400px] min-w-[400px]'>
@@ -100,6 +101,7 @@ const ProductFrame = ({ product, isFlexDisplay, price_font_size, discount_font_s
             )
                 :
                 (
+                    //Grid View Display
                     <>
                         <Link onClick={() => addToRecentlyViewedAction(product)} to={`/products/product-details/${product.id}`}>
                             <div className='relative'>
@@ -114,33 +116,33 @@ const ProductFrame = ({ product, isFlexDisplay, price_font_size, discount_font_s
                                 <h3 className='font-medium capitalize'>{product?.name}</h3>
                                 <div className='flex items-start space-x-3'>
                                     <span className={`font-medium montserrat ${price_font_size}`}>${product?.price}</span>
-                                    {product?.discount && <span className={`text-[16px] font-medium montserrat opacity-80 discount-strike ${discount_font_size}`}>${(product?.price * 0.3) + product?.price}</span>}
+                                    {product?.discount && <span className={`font-medium montserrat opacity-80 discount-strike ${discount_font_size}`}>${(product?.price * 0.3) + product?.price}</span>}
                                 </div>
                             </div>
-                            {showControls && 
+                            {showControls &&
                                 <div>
-                                {existingCartItem ? (
-                                    <div className='flex items-center space-x-4'>
-                                        <QuantityControlsBtn
-                                            onClick={() => { decreaseQuantity(existingCartItem); setAnimationKey((prevKey) => prevKey + 1) }}
-                                            children={<Minus size={icon_size} color="#f8f8f8" weight="bold" />}
-                                            className={`rounded-[5px] hover:opacity-70 p-2 bg-black text-white ${shop_button}`}
-                                        />
+                                    {existingCartItem ? (
+                                        <div className='flex items-center space-x-4'>
+                                            <QuantityControlsBtn
+                                                onClick={() => { decreaseQuantity(existingCartItem); setAnimationKey((prevKey) => prevKey + 1) }}
+                                                children={<Minus size={icon_size} color="#f8f8f8" weight="bold" />}
+                                                className={`rounded-[5px] hover:opacity-70 p-2 bg-black text-white ${shop_button}`}
+                                            />
 
-                                        <motion.span key={animationKey} animate={{ scale: [1.3, 1] }} className='font-bold'>{existingCartItem.cartQuantity}</motion.span>
+                                            <motion.span key={animationKey} animate={{ scale: [1.3, 1] }} className='font-bold'>{existingCartItem.cartQuantity}</motion.span>
 
-                                        <QuantityControlsBtn
-                                            onClick={() => { addQuantity(existingCartItem); setAnimationKey((prevKey) => prevKey + 1) }}
-                                            children={<Plus size={icon_size} color="#f8f8f8" weight="bold" />}
-                                            className={`rounded-[5px] hover:opacity-70 p-2 bg-black text-white ${shop_button}`}
-                                        />
-                                    </div>
-                                ) : (
-                                    <button className={`rounded-[5px] hover:opacity-70 transition duration-300 p-3 bg-black text-white ${shop_button}`} onClick={() => addToCart(product)}>
-                                        <ShoppingCartSimple size={icon_size} color="#f8f8f8" weight="regular" />
-                                    </button>
-                                )}
-                            </div>
+                                            <QuantityControlsBtn
+                                                onClick={() => { addQuantity(existingCartItem); setAnimationKey((prevKey) => prevKey + 1) }}
+                                                children={<Plus size={icon_size} color="#f8f8f8" weight="bold" />}
+                                                className={`rounded-[5px] hover:opacity-70 p-2 bg-black text-white ${shop_button}`}
+                                            />
+                                        </div>
+                                    ) : (
+                                        <button className={`rounded-[5px] hover:opacity-70 transition duration-300 p-3 bg-black text-white ${shop_button}`} onClick={() => addToCart(product)}>
+                                            <ShoppingCartSimple size={icon_size} color="#f8f8f8" weight="regular" />
+                                        </button>
+                                    )}
+                                </div>
                             }
                         </div>
                     </>

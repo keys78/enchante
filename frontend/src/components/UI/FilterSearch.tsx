@@ -1,6 +1,8 @@
 import { MagnifyingGlass } from '@phosphor-icons/react';
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useAppDispatch } from '../../network/hooks';
+import { filterProductsByCategory } from '../../reducers/products/productsSlice';
 
 type Option = {
   label: string;
@@ -12,10 +14,14 @@ type FilterSearchProps = {
 };
 
 const FilterSearch: React.FC<FilterSearchProps> = ({ options }) => {
+  const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const [filteredOptions, setFilteredOptions] = useState<Option[]>(options);
   const searchContainerRef = useRef<HTMLDivElement>(null);
+  const [selectedFilters, setSelectedFilters] = useState({
+    category: "all",
+  });
 
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
@@ -41,11 +47,29 @@ const FilterSearch: React.FC<FilterSearchProps> = ({ options }) => {
   const handleOptionClick = (option: Option) => {
     setSearchValue(option.label);
     setIsOpen(false);
+    // handleFilterClick('category', option.label)
+    dispatch(filterProductsByCategory({category: option.label.toLowerCase()}))
+    console.log(option.label)
   };
 
   const handleClickOutside = (event: MouseEvent) => {
     if (searchContainerRef.current && !searchContainerRef.current.contains(event.target as Node)) {
       setIsOpen(false);
+    }
+  };
+
+  const handleFilterClick = (filterType: 'category', filterValue: string) => {
+    setSelectedFilters((prevFilters) => ({
+      ...prevFilters,
+      [filterType]: filterValue,
+    }));
+
+    switch (filterType) {
+      case 'category':
+        dispatch(filterProductsByCategory({ category: filterValue }));
+        break;
+      default:
+        break;
     }
   };
 
@@ -55,8 +79,8 @@ const FilterSearch: React.FC<FilterSearchProps> = ({ options }) => {
     }
 
     return filteredOptions.map((option) => (
-      <Link to={`/products/${option.value}`} key={option.value}>
-        <li onClick={() => handleOptionClick(option)}>{option.label}</li>
+      <Link to={`/products/?${option.value}`} onClick={() => handleOptionClick(option)} key={option.value}>
+        <li >{option.label}</li>
       </Link>
     ));
   };

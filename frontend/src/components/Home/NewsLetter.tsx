@@ -2,9 +2,13 @@ import { Link } from 'react-router-dom'
 import limited_offer_x from '../../assets/png/limited_offer_x.jpg'
 import { Envelope } from '@phosphor-icons/react'
 
-const NewsLetter = () => {
+interface Props {
+    newsletter_extras: string
+}
+
+const NewsLetter = ({newsletter_extras = 'pt-[44px]'}: Props) => {
     return (
-        <section className='pt-44 pb-20'>
+        <section className={`${newsletter_extras} pb-20`}>
             <div className='mx-auto px-8'>
                 <div className='flex bg-[#202122] max-w-[1024px] w-full mx-auto rounded-[5px]'>
                     <div className='max-w-[450px] rounded-[5px]'>
