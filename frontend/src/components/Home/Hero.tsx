@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { CardSliderOne, CardSliderTwo, SliderData, heroDisplayTexts } from '../../utils/data';
 import Slideshow from '../UI/SlidesShow';
 import CardCarousel from '../UI/CardCarousel';
-import { ArrowElbowDownRight, FacebookLogo, InstagramLogo, TwitterLogo } from '@phosphor-icons/react';
+import { FacebookLogo, InstagramLogo, TwitterLogo } from '@phosphor-icons/react';
 
 
 const Hero = () => {

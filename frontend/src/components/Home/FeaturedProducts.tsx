@@ -11,7 +11,7 @@ import ProductFrame from '../products/ProductFrame';
 const SelectedProducts = () => {
 
   return (
-    <section className='pt-44 pb-20 px-[80px]'>
+    <section id="featured" className='pt-44 pb-20 px-[80px]'>
       <div className='mx-auto'>
         <Swiper
           className='pt-[48px]'

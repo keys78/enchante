@@ -7,7 +7,6 @@ import RecentlyViewed from "../components/products/RecentlyViewed";
 const ProductDetails = () => {
     const { id } = useParams();
 
-    console.log(id); // Output the value of the "id" par state.productsameter
     const { filteredProducts } = useAppSelector(state => state.products)
     const productInfo = filteredProducts.find(val => val.id === id)
 
@@ -15,7 +14,7 @@ const ProductDetails = () => {
 
     return (
         <section className="app-container mt-[12px] px-[120px]">
-            <div>
+            <div className="pb-[200px]">
                 <div className='pt-[30px] pb-[18px] flex items-center space-x-2'>
                     <span className='flex items-center space-x-2' style={{ color: '#a6a4a4' }}><Link to={'/'}>Home</Link> <CaretRight size={14} /> </span>
                     <span className='flex items-center space-x-2' style={{ color: '#a6a4a4' }}><Link to={'/products'}>Products</Link> <CaretRight size={14} /> </span>

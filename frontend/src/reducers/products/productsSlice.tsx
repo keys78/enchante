@@ -27,17 +27,29 @@ const productsSlice = createSlice({
   reducers: {
     addToRecentlyViewed(state, action: PayloadAction<Product>) {
       const { id } = action.payload;
-      const existingItem = state.recentlyViewed.find((item) => item.id === id);
-
-      if (existingItem) {
-        return;
+      const existingItemIndex = state.recentlyViewed.findIndex((item) => item.id === id);
+    
+      if (existingItemIndex !== -1) {
+        // Item already exists, we need to it to the front
+        const existingItem = state.recentlyViewed[existingItemIndex];
+        state.recentlyViewed.splice(existingItemIndex, 1);
+        state.recentlyViewed.unshift(existingItem);
       } else {
-        const newlyViewedItem = { ...action.payload, cartQuantity: 1 };
-        state.recentlyViewed = [...state.recentlyViewed, newlyViewedItem];
-      }
 
+        // Item doesn't exist, add it to the front
+        const newlyViewedItem = { ...action.payload, cartQuantity: 1 };
+        state.recentlyViewed.unshift(newlyViewedItem);
+      }
+    
+      // Limiting the number of items to a maximum of 5
+      if (state.recentlyViewed.length > 4) {
+        state.recentlyViewed.pop();
+      }
+    
       localStorage.setItem("enchante-rv", JSON.stringify(state.recentlyViewed));
     },
+    
+    
 
 
     filterProductsByPrice: (state, action: PayloadAction<{ maxRange: string }>) => {

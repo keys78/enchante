@@ -1,5 +1,5 @@
 import { useAddQuantity, useAddToCart, useDecreaseQuantity } from '../hooks/useCartControls';
-import { useAppSelector } from '../../network/hooks';
+import { useAppDispatch, useAppSelector } from '../../network/hooks';
 import { RootState } from '../../network/store';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -10,6 +10,7 @@ import QuantityControlsBtn from './QuantityControlsBtn';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import free_shipping from '../../assets/png/free_shipping.jpg'
+import { addToRecentlyViewed } from '../../reducers/products/productsSlice';
 
 
 interface Props {
@@ -28,7 +29,21 @@ const ProductFrame = ({ product, isFlexDisplay, price_font_size, discount_font_s
     const decreaseQuantity = useDecreaseQuantity();
     const [animationKey, setAnimationKey] = useState<number>(0);
     const existingCartItem = cart.cartItems.find((item: CartItem) => item.id === product.id);
+    const dispatch = useAppDispatch();
+    const { recentlyViewed } = useAppSelector(state => state.products)
 
+
+    const addToRecentlyViewedAction = (product: Product) => {
+        const existingRecentlyViewedItem = recentlyViewed.find((item) => item.id === product.id);
+        
+        if (!existingRecentlyViewedItem) {
+          const recentlyViewedItem: Product = {
+            ...product,
+            cartQuantity: 1,
+          };
+          dispatch(addToRecentlyViewed(recentlyViewedItem));
+        }
+      };
 
 
     return (
@@ -85,7 +100,7 @@ const ProductFrame = ({ product, isFlexDisplay, price_font_size, discount_font_s
                 :
                 (
                     <>
-                        <Link to={`/products/product-details/${product.id}`}>
+                        <Link onClick={() => addToRecentlyViewedAction(product)} to={`/products/product-details/${product.id}`}>
                             <div className='relative'>
                                 <img className='rounded-[5px]' src={product?.image} alt={'enchanté_fashon'} />
                                 {product?.new && <div className='absolute top-4 left-4 bg-orangeSkin text-white rounded-[5px] py-1 px-3'>new</div>}

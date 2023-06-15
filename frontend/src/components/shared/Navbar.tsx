@@ -1,7 +1,5 @@
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
-// import { logoutUser } from "../slices/authSlice";
-import { toast } from "react-toastify";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../network/hooks";
 import { getTotals } from "../../reducers/cart/cartSlice";
 import { RootState } from "../../network/store";
@@ -12,7 +10,7 @@ const NavBar = () => {
   const dispatch = useAppDispatch();
   const { cartTotalQuantity } = useAppSelector((state) => state.cart);
   const cart = useAppSelector((state: RootState) => state.cart);
-  const auth = true
+  const auth = true;
 
   const options = [
     { label: 'Men', value: 'men' },
@@ -21,21 +19,27 @@ const NavBar = () => {
   ];
 
   useEffect(() => {
-    dispatch(getTotals())
-  }, [dispatch, cart])
+    dispatch(getTotals());
+  }, [dispatch, cart]);
 
   useEffect(() => {
+    const isSticky = () => {
+      const header: any = document.querySelector('.header-section');
+      const scrollTop = window.scrollY;
+      scrollTop >= 50 ? header?.classList.add('is-sticky') : header?.classList.remove('is-sticky');
+    };
+
     window.addEventListener('scroll', isSticky);
     return () => {
       window.removeEventListener('scroll', isSticky);
     };
-  });
+  }, []);
 
-  const isSticky = () => {
-    const header: any = document.querySelector('.header-section');
-    const scrollTop = window.scrollY;
-    scrollTop >= 50 ? header?.classList.add('is-sticky') : header?.classList.remove('is-sticky');
-  };
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
   return (
     <header className="header-section flex items-center justify-between text-black relative border-b border-gray-200 pt-[30px] pb-[24px] app-container px-[40px]">
@@ -46,9 +50,32 @@ const NavBar = () => {
       </Link>
 
       <ul className="flex space-x-20 uppercase -mr-[200px]">
-        <a href="/products" className=""><li className="hover-underline-animation font-bold">New Collections</li></a>
-        <a href="/products" className=""><li className="hover-underline-animation font-bold">Popular</li></a>
-        <a href="/products" className=""><li className="hover-underline-animation font-bold">Shop Now</li></a>
+        <li>
+          <a
+            href="/#currated"
+            // className={({ isActive }) => (isActive ? "border-b-2 border-orangeSkin" : "")}
+            className="hover-underline-animation font-bold"
+          >
+            New Collections
+          </a>
+        </li>
+        <li>
+          <a
+            href="/#featured"
+            // className={({ isActive }) => (isActive ? "border-b-2 border-orangeSkin" : "")}
+            className="hover-underline-animation font-bold"
+          >
+            Popular
+          </a>
+        </li>
+        <li>
+          <NavLink
+            to="/products"
+            className={({ isActive }) => (isActive ? "border-b-2 border-orangeSkin" : "hover-underline-animation font-bold")}
+          >
+            Shop Now
+          </NavLink>
+        </li>
       </ul>
 
       <div className="flex items-center justify-end space-x-8 w-[300px]">
@@ -64,30 +91,24 @@ const NavBar = () => {
         <div className="w-[26px]">
           <UserCircle size={26} color="#070707" weight="regular" />
         </div>
-
-
-
-        {/* {auth ? (
-            <button
-              onClick={() => {
-                // dispatch(logoutUser(null));
-                toast.warning("Logged out!", { position: "bottom-left" });
-              }}
-            >
-              Logout
-            </button>
-          ) : (
-            <div>
-              <Link to="/login">Login</Link>
-              <Link to="register">Register</Link>
-            </div>
-          )} */}
       </div>
-
+      {/* {auth ? (
+//             <button
+//               onClick={() => {
+//                 // dispatch(logoutUser(null));
+//                 toast.warning("Logged out!", { position: "bottom-left" });
+//               }}
+//             >
+//               Logout
+//             </button>
+//           ) : (
+//             <div>
+//               <Link to="/login">Login</Link>
+//               <Link to="register">Register</Link>
+//             </div>
+//           )} */}
     </header>
   );
 };
 
 export default NavBar;
-
-
