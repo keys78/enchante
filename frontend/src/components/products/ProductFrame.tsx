@@ -19,10 +19,11 @@ interface Props {
     price_font_size: string,
     discount_font_size?: string,
     shop_button?: string,
-    icon_size: number
+    icon_size: number,
+    showControls?: boolean
 }
 
-const ProductFrame = ({ product, isFlexDisplay, price_font_size, discount_font_size, shop_button, icon_size }: Props) => {
+const ProductFrame = ({ product, isFlexDisplay, price_font_size, discount_font_size, shop_button, icon_size, showControls }: Props) => {
     const cart = useAppSelector((state: RootState) => state.cart);
     const addToCart = useAddToCart();
     const addQuantity = useAddQuantity();
@@ -113,10 +114,11 @@ const ProductFrame = ({ product, isFlexDisplay, price_font_size, discount_font_s
                                 <h3 className='font-medium capitalize'>{product?.name}</h3>
                                 <div className='flex items-start space-x-3'>
                                     <span className={`font-medium montserrat ${price_font_size}`}>${product?.price}</span>
-                                    {product?.discount && <span className={`text-[16px] font-medium montserrat opacity-60 discount-strike ${discount_font_size}`}>${(product?.price * 0.3) + product?.price}</span>}
+                                    {product?.discount && <span className={`text-[16px] font-medium montserrat opacity-80 discount-strike ${discount_font_size}`}>${(product?.price * 0.3) + product?.price}</span>}
                                 </div>
                             </div>
-                            <div>
+                            {showControls && 
+                                <div>
                                 {existingCartItem ? (
                                     <div className='flex items-center space-x-4'>
                                         <QuantityControlsBtn
@@ -139,6 +141,7 @@ const ProductFrame = ({ product, isFlexDisplay, price_font_size, discount_font_s
                                     </button>
                                 )}
                             </div>
+                            }
                         </div>
                     </>
                 )

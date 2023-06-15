@@ -17,12 +17,12 @@ const RecentlyViewed = () => {
                 <section className='pt-44 pb-20'>
                     <div className='mx-auto'>
                         <Swiper
-                            className='pt-[48px]'
+                            className={`${recentlyViewed.length <= 3 ? 'pt-[78px]' : 'pt-[48px]' }`}
                             modules={[Navigation]}
                             spaceBetween={20}
                             slidesPerView={1}
                             loop={false}
-                            navigation={true}
+                            navigation
                             pagination={false}
                             scrollbar={false}
                             breakpoints={{
@@ -41,7 +41,12 @@ const RecentlyViewed = () => {
                             {recentlyViewed.map((product: Product, i: number) => {
                                 return (
                                     <SwiperSlide key={i}>
-                                        <ProductFrame product={product} price_font_size={'text-[24px]'} icon_size={20} />
+                                        <ProductFrame product={product} 
+                                        price_font_size='text-[16px]'
+                                        discount_font_size={'text-[10px]'}
+                                        shop_button={'p-[4px]'}
+                                        icon_size={18}
+                                        showControls={false}/>
                                     </SwiperSlide>
                                 );
                             })}
