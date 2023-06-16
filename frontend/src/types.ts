@@ -12,6 +12,7 @@ export interface Product {
     name: string;
     image: string;
     desc: string;
+    sizes:string[],
     price: number;
     color: string;
     brand: string;

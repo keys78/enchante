@@ -24,7 +24,9 @@ const ProductDetails = () => {
     const decreaseQuantity = useDecreaseQuantity();
     const [animationKey, setAnimationKey] = useState<number>(0);
     const [loved, seLoved] = useState<boolean>(false);
+    const [activeSize, setActiveSize] = useState<number>(0);
     const existingCartItem = cart.cartItems.find((item: CartItem) => item.id === id);
+
 
     const projects = [
         {
@@ -49,9 +51,14 @@ const ProductDetails = () => {
         },
     ]
 
+    const tabTitle = [
+        { type: 'description' },
+        { type: 'discussion & comments' }
+    ]
+
 
     const getCurrentIndex = (tab: any) => { setActiveTab(tab); };
-    const tabList = Array.from(new Set(projects.map(project => project.type)));
+    const tabList = Array.from(new Set(tabTitle.map(project => project.type)));
     const [activeTab, setActiveTab] = useState(tabList[0]);
 
 
@@ -79,10 +86,10 @@ const ProductDetails = () => {
                 </div>
 
                 <div className="flex w-full space-x-5">
-                    <div >
+                    <div className="max-w-[60%]" >
                         <img className="w-full" src={productInfo?.image} alt={productInfo?.name} />
                     </div>
-                    <div className="product-info">
+                    <div className="product-info w-full">
                         <div className="flex items-center justify-between">
                             <h1 className="text-[26px]">{productInfo?.name}</h1>
                             <div className="cursor-pointer" onClick={() => seLoved(!loved)}>
@@ -93,43 +100,65 @@ const ProductDetails = () => {
                             </div>
                         </div>
                         <div className="flex items-center space-x-5">
-                            <div className='flex'>
+                            <div className='flex mt-2'>
                                 {Array.from({ length: (Number(productInfo?.star_ratings)) }, (_, i) => (
-                                    <Star key={i} size={20} color="#f9a83f" weight="fill" />
+                                    <Star key={i} size={18} color="#f9a83f" weight="fill" />
                                 ))}
                                 {Array.from({ length: 5 - (Number(productInfo?.star_ratings)) }, (_, i) => (
-                                    <Star key={i} size={20} color="#f9a83f" weight="thin" />
+                                    <Star key={i} size={18} color="#f9a83f" weight="thin" />
                                 ))}
                             </div>
                             <div>
                                 ({productInfo?.star_ratings <= 4 ? (productInfo?.star_ratings + (Math.random() * 0.9)).toFixed(1) : productInfo?.star_ratings}/5)
                             </div>
                         </div>
-                        <div className="text-[24px] font-medium montserrat">${productInfo?.price}</div>
-                        <p className="py-4">{productInfo?.desc}</p>
-                        <div>
-                            {existingCartItem ? (
-                                <div className='flex items-center space-x-4'>
-                                    <QuantityControlsBtn
-                                        onClick={() => { decreaseQuantity(existingCartItem); setAnimationKey((prevKey) => prevKey + 1) }}
-                                        children={<Minus size={24} color="#f8f8f8" weight="bold" />}
-                                        className={`rounded-[5px] hover:opacity-70 bg-black text-white p-[6px]`}
-                                    />
+                        <div className="text-[24px] font-medium montserrat py-4">${productInfo?.price}</div>
+                        <div className="py-6 border-t border-b border-gray-100 w-full flex items-center justify-between">
+                            <div>
+                                <h1 className="font-medium pb-4">Available Sizes</h1>
+                                <div className="flex space-x-5 items-center">
+                                    {productInfo?.sizes.map((val, i) =>
+                                        <div onClick={() => setActiveSize(i)} className={`border border-black text-center flex items-center justify-center cursor-pointer rounded-[5px] h-[32px] w-[32px] ${i === activeSize ? "bg-black text-white" : ''}`}>{val}</div>
+                                    )}
 
-                                    <motion.span key={animationKey} animate={{ scale: [1.3, 1] }} className='font-bold'>{existingCartItem.cartQuantity}</motion.span>
-
-                                    <QuantityControlsBtn
-                                        onClick={() => { addQuantity(existingCartItem); setAnimationKey((prevKey) => prevKey + 1) }}
-                                        children={<Plus size={24} color="#f8f8f8" weight="bold" />}
-                                        className={`rounded-[5px] hover:opacity-70 bg-black text-white p-[6px]`}
-                                    />
                                 </div>
-                            ) : (
-                                <button className={`flex items-center rounded-[5px] hover:opacity-70 transition duration-300 py-2 px-4 bg-black text-white`} onClick={() => addToCart(productInfo)}>
-                                    Add To Cart &nbsp;&nbsp;<ShoppingCartSimple size={20} color="#f8f8f8" weight="regular" />
-                                </button>
-                            )}
+                            </div>
+
+                            <div className="flex space-x-5 items-center">
+                                <div>
+                                    <h1 className="font-medium pb-4">Available Colors</h1>
+                                    <div style={{ background: `${productInfo?.color}` }} className="h-[20px] w-[20px] rounded-[100%]"></div>
+                                </div>
+                            </div>
                         </div>
+
+                        <div className="my-3 py-4 w-full">
+                            <div className="pb-3"><span className="font-medium">{Math.max(1, Math.floor(Math.random() * 10)).toFixed(0)}</span> left in stock!</div>
+                            <div>
+                                {existingCartItem ? (
+                                    <div className='flex items-center space-x-4'>
+                                        <QuantityControlsBtn
+                                            onClick={() => { decreaseQuantity(existingCartItem); setAnimationKey((prevKey) => prevKey + 1) }}
+                                            children={<Minus size={24} color="#f8f8f8" weight="bold" />}
+                                            className={`rounded-[5px] hover:opacity-70 bg-black text-white p-[6px]`}
+                                        />
+
+                                        <motion.span key={animationKey} animate={{ scale: [1.3, 1] }} className='font-bold'>{existingCartItem.cartQuantity}</motion.span>
+
+                                        <QuantityControlsBtn
+                                            onClick={() => { addQuantity(existingCartItem); setAnimationKey((prevKey) => prevKey + 1) }}
+                                            children={<Plus size={24} color="#f8f8f8" weight="bold" />}
+                                            className={`rounded-[5px] hover:opacity-70 bg-black text-white p-[6px]`}
+                                        />
+                                    </div>
+                                ) : (
+                                    <button className={`flex items-center justify-center space-x-3 rounded-[5px] hover:opacity-70 transition duration-300 py-3 px-4 bg-black text-white w-full`} onClick={() => addToCart(productInfo)}>
+                                        <span>Add To Cart</span> <ShoppingCartSimple size={20} color="#f8f8f8" weight="regular" />
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -139,49 +168,12 @@ const ProductDetails = () => {
             <Pager value={tabList.indexOf(activeTab)}>
                 {tabList.map((tab, i) => (
                     <div key={i}>
-                        {projectsToRender.map((project, i) => (
+                        {products.map((project, i) => (
                             <div
-                                className={` s-991:flex block ${i % 2 == 0 && 's-991:space-x-20'} s-991:mb-40 mb-16 ${i % 2 != 0 && 'flex-row-reverse s-991:space-x-0'}`}
                                 key={i}>
+                                {project?.desc}
 
 
-                                <div className={`s-991:max-w-[500px] text-[16px] relative`}>
-                                    <h1 className="pt-4 pb-2 font-[RoosStRegisDisplay-Regular] opacity-50 text-[20px]">{project.p_tag}</h1>
-                                    <h1 className="s-400:text-[30px] text-[24px] font-[RoosStRegisDisplay-Regular]">{project.title}</h1>
-                                    <h1 className="pt-4 pb-2b opacity-75 mb-4 s-480:text-[18px] text-[16px]">{project.description}</h1>
-                                    <div className="flex space-x-2 capitalize opacity-75 mt-2">
-                                        Tools: &nbsp;
-                                        {project.stacks.map((val: any) => (
-                                            <span key={val}>
-                                                {val}
-                                            </span>
-                                        ))}
-                                    </div>
-                                    <div className="flex items-center space-x-2 opacity-75 mt-2">
-                                        <span>Category:</span>
-                                        {project.category.map((val) => (
-                                            <span className="bg-gradient-to-br from-[#180249] via-[#21153b] px-2 rounded" lang="ESP" key={val}>
-                                                #{val}
-                                            </span>
-                                        ))}
-                                    </div>
-
-
-                                    <div className="s-991:relative absolute s-991:top-0 top-10 right-0 flex space-x-4 mt-5">
-                                        {project.code_url !== "" &&
-                                            <button className="bg-[#1d1d1d] px-2 py-1 rounded">
-                                                <a target={'_blank'} rel="noopener noreferrer" href={project.code_url}>
-                                                    Source code
-                                                </a>
-                                            </button>
-                                        }
-                                        <button className="bg-[#1d1d1d] px-2 py-1 rounded">
-                                            <a target={'_blank'} rel="noopener noreferrer" href={project.preview_url}>
-                                                Demo
-                                            </a>
-                                        </button>
-                                    </div>
-                                </div>
                             </div>
                         ))}
                     </div>
