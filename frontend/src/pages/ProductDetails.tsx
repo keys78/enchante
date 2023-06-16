@@ -57,7 +57,7 @@ const ProductDetails = () => {
                 <div className='pt-[30px] pb-[18px] flex items-center space-x-2'>
                     <span className='flex items-center space-x-2' style={{ color: '#a6a4a4' }}><Link to={'/'}>Home</Link> <CaretRight size={14} /> </span>
                     <span className='flex items-center space-x-2' style={{ color: '#a6a4a4' }}><Link to={'/products'}>Products</Link> <CaretRight size={14} /> </span>
-                    <span className='font-medium'>{productInfo?.name}</span>
+                    <span className='font-bold'>{productInfo?.name}</span>
                 </div>
 
                 <div className="flex w-full space-x-5 pb-[50px]">
@@ -87,7 +87,10 @@ const ProductDetails = () => {
                                 ({productInfo?.star_ratings <= 4 ? (productInfo?.star_ratings + (Math.random() * 0.9)).toFixed(1) : productInfo?.star_ratings}/5)
                             </div>
                         </div>
-                        <div className="text-[24px] font-medium montserrat py-4">${productInfo?.price}</div>
+                        <div className='flex items-start space-x-3 py-4'>
+                              <span className="text-[24px] font-medium montserrat">${productInfo?.price}</span>
+                              {productInfo?.discount && <span className='text-[16px] font-medium montserrat opacity-60 discount-strike'>${(productInfo?.price * 0.3) + productInfo?.price}</span>}
+                            </div>
                         <div className="py-6 my-6 border-t border-b border-gray-100 w-full flex items-center justify-between">
                             <div>
                                 <h1 className="font-medium pb-4">Available Sizes</h1>
