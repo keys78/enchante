@@ -19,9 +19,7 @@ const FilterSearch: React.FC<FilterSearchProps> = ({ options }) => {
   const [searchValue, setSearchValue] = useState('');
   const [filteredOptions, setFilteredOptions] = useState<Option[]>(options);
   const searchContainerRef = useRef<HTMLDivElement>(null);
-  const [selectedFilters, setSelectedFilters] = useState({
-    category: "all",
-  });
+
 
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
@@ -47,7 +45,6 @@ const FilterSearch: React.FC<FilterSearchProps> = ({ options }) => {
   const handleOptionClick = (option: Option) => {
     setSearchValue(option.label);
     setIsOpen(false);
-    // handleFilterClick('category', option.label)
     dispatch(filterProductsByCategory({category: option.label.toLowerCase()}))
     console.log(option.label)
   };
@@ -58,20 +55,6 @@ const FilterSearch: React.FC<FilterSearchProps> = ({ options }) => {
     }
   };
 
-  const handleFilterClick = (filterType: 'category', filterValue: string) => {
-    setSelectedFilters((prevFilters) => ({
-      ...prevFilters,
-      [filterType]: filterValue,
-    }));
-
-    switch (filterType) {
-      case 'category':
-        dispatch(filterProductsByCategory({ category: filterValue }));
-        break;
-      default:
-        break;
-    }
-  };
 
   const renderOptions = () => {
     if (filteredOptions.length === 0) {

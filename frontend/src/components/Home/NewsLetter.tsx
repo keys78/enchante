@@ -6,7 +6,7 @@ interface Props {
     newsletter_extras: string
 }
 
-const NewsLetter = ({newsletter_extras = 'pt-[44px]'}: Props) => {
+const NewsLetter = ({newsletter_extras = 'pt-[100px]'}: Props) => {
     return (
         <section className={`${newsletter_extras} pb-20`}>
             <div className='mx-auto px-8'>

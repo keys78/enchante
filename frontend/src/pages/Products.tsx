@@ -255,7 +255,7 @@ const Products = () => {
             </div>
 
             <RecentlyViewed />
-            <NewsLetter newsletter_extras={'pt-[20px]'} />
+            <NewsLetter newsletter_extras={'pt-[120px]'} />
 
 
         </section>

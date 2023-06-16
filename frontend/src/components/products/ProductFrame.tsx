@@ -11,6 +11,7 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import free_shipping from '../../assets/png/free_shipping.jpg'
 import { addToRecentlyViewed } from '../../reducers/products/productsSlice';
+import { characterLimit } from '../../utils/general';
 
 
 interface Props {
@@ -63,9 +64,9 @@ const ProductFrame = ({ product, isFlexDisplay, price_font_size, discount_font_s
 
                     <div className='w-full relative p-[16px]'>
                         <div className="details flex item-center justify-between">
-                            <div className='max-w-[300px]'>
+                            <div className='max-w-[400px]'>
                                 <h3 className='font-medium capitalize'>{product?.name}</h3>
-                                <h3 className=''>{product?.desc}...</h3>
+                                <h3 className=''>{characterLimit(product?.desc, 150)}...</h3>
                             </div>
                             <div className='flex items-start space-x-3'>
                                 <span className="text-[24px] font-medium montserrat">${product?.price}</span>
