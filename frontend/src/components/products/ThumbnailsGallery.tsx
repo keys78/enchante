@@ -1,109 +1,49 @@
-import { useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/free-mode";
-import "swiper/css/navigation";
-import "swiper/css/thumbs";
+import React, { useState } from 'react';
+import sample_2 from '../../assets/png/img_two.jpg';
+import sample_3 from '../../assets/png/img_s_xx.jpg';
+import sample_4 from '../../assets/png/img_ss_x.jpg';
+import sample_5 from '../../assets/png/img_s_2.jpg';
+import { Product } from '../../types';
 
-SwiperCore.use([Navigation, Thumbs]);
+interface Props {
+  imgArr: Product;
+}
 
-import { FreeMode, Navigation, Thumbs } from "swiper";
+const ThumbnailsGallery = ({ imgArr }: Props) => {
+  const [currentView, setCurrentView] = useState(imgArr.image);
+  const thumbnails = [imgArr.image, sample_2, sample_3, sample_4, sample_5];
+  const lastIndex = thumbnails.length - 1;
 
-const ThumbnailsGallery = () => {
-  const [thumbsSwiper, setThumbsSwiper] = useState(null);
-  const handleSwiper = (swiper: Swiper) => {
-    setThumbsSwiper(swiper);
+  const handlePrevClick = () => {
+    const currentIndex = thumbnails.indexOf(currentView);
+    const newIndex = currentIndex === 0 ? lastIndex : currentIndex - 1;
+    setCurrentView(thumbnails[newIndex]);
+  };
+
+  const handleNextClick = () => {
+    const currentIndex = thumbnails.indexOf(currentView);
+    const newIndex = currentIndex === lastIndex ? 0 : currentIndex + 1;
+    setCurrentView(thumbnails[newIndex]);
   };
 
   return (
-    <>
-      <Swiper
-        // style={{
-        //   "--swiper-navigation-color": "#fff",
-        //   "--swiper-pagination-color": "#fff",
-        // }}
-        loop={true}
-        spaceBetween={10}
-        navigation={true}
-        thumbs={{ swiper: thumbsSwiper }}
-        modules={[FreeMode, Navigation, Thumbs]}
-        className="mySwiper2"
-      >
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-1.jpg" alt="Nature 1" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-2.jpg" alt="Nature 2" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-3.jpg" alt="Nature 3" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-4.jpg" alt="Nature 4" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-5.jpg" alt="Nature 5" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-6.jpg" alt="Nature 6" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-7.jpg" alt="Nature 7" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-8.jpg" alt="Nature 8" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-9.jpg" alt="Nature 9" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-10.jpg" alt="Nature 10" />
-        </SwiperSlide>
-      </Swiper>
-      <Swiper
-        onSwiper={handleSwiper}
-        loop={true}
-        spaceBetween={10}
-        slidesPerView={4}
-        freeMode={true}
-        watchSlidesProgress={true}
-        modules={[FreeMode, Navigation, Thumbs]}
-        className="mySwiper"
-      >
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-1.jpg" alt="Nature 1" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-2.jpg" alt="Nature 2" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-3.jpg" alt="Nature 3" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-
-
-4.jpg" alt="Nature 4" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-5.jpg" alt="Nature 5" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-6.jpg" alt="Nature 6" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-7.jpg" alt="Nature 7" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-8.jpg" alt="Nature 8" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-9.jpg" alt="Nature 9" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-10.jpg" alt="Nature 10" />
-        </SwiperSlide>
-      </Swiper>
-    </>
+    <div>
+      <div className='flex'>
+        <div className='prev h-[23px] w-[24px] rounded-[5px] bg-black text-white' onClick={handlePrevClick}>{'<'}</div>
+        <div className='next h-[23px] w-[24px] rounded-[5px] bg-black text-white' onClick={handleNextClick}>{'>'}</div>
+      </div>
+      <div className="slide-container">
+        {thumbnails.map((thumbnail, index) => (
+          <div
+            className={`thumbnail ${thumbnail === currentView ? 'active' : ''}`}
+            key={index}
+            onClick={() => setCurrentView(thumbnail)}
+          >
+            <img className="w-[150px] rounded-[5px]" src={thumbnail} alt="Thumbnail" />
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };
 

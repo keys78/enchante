@@ -9,7 +9,6 @@ import { CartItem } from "../types";
 import QuantityControlsBtn from "../components/products/QuantityControlsBtn";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { products } from "../utils/data";
 import Tabs from "../components/UI/Tabs";
 import { Pager } from "../components/UI/Pager";
 
@@ -26,72 +25,44 @@ const ProductDetails = () => {
     const [loved, seLoved] = useState<boolean>(false);
     const [activeSize, setActiveSize] = useState<number>(0);
     const existingCartItem = cart.cartItems.find((item: CartItem) => item.id === id);
+    const [activeTab, setActiveTab] = useState("Comments & Discussions");
 
 
-    const projects = [
-        {
-            p_tag: '01',
-            title: 'Buckley Law',
-            stacks: ['Javascript, JQuery, html', 'css3',],
-            description: 'Buckley Law is the personal service portfolio of Attorney Buckley, designed to showcase his expertise and facilitate communication with potential clients interested in seeking his legal counsel.',
-            category: ['portfolio', 'judiciary',],
-            type: 'javascript',
-            preview_url: "https://buckleylawoffices.com/",
-            code_url: ""
-        },
-        {
-            p_tag: '02',
-            title: 'Plaidlife',
-            stacks: ['Javascript, JQuery, html', 'css3',],
-            description: 'Plaidlife is an e-commerce platform that connects artists of plaid designs to lovers of the pattern, offering a unique and diverse selection of products that cater to their tastes and preferences.',
-            category: ['e-commerce',],
-            type: 'vue',
-            preview_url: "https://plaidlife.com/",
-            code_url: ""
-        },
-    ]
-
-    const tabTitle = [
-        { type: 'description' },
-        { type: 'discussion & comments' }
-    ]
-
-
-    const getCurrentIndex = (tab: any) => { setActiveTab(tab); };
-    const tabList = Array.from(new Set(tabTitle.map(project => project.type)));
-    const [activeTab, setActiveTab] = useState(tabList[0]);
-
-
-    const filteredProjects = () => {
-        switch (activeTab) {
-            case "all":
-                return projects && projects;
-            default:
-                return projects?.filter((project) => project?.type === activeTab);
-        }
+    const getCurrentIndex = (tab) => {
+        setActiveTab(tab);
     };
 
-    const projectsToRender = filteredProjects(); // Call the function to get the array
+    const filteredProjects = () => {
+        if (activeTab === "Comments & Discussions") {
+            return 'No Comments / Discussions yet'
+        } else {
+            return productInfo?.desc
+        }
+    }
+
+    const productDescription = filteredProjects(); // Call the function to get the array
+    const tabsList = ["Product Description", "Comments & Discussions"]
+
 
 
 
 
     return (
         <section className="app-container mt-[12px] px-[120px]">
-            <div className="pb-[200px]">
+            <div className="">
                 <div className='pt-[30px] pb-[18px] flex items-center space-x-2'>
                     <span className='flex items-center space-x-2' style={{ color: '#a6a4a4' }}><Link to={'/'}>Home</Link> <CaretRight size={14} /> </span>
                     <span className='flex items-center space-x-2' style={{ color: '#a6a4a4' }}><Link to={'/products'}>Products</Link> <CaretRight size={14} /> </span>
                     <span className='font-medium'>{productInfo?.name}</span>
                 </div>
 
-                <div className="flex w-full space-x-5">
-                    <div className="max-w-[60%]" >
-                        <img className="w-full" src={productInfo?.image} alt={productInfo?.name} />
+                <div className="flex w-full space-x-5 pb-[50px]">
+                    <div className="max-w-[50%] min-w-[50%]" >
+                        <ThumbnailsGallery imgArr={productInfo} />
                     </div>
                     <div className="product-info w-full">
                         <div className="flex items-center justify-between">
-                            <h1 className="text-[26px]">{productInfo?.name}</h1>
+                            <h1 className="text-[24px]">{productInfo?.name}</h1>
                             <div className="cursor-pointer" onClick={() => seLoved(!loved)}>
                                 {loved ?
                                     <Heart size={22} color="#f9a83f" weight="regular" /> :
@@ -113,7 +84,7 @@ const ProductDetails = () => {
                             </div>
                         </div>
                         <div className="text-[24px] font-medium montserrat py-4">${productInfo?.price}</div>
-                        <div className="py-6 border-t border-b border-gray-100 w-full flex items-center justify-between">
+                        <div className="py-6 my-6 border-t border-b border-gray-100 w-full flex items-center justify-between">
                             <div>
                                 <h1 className="font-medium pb-4">Available Sizes</h1>
                                 <div className="flex space-x-5 items-center">
@@ -127,7 +98,9 @@ const ProductDetails = () => {
                             <div className="flex space-x-5 items-center">
                                 <div>
                                     <h1 className="font-medium pb-4">Available Colors</h1>
-                                    <div style={{ background: `${productInfo?.color}` }} className="h-[20px] w-[20px] rounded-[100%]"></div>
+                                    <div style={{ border: `2px solid ${productInfo?.color}` }} className="h-[26px] w-[26px] rounded-[100%] flex items-center justify-center">
+                                        <div style={{ background: `${productInfo?.color}` }} className="h-[20px] w-[20px] rounded-[100%]"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -163,23 +136,15 @@ const ProductDetails = () => {
                 </div>
             </div>
 
-            <Tabs tabList={tabList} activeTab={activeTab} setActiveTab={setActiveTab} currentTab={(tab: any) => getCurrentIndex(tab)} />
+            <Tabs tabList={tabsList} activeTab={activeTab} setActiveTab={setActiveTab} currentTab={(tab: any) => getCurrentIndex(tab)} />
 
-            <Pager value={tabList.indexOf(activeTab)}>
-                {tabList.map((tab, i) => (
+            <Pager value={tabsList.indexOf(activeTab)}>
+                {tabsList.map((_, i) => (
                     <div key={i}>
-                        {products.map((project, i) => (
-                            <div
-                                key={i}>
-                                {project?.desc}
-
-
-                            </div>
-                        ))}
+                        {productDescription}
                     </div>
                 ))}
             </Pager>
-
             <RecentlyViewed />
         </section>
     );
