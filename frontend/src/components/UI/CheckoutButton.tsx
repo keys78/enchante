@@ -21,7 +21,7 @@ const CheckoutButton = ({ cartItems }: CheckoutButtonProps) => {
 
     return (
         <button
-            className="p-2 bg-blue-500 text-white rounded"
+            className="p-2 bg-black text-white rounded-[5px] w-full"
             onClick={() => handleCheckout()}
         >
             Check out
