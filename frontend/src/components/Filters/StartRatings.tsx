@@ -51,13 +51,14 @@ const StartRatings = ({ selectedRating, setSelectedRating }: StartRatingsProps) 
                     starRatings.map((rating) => (
                         <div className="flex space-x-3 px-3 mb-[10px]" key={rating.value.toString()}>
                             <label htmlFor={`rating${rating.value}`}>
-                                <div className="flex space-x-1">
+                                <div className="flex items-center space-x-1">
                                     {Array(rating.filledStars).fill(
                                         <Star key={`filled${rating.value}`} size={18} color="#f75a2c" weight="regular" />
                                     )}
                                     {Array(rating.emptyStars).fill(
                                         <Star key={`empty${rating.value}`} size={18} color="#d4d4d4" weight="regular" />
                                     )}
+                                    <span className='text-orangeSkin'>+</span>
                                 </div>
                             </label>
                             <input

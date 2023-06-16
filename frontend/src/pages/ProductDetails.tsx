@@ -25,7 +25,7 @@ const ProductDetails = () => {
     const [loved, seLoved] = useState<boolean>(false);
     const [activeSize, setActiveSize] = useState<number>(0);
     const existingCartItem = cart.cartItems.find((item: CartItem) => item.id === id);
-    const [activeTab, setActiveTab] = useState("Comments & Discussions");
+    const [activeTab, setActiveTab] = useState("Product Description");
 
 
     const getCurrentIndex = (tab) => {
@@ -33,15 +33,19 @@ const ProductDetails = () => {
     };
 
     const filteredProjects = () => {
-        if (activeTab === "Comments & Discussions") {
-            return 'No Comments / Discussions yet'
-        } else {
-            return productInfo?.desc
+        switch (activeTab) {
+            case productInfo?.desc:
+                return productInfo?.desc;
+            case "Comments & Discussions":
+                return 'No Comments / Discussions yet';
+            default:
+                return productInfo?.desc;
         }
-    }
+    };
 
-    const productDescription = filteredProjects(); // Call the function to get the array
-    const tabsList = ["Product Description", "Comments & Discussions"]
+
+    const productDescription = filteredProjects();
+    const tabsList = ["Product Description", "Comments & Discussions"];
 
 
 
@@ -60,23 +64,23 @@ const ProductDetails = () => {
                     <div className="max-w-[50%] min-w-[50%]" >
                         <ThumbnailsGallery imgArr={productInfo} />
                     </div>
-                    <div className="product-info w-full">
-                        <div className="flex items-center justify-between">
-                            <h1 className="text-[24px]">{productInfo?.name}</h1>
+                    <div className="w-full pl-[30px]">
+                        <div className="flex items-start justify-between">
+                            <h1 className="text-[24px]">{productInfo?.name} <span className="italic text-[12px]">{productInfo?.brand}</span></h1>
                             <div className="cursor-pointer" onClick={() => seLoved(!loved)}>
                                 {loved ?
-                                    <Heart size={22} color="#f9a83f" weight="regular" /> :
-                                    <Heart size={22} color="#f9a83f" weight="fill" />
+                                    <Heart size={22} color="#f75a2c" weight="regular" /> :
+                                    <Heart size={22} color="#f75a2c" weight="fill" />
                                 }
                             </div>
                         </div>
                         <div className="flex items-center space-x-5">
                             <div className='flex mt-2'>
                                 {Array.from({ length: (Number(productInfo?.star_ratings)) }, (_, i) => (
-                                    <Star key={i} size={18} color="#f9a83f" weight="fill" />
+                                    <Star key={i} size={18} color="#f75a2c" weight="fill" />
                                 ))}
                                 {Array.from({ length: 5 - (Number(productInfo?.star_ratings)) }, (_, i) => (
-                                    <Star key={i} size={18} color="#f9a83f" weight="thin" />
+                                    <Star key={i} size={18} color="#f75a2c" weight="thin" />
                                 ))}
                             </div>
                             <div>
@@ -106,7 +110,10 @@ const ProductDetails = () => {
                         </div>
 
                         <div className="my-3 py-4 w-full">
-                            <div className="pb-3"><span className="font-medium">{Math.max(1, Math.floor(Math.random() * 10)).toFixed(0)}</span> left in stock!</div>
+                            <div className="flex items-center justify-between pb-[20px]">
+                                <div className="pb-3"><span className="font-medium">{Math.max(1, Math.floor(Math.random() * 10)).toFixed(0)}</span> left in stock!</div>
+                                {productInfo?.free_shipping && <button className="bg-black text-white px-3 py-[3px] text-[10px] rounded-[5px] cursor-none">free shipping available</button>}
+                            </div>
                             <div>
                                 {existingCartItem ? (
                                     <div className='flex items-center space-x-4'>
@@ -136,12 +143,12 @@ const ProductDetails = () => {
                 </div>
             </div>
 
-            <Tabs tabList={tabsList} activeTab={activeTab} setActiveTab={setActiveTab} currentTab={(tab: any) => getCurrentIndex(tab)} />
+            <Tabs tabList={tabsList} activeTab={activeTab} setActiveTab={setActiveTab} currentTab={getCurrentIndex} />
 
             <Pager value={tabsList.indexOf(activeTab)}>
-                {tabsList.map((_, i) => (
-                    <div key={i}>
-                        {productDescription}
+                {tabsList.map((tab, index) => (
+                    <div key={index}>
+                        {tab === "Product Description" ? productDescription : 'No Comments / Discussions yet'}
                     </div>
                 ))}
             </Pager>
