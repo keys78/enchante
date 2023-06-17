@@ -167,8 +167,10 @@ select:-webkit-autofill:focus {
 .slideshow { margin: 0 auto; overflow: hidden; width: 100%; max-width: 450px; position: relative; background: #000; }
 .slide { display: inline-block; max-width: 450px;}
 .currated-image { height: 450px;}
-
 }
+
+.sidebar-wrapper { box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; }
+.logo-main { z-index: 9999999999999 !important;}
 
 
 .slide-in {
