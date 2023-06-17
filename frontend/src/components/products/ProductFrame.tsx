@@ -50,22 +50,21 @@ const ProductFrame = ({ product, isFlexDisplay, price_font_size, discount_font_s
 
     return (
 
-        <div
+        <motion.div
+            key={product?.id}
+            layout
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
         >
             {isFlexDisplay ? (
                 //flex View Display
-                <motion.div
-                    key={product?.id}
-                    layout
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.5 }}
-                    className='flex mb-[16px] bg-gray-50 p-3 rounded-[5px] '>
+                <div className='flex mb-[16px] bg-gray-50 p-3 rounded-[5px] '>
                     <Link to={`/products/product-details/${product.id}`}>
                         <div className='relative max-w-[400px] min-w-[400px]'>
                             <img className='rounded-[5px]' src={product?.image} alt={'enchanté_fashon'} />
-                            {product?.new && <div className='absolute top-4 left-4 bg-orangeSkin text-white rounded-[5px] py-1 px-3'>new</div>}
+                            {product?.new && <div className='absolute top-4 left-4 bg-orangeSkin text-white rounded-[5px] py-[1px] px-2'>new</div>}
                             {product?.free_shipping && <img title='Free Shipping' className='absolute top-4 right-4 rounded-[30px] py-1 px-3 w-[74px]' src={free_shipping} alt="" />}
                         </div>
                     </Link>
@@ -106,22 +105,18 @@ const ProductFrame = ({ product, isFlexDisplay, price_font_size, discount_font_s
                             )}
                         </div>
                     </div>
-                </motion.div>
+                </div>
             )
                 :
                 (
                     //Grid View Display
-                    <motion.div
-                        key={product?.id}
-                        layout
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
+                    <div
+
                     >
                         <Link onClick={() => addToRecentlyViewedAction(product)} to={`/products/product-details/${product.id}`}>
                             <div className='relative'>
                                 <img className='rounded-[5px]' src={product?.image} alt={'enchanté_fashon'} />
-                                {product?.new && <div className='absolute top-4 left-4 bg-orangeSkin text-white rounded-[5px] py-1 px-3'>new</div>}
+                                {product?.new && <div className='absolute top-4 left-4 bg-orangeSkin text-white rounded-[5px] py-[1px] px-2'>new</div>}
                                 {product?.free_shipping && <img title='Free Shipping' className='absolute top-4 right-4 rounded-[30px] py-1 px-3 w-[74px]' src={free_shipping} alt="" />}
                             </div>
                         </Link>
@@ -160,12 +155,10 @@ const ProductFrame = ({ product, isFlexDisplay, price_font_size, discount_font_s
                                 </div>
                             }
                         </div>
-                    </motion.div>
+                    </div>
                 )
             }
-
-
-        </div>
+        </motion.div>
     )
 }
 

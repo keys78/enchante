@@ -7,7 +7,7 @@ import { RootState } from "../network/store";
 import { useAppDispatch, useAppSelector } from "../network/hooks";
 import { CaretLeft, CaretRight, Minus, Plus, TrashSimple } from "@phosphor-icons/react";
 import QuantityControlsBtn from "../components/products/QuantityControlsBtn";
-import { motion } from "framer-motion";
+import { animate, motion, useMotionValue, useTransform } from "framer-motion";
 import { useAddQuantity, useDecreaseQuantity } from "../components/hooks/useCartControls";
 import NewsLetter from "../components/home/NewsLetter";
 import { CartItem } from "../types";
@@ -21,16 +21,29 @@ const Cart = () => {
   const [animationKey, setAnimationKey] = useState<number>(0);
   const addQuantity = useAddQuantity();
   const decreaseQuantity = useDecreaseQuantity();
-
   //   const auth = useSelector((state) => state.auth);
   const auth = false
-
-
-
   useEffect(() => {
     dispatch(getTotals());
   }, [cart, dispatch]);
 
+
+  const count = useMotionValue(0);
+  const rounded = useTransform(count, latest => {
+    const formattedValue = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      maximumFractionDigits: 0
+    }).format(Math.round(latest));
+
+    return formattedValue;
+  });
+
+  useEffect(() => {
+    const controls = animate(count, cart.cartTotalAmount, { duration: 0.5 });
+
+    return controls.stop;
+  }, [cart.cartTotalAmount, count]);
 
 
 
@@ -68,7 +81,7 @@ const Cart = () => {
                   <div className="border-b border-gray-300 py-4 px-[10px] flex items-center justify-between">
                     <h1>Cart ({cartTotalQuantity})</h1>
                     <button className="flex items-center" onClick={() => dispatch(clearCart())}>
-                      Clear Cart &nbsp;&nbsp;<TrashSimple size={16} color="#141414" />
+                      <TrashSimple size={16} color="#141414" />&nbsp;&nbsp;Clear Cart 
                     </button>
                   </div>
                   <div className="px-[10px]">
@@ -126,7 +139,7 @@ const Cart = () => {
               <div className="p-[10px] ">
                 <div className="flex items-center justify-between">
                   <span className="font-medium opacity-60">Subtotal</span>
-                  <span className="montserrat font-medium text-[18px]">${cart.cartTotalAmount}</span>
+                  <motion.span className="montserrat font-medium text-[18px]">{rounded}</motion.span>
                 </div>
                 <div className="flex items-center justify-between py-2 border-b border-gray-300 mb-[10px]">
                   <span className="font-medium opacity-60">Discount</span>
@@ -139,7 +152,7 @@ const Cart = () => {
                     className="p-2 bg-black text-white rounded-[5px] w-full"
                     onClick={() => navigate("/login")}
                   >
-                    Login to Check out
+                    LOGIN TO CHECKOUT
                   </button>
                 )}
 
