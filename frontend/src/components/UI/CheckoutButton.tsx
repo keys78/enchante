@@ -1,11 +1,15 @@
 import axios from "axios";
-import { Product } from "../types";
+import { CartItem } from "../../types";
+import { useAppSelector } from "../../network/hooks";
+import { RootState } from "../../network/store";
 
 interface CheckoutButtonProps {
-    cartItems: Product[];
+    cartItems: CartItem[];
 }
 
 const CheckoutButton = ({ cartItems }: CheckoutButtonProps) => {
+    const cart = useAppSelector((state: RootState) => state.cart)
+
     const handleCheckout = () => {
         axios.post(`http://localhost:4000/stripe/create-checkout-session`, {
             cartItems: cartItems,
@@ -24,7 +28,7 @@ const CheckoutButton = ({ cartItems }: CheckoutButtonProps) => {
             className="p-2 bg-black text-white rounded-[5px] w-full"
             onClick={() => handleCheckout()}
         >
-            Check out
+            CHECKOUT (${cart.cartTotalAmount})
         </button>
     );
 };

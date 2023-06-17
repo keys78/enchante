@@ -11,6 +11,7 @@ import ProductFrame from '../components/products/ProductFrame';
 import RangeSlider from '../components/filters/RangeSliders';
 import NewsLetter from '../components/home/NewsLetter';
 import RecentlyViewed from '../components/products/RecentlyViewed';
+import { AnimatePresence } from 'framer-motion';
 
 
 const Products = () => {
@@ -232,16 +233,18 @@ const Products = () => {
                                 <div className={`${!isFlexDisplay && 'grid grid-cols-3 gap-x-[16px] gap-y-[34px]'} `}>
                                     {filteredProducts.map((product: Product, i: number) =>
                                         <div className='relative w-full'>
-                                            <ProductFrame
-                                                product={product}
-                                                showControls={true}
-                                                key={i}
-                                                isFlexDisplay={isFlexDisplay}
-                                                price_font_size='text-[16px] font-bold'
-                                                discount_font_size={'text-[12px]'}
-                                                shop_button={'p-[4px]'}
-                                                icon_size={18}
-                                            />
+                                            <AnimatePresence>
+                                                <ProductFrame
+                                                    product={product}
+                                                    showControls={true}
+                                                    key={i}
+                                                    isFlexDisplay={isFlexDisplay}
+                                                    price_font_size='text-[16px] font-bold'
+                                                    discount_font_size={'text-[12px]'}
+                                                    shop_button={'p-[4px]'}
+                                                    icon_size={18}
+                                                />
+                                            </AnimatePresence>
                                         </div>
                                     )}
                                 </div>

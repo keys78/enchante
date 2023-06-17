@@ -4,8 +4,8 @@ import { toast } from "react-toastify";
 
 interface CartItem {
   id: string;
-  name:string,
-  image:string,
+  name: string,
+  image: string,
   desc: string,
   price: number
   cartQuantity: number;
@@ -34,19 +34,19 @@ const cartSlice = createSlice({
     addToCart(state, action: PayloadAction<CartItem>) {
       const { id } = action.payload;
       const existingItem = state.cartItems.find((item) => item.id === id);
-    
+
       if (existingItem) {
         existingItem.cartQuantity += 1;
         toast.info("product quantity updated", { position: "bottom-right", autoClose: 500, });
       } else {
         const newCartItem = { ...action.payload, cartQuantity: 1 };
         state.cartItems = [...state.cartItems, newCartItem];
-        toast.success("Product added to cart", { position: "bottom-right", autoClose: 500, });
+        toast.success(`${newCartItem.name} added to cart`, { position: "bottom-right", autoClose: 500, });
       }
-    
+
       localStorage.setItem("pickme-cart", JSON.stringify(state.cartItems));
     },
-    
+
     decreaseCart(state, action: PayloadAction<CartItem>) {
       const { id } = action.payload;
       const itemIndex = state.cartItems.findIndex((item) => item.id === id);
@@ -54,7 +54,7 @@ const cartSlice = createSlice({
       if (itemIndex >= 0) {
         if (state.cartItems[itemIndex].cartQuantity > 1) {
           state.cartItems[itemIndex].cartQuantity -= 1;
-          toast.info("Decreased product quantity", { position: "bottom-right", autoClose: 500, });
+          toast.info("product quantity updated", { position: "bottom-right", autoClose: 500, });
         } else {
           state.cartItems.splice(itemIndex, 1);
           toast.error("Product removed from cart", { position: "bottom-right", autoClose: 500, });
@@ -72,7 +72,7 @@ const cartSlice = createSlice({
         if (state.cartItems[itemIndex].cartQuantity > 1) {
           state.cartItems[itemIndex].cartQuantity -= 1;
           toast.info("product quantity updated", { position: "bottom-right", autoClose: 500, });
-        } 
+        }
       }
 
       localStorage.setItem("pickme-cart", JSON.stringify(state.cartItems));
@@ -81,7 +81,7 @@ const cartSlice = createSlice({
     removeFromCart(state, action: PayloadAction<CartItem>) {
       const { id } = action.payload;
       const selectedCartItem = state.cartItems.find((item) => item.id === id);
-    
+
       if (selectedCartItem) {
         state.cartItems = state.cartItems.filter((item) => item.id !== id);
         toast.error(`${selectedCartItem.name} removed from cart`, {
@@ -89,10 +89,10 @@ const cartSlice = createSlice({
           delay: 1000,
         });
       }
-    
+
       localStorage.setItem("pickme-cart", JSON.stringify(state.cartItems));
     },
-    
+
 
 
     getTotals(state) {
@@ -100,10 +100,10 @@ const cartSlice = createSlice({
         (cartTotal, cartItem) => {
           const { price, cartQuantity } = cartItem;
           const itemTotal = price * cartQuantity;
-    
+
           cartTotal.total += itemTotal;
           cartTotal.quantity += cartQuantity;
-    
+
           return cartTotal;
         },
         {
@@ -111,14 +111,14 @@ const cartSlice = createSlice({
           quantity: 0,
         }
       );
-    
+
       state.cartTotalQuantity = quantity;
       state.cartTotalAmount = parseFloat(total.toFixed(2));
-    
+
       localStorage.setItem("pickme-cart", JSON.stringify(state.cartItems));
     },
-    
-    
+
+
     clearCart(state) {
       state.cartItems = [];
       localStorage.setItem("pickme-cart", JSON.stringify(state.cartItems));

@@ -50,10 +50,18 @@ const ProductFrame = ({ product, isFlexDisplay, price_font_size, discount_font_s
 
     return (
 
-        <div key={product.id} >
+        <div
+        >
             {isFlexDisplay ? (
                 //flex View Display
-                <div className='flex mb-[16px] bg-gray-50 p-3 rounded-[5px] '>
+                <motion.div
+                    key={product?.id}
+                    layout
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className='flex mb-[16px] bg-gray-50 p-3 rounded-[5px] '>
                     <Link to={`/products/product-details/${product.id}`}>
                         <div className='relative max-w-[400px] min-w-[400px]'>
                             <img className='rounded-[5px]' src={product?.image} alt={'enchanté_fashon'} />
@@ -98,12 +106,18 @@ const ProductFrame = ({ product, isFlexDisplay, price_font_size, discount_font_s
                             )}
                         </div>
                     </div>
-                </div>
+                </motion.div>
             )
                 :
                 (
                     //Grid View Display
-                    <>
+                    <motion.div
+                        key={product?.id}
+                        layout
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                    >
                         <Link onClick={() => addToRecentlyViewedAction(product)} to={`/products/product-details/${product.id}`}>
                             <div className='relative'>
                                 <img className='rounded-[5px]' src={product?.image} alt={'enchanté_fashon'} />
@@ -146,7 +160,7 @@ const ProductFrame = ({ product, isFlexDisplay, price_font_size, discount_font_s
                                 </div>
                             }
                         </div>
-                    </>
+                    </motion.div>
                 )
             }
 
