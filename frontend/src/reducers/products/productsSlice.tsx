@@ -77,7 +77,7 @@ const productsSlice = createSlice({
       const { category } = action.payload;
       state.filterTerms.category = category === "all" ? null : category;
 
-      const { category: filterCategory, brand, color, freeShipping, price } = state.filterTerms;
+      const { category: filterCategory, brand, color, freeShipping } = state.filterTerms;
       // const numericPrice = typeof price === "number" ? price : price !== null ? parseFloat(price) : null
       state.filteredProducts = state.products.filter((product: Product) =>
         // (numericPrice !== null ? product.price <= numericPrice : true) &&
@@ -93,7 +93,7 @@ const productsSlice = createSlice({
       const { color } = action.payload;
       state.filterTerms.color = color === "all" ? null : color;
 
-      const { category, brand, color: filterColor, freeShipping, price } = state.filterTerms;
+      const { category, brand, color: filterColor, freeShipping } = state.filterTerms;
       // const numericPrice = typeof price === "number" ? price : price !== null ? parseFloat(price) : null;
       state.filteredProducts = state.products.filter((product: Product) =>
         (category ? product.category === category : true) &&
@@ -110,7 +110,7 @@ const productsSlice = createSlice({
       const { brand } = action.payload;
       state.filterTerms.brand = brand === "all" ? null : brand;
 
-      const { category, color, brand: filterBrand, freeShipping, price } = state.filterTerms;
+      const { category, color, brand: filterBrand, freeShipping } = state.filterTerms;
       // const numericPrice = typeof price === "number" ? price : price !== null ? parseFloat(price) : null;
       state.filteredProducts = state.products.filter((product: Product) =>
         // (numericPrice !== null ? product.price <= numericPrice : true) &&
@@ -176,7 +176,7 @@ const productsSlice = createSlice({
 
     filterByNewProducts: (state, action: PayloadAction<{ newProduct: Product["new"] }>) => {
       const { newProduct } = action.payload;
-      const { category, color, brand, free_shipping } = state.filterTerms;
+      const { category, color, brand } = state.filterTerms;
 
       if (newProduct) {
         state.filteredProducts = state.products.filter((product: Product) =>

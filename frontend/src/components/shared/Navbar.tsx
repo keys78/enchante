@@ -7,7 +7,7 @@ import { List, MagnifyingGlass, ShoppingCartSimple, UserCircle } from "@phosphor
 import FilterSearch from "../UI/FilterSearch";
 import useWindowSize from "../hooks/useWindowSize";
 import Sidebar from "../sidebar/Sidebar";
-import { AnimatePresence } from "framer-motion";
+
 
 const NavBar = () => {
   const dispatch = useAppDispatch();
@@ -15,7 +15,7 @@ const NavBar = () => {
   const [isSideBar, setIsSideBar] = useState<boolean>(false)
   const { cartTotalQuantity } = useAppSelector((state) => state.cart);
   const cart = useAppSelector((state: RootState) => state.cart);
-  const auth = true;
+  // const auth = true;
   const options = [
     { label: 'Men', value: 'men' },
     { label: 'Women', value: 'women' },

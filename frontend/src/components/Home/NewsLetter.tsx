@@ -3,7 +3,7 @@ import limited_offer_x from '../../assets/png/limited_offer_x.jpg'
 import { Envelope } from '@phosphor-icons/react'
 
 interface Props {
-    newsletter_extras: string
+    newsletter_extras?: string
 }
 
 const NewsLetter = ({newsletter_extras = 'pt-[100px]'}: Props) => {
