@@ -3,16 +3,19 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../network/hooks";
 import { getTotals } from "../../reducers/cart/cartSlice";
 import { RootState } from "../../network/store";
-import { List, MagnifyingGlass, ShoppingCartSimple, UserCircle } from "@phosphor-icons/react";
+import { List, MagnifyingGlass, ShoppingCartSimple, UserCircle, X } from "@phosphor-icons/react";
 import FilterSearch from "../UI/FilterSearch";
 import useWindowSize from "../hooks/useWindowSize";
 import Sidebar from "../sidebar/Sidebar";
+import { AnimatePresence, motion } from "framer-motion";
+import { searchBarVariants } from "../../utils/animations";
 
 
 const NavBar = () => {
   const dispatch = useAppDispatch();
   const { width } = useWindowSize();
   const [isSideBar, setIsSideBar] = useState<boolean>(false)
+  const [showSearchBar, setShowSearchBar] = useState<boolean>(false)
   const { cartTotalQuantity } = useAppSelector((state) => state.cart);
   const cart = useAppSelector((state: RootState) => state.cart);
   // const auth = true;
@@ -85,7 +88,21 @@ const NavBar = () => {
 
         <div className="flex items-center justify-end space-x-8 w-[300px]">
           {width > 767 && <FilterSearch options={options} />}
-          {width < 767 && <MagnifyingGlass size={22} color="#070707" weight="regular" />}
+
+          <AnimatePresence> {
+            width < 767 && showSearchBar &&
+            <motion.div
+              variants={searchBarVariants as any}
+              initial="initial"
+              animate="final"
+              exit="exit"
+              className="w-full bg-black fixed top-0 left-0 z-50 flex items-center justify-center py-[27px]">
+              <X size={22} onClick={() => setShowSearchBar(false)} className="absolute top-2 right-2" color="#f1f1f1" />
+              {<FilterSearch options={options} />}
+            </motion.div>
+          }
+          </AnimatePresence>
+          {width < 767 && <MagnifyingGlass onClick={() => setShowSearchBar(!showSearchBar)} size={22} color="#070707" weight="regular" />}
           <Link to="/cart">
             <div className="relative">
               <ShoppingCartSimple size={26} color="#070707" weight="regular" />
@@ -98,7 +115,16 @@ const NavBar = () => {
             <UserCircle size={26} color="#070707" weight="regular" />
           </div>}
           <div className="w-[26px]">
-            <List onClick={() => setIsSideBar(!isSideBar)} size={26} color="#070707" weight="regular" />
+            {width < 787 &&
+              <>
+                {
+                  !isSideBar ?
+                    <List size={26} onClick={() => setIsSideBar(!isSideBar)} color="#070707" weight="regular" />
+                    :
+                    <X size={26} onClick={() => setIsSideBar(!isSideBar)} className={`${isSideBar && 'update-closing'}`} color="#070707" weight="regular" />
+                }
+              </>
+            }
           </div>
         </div>
         {/* {auth ? (
@@ -116,8 +142,8 @@ const NavBar = () => {
 //               <Link to="register">Register</Link>
 //             </div>
 //           )} */}
-        {width < 1024 && isSideBar &&
-            <Sidebar  isSideBar={isSideBar}/>
+        {width < 1024 &&
+          <Sidebar isSideBar={isSideBar} />
 
         }
       </header>

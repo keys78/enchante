@@ -2,101 +2,25 @@ import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from "../network/hooks";
 import { RootState } from "../network/store";
 import { Product } from "../types";
-import { filterByFreeShipment, filterByNewProducts, filterProductsByBrand, filterProductsByCategory, filterProductsByColor, resetAllFilters, sortByHighestPrice, sortByLowestPrice, sortByNameAZ, sortByNameZA } from "../reducers/products/productsSlice";
-import ToggleFilters from '../components/filters/ToggleFilters';
-import StartRatings from '../components/filters/StartRatings';
+import { sortByHighestPrice, sortByLowestPrice, sortByNameAZ, sortByNameZA } from "../reducers/products/productsSlice";
 import { Link } from 'react-router-dom';
-import { CaretRight, SquaresFour, ListDashes, MagnifyingGlass } from '@phosphor-icons/react';
+import { CaretRight, SquaresFour, ListDashes, MagnifyingGlass, Funnel } from '@phosphor-icons/react';
 import ProductFrame from '../components/products/ProductFrame';
-import RangeSlider from '../components/filters/RangeSliders';
 // import NewsLetter from '../components/home/NewsLetter';
 // import RecentlyViewed from '../components/products/RecentlyViewed';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import useWindowSize from '../components/hooks/useWindowSize';
+import AllFilters from '../components/filters/AllFilters';
+import { modalVariants } from '../utils/animations';
 
 
 const Products = () => {
     const dispatch = useAppDispatch();
     const { width } = useWindowSize();
-    const { products, filteredProducts, filterTerms } = useAppSelector((state: RootState) => state.products);
-    const [priceRange, setPriceRange] = useState({ min: 0, max: getMaxPrice() });
-    const [selectedRating, setSelectedRating] = useState<number | null>(null);
-    const [isFreeShipment, setIsFreeShipment] = useState<boolean>(false)
-    const [isNewProduct, setIsNewProduct] = useState<boolean>(false)
+    const { filteredProducts, filterTerms } = useAppSelector((state: RootState) => state.products);
     const [isFlexDisplay, setIsFlexDisplay] = useState<boolean>(false)
     const [currentSelection, setCurrentSelection] = useState("Select order....")
-    const [selectedFilters, setSelectedFilters] = useState({
-        category: "all",
-        color: "all",
-        brand: "all",
-        star_ratings: ''
-    });
 
-
-    function getMaxPrice(): number {
-        let maxPrice = 0;
-        products.forEach((product: Product) => {
-            if (product.price > maxPrice) { maxPrice = product.price; }
-        });
-        return maxPrice;
-    }
-
-
-    const handleFilterClick = (filterType: 'category' | 'color' | 'brand', filterValue: string) => {
-        setSelectedFilters((prevFilters) => ({
-            ...prevFilters,
-            [filterType]: filterValue,
-        }));
-
-        switch (filterType) {
-            case 'category':
-                dispatch(filterProductsByCategory({ category: filterValue }));
-                break;
-            case 'color':
-                dispatch(filterProductsByColor({ color: filterValue }));
-                break;
-            case 'brand':
-                dispatch(filterProductsByBrand({ brand: filterValue }));
-                break;
-            default:
-                break;
-        }
-    };
-
-
-    const handleFilterByNewProducts = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { checked } = event.target;
-        setIsNewProduct(checked);
-        dispatch(filterByNewProducts({ newProduct: checked }));
-    };
-
-
-    const handleFreeShipmentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { checked } = event.target;
-        setIsFreeShipment(checked);
-        dispatch(filterByFreeShipment({ freeShipping: checked }));
-    };
-
-    const handleResetFilters = () => {
-        dispatch(resetAllFilters());
-        setPriceRange({ min: 0, max: getMaxPrice() });
-        setIsFreeShipment(false);
-        setIsNewProduct(false)
-        setSelectedFilters((prevFilters) => ({
-            ...prevFilters,
-            brand: "all",
-            category: "all",
-            color: "all",
-        }));
-        setSelectedRating(null);
-    };
-
-
-    const getUniqueFilterValues = (products: Product[], item: keyof Product): string[] => {
-        const arr = products.map((val: Product) => val[item]);
-        const uniqueValues = [...new Set(arr)] as string[];
-        return uniqueValues;
-    };
 
     const handleSelectionChange = (selectedValue) => {
         switch (selectedValue) {
@@ -129,53 +53,22 @@ const Products = () => {
 
                 <div className='flex items-start space-x-5'>
 
-                    {width > 767 &&
-                        <div className="min-w-[200px] max-w-[200px] w-full rounded-[5px] border p-1 ">
-                            <ToggleFilters
-                                title="Category"
-                                selectedFilter={selectedFilters.category}
-                                options={getUniqueFilterValues(products, 'category')}
-                                handleFilterClick={(filterValue) => handleFilterClick('category', filterValue)}
-                            />
+                    <AnimatePresence>
+                        {
+                            width > 767 ?
+                                <AllFilters allFilterCompStyles={'min-w-[200px] max-w-[200px] w-full rounded-[5px] border p-1'} /> :
+                                <motion.div
+                                    variants={modalVariants as any}
+                                    initial="initial"
+                                    animate="final"
+                                    exit="exit"
+                                    className='filterbar-wrapper w-[300px] bg-white text-textGray h-[100vh] fixed top-0 left-0 p-[20px] '
+                                >
+                                    <AllFilters allFilterCompStyles={'mt-[80px] w-full rounded-[5px] border p-1'} />
+                                </motion.div>
+                        }
+                    </AnimatePresence>
 
-                            <ToggleFilters
-                                title="Color"
-                                selectedFilter={selectedFilters.color}
-                                options={getUniqueFilterValues(products, 'color')}
-                                handleFilterClick={(filterValue) => handleFilterClick('color', filterValue)}
-                            />
-
-                            <ToggleFilters
-                                title="Brand"
-                                selectedFilter={selectedFilters.brand}
-                                options={getUniqueFilterValues(products, 'brand')}
-                                handleFilterClick={(filterValue) => handleFilterClick('brand', filterValue)}
-                            />
-
-                            <StartRatings selectedRating={selectedRating} setSelectedRating={setSelectedRating} />
-
-                            <RangeSlider
-                                priceRange={priceRange}
-                                setPriceRange={setPriceRange}
-                            />
-
-                            <div className='flex items-center justify-between rounded-[5px] px-3 py-2 mb-2 bg-gray-50 font-medium'>
-                                <h1>New Arrivals</h1>
-                                <input checked={isNewProduct} onChange={handleFilterByNewProducts} type="checkbox" className='cursor-pointer' />
-                            </div>
-
-                            <div className='flex items-center justify-between rounded-[5px] px-3 py-2 bg-gray-50 font-medium'>
-                                <h1>Free Shipping</h1>
-                                <input checked={isFreeShipment} onChange={handleFreeShipmentChange} type="checkbox" className='cursor-pointer' />
-                            </div>
-
-                            <button
-                                className='rounded-[5px] px-3 py-2 bg-gray-900 font-medium cursor-pointer border-2border-white text-white w-full mt-6 hover:bg-white hover:text-black transition duration-300 hover:border-2 hover:border-black'
-                                onClick={handleResetFilters}>
-                                Reset Filters
-                            </button>
-                        </div>
-                    }
 
                     <div className='w-full'>
                         {width < 1024 &&
@@ -188,10 +81,11 @@ const Products = () => {
                             </form>
                         }
                         <div className='flex items-center justify-between space-x-10 w-full mb-3'>
-                            <div className='whitespace-nowrap flex items-center space-x-4'>
-                                <SquaresFour className='cursor-pointer' onClick={() => setIsFlexDisplay(false)} size={30} color={`${isFlexDisplay ? "" : '#f75a2c'}`} weight="fill" />
-                                <ListDashes className='cursor-pointer' onClick={() => setIsFlexDisplay(true)} size={30} color={`${!isFlexDisplay ? "" : '#f75a2c'}`} weight="fill" />
-                                <div><span className='font-medium text-[20px]'>{filteredProducts.length}</span> result{filteredProducts.length === 1 ? '' : 's'}</div>
+                            <div className='whitespace-nowrap flex items-center s-480:space-x-4 space-x-3'>
+                                {width < 767 && <Funnel size={22} color="#141414" />}
+                                <SquaresFour className='cursor-pointer' onClick={() => setIsFlexDisplay(false)} size={width < 767 ? 22 : 30} color={`${isFlexDisplay ? "" : '#f75a2c'}`} weight="fill" />
+                                <ListDashes className='cursor-pointer' onClick={() => setIsFlexDisplay(true)} size={width < 767 ? 22 : 30} color={`${!isFlexDisplay ? "" : '#f75a2c'}`} weight="fill" />
+                                <div><span className='font-medium s-480:text-[20px] text-[16px]'>{filteredProducts.length}</span> result{filteredProducts.length === 1 ? '' : 's'}</div>
                             </div>
                             {width > 1024 &&
                                 <form className='flex space-x-3 items-center justify-center w-full mx-auto'>
@@ -243,7 +137,7 @@ const Products = () => {
                         </div>
 
 
-
+{/* <div>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi amet maiores magnam, quidem dolorum nulla dolor sunt reprehenderit iste quis ab hic doloremque, alias a impedit aspernatur autem animi quaerat! Rerum fugiat magni illo commodi nemo, non perferendis repudiandae excepturi dolores odio. Amet illo accusantium laborum voluptatum ullam debitis. Nulla, aliquid obcaecati accusamus unde velit quibusdam dolores, ex, laborum repellat suscipit dignissimos. Quas vel distinctio, nihil eum maxime, voluptas repellendus odio iusto, suscipit cumque iste fugiat consequatur? Eligendi quo fugit animi cum laudantium ea quod deserunt dicta at labore, velit mollitia quidem maiores eaque perferendis eos corrupti doloremque numquam corporis natus ex magni illum rerum consequatur! Unde excepturi ullam nemo id aliquam expedita odio at molestias quaerat, beatae saepe inventore ipsa quod omnis dignissimos dolore voluptatum ipsum? Ab quis molestias illo placeat culpa saepe incidunt mollitia dolorum, magni deleniti alias sint optio voluptate quisquam asperiores. Quo nesciunt tenetur ipsam amet reprehenderit. Ipsam explicabo sapiente cupiditate est non illum, doloribus rerum qui voluptas, dolores aperiam vel numquam at rem beatae modi adipisci, minima architecto sint quas exercitationem? Cum eaque libero eligendi delectus culpa? Architecto similique eius corrupti, sequi qui libero amet adipisci, possimus illum alias impedit! Quas adipisci aut magni illum odio? Earum a rem architecto labore, necessitatibus sed, vitae dolorem quas quasi totam, ipsum optio doloribus amet ut blanditiis voluptatum deserunt cum maxime distinctio. Earum aspernatur laborum nihil aut quam id corrupti ab voluptatibus non consequuntur dicta a optio nulla vitae architecto, quod velit cumque tenetur adipisci, suscipit, necessitatibus totam fugiat! Fuga nihil praesentium molestiae vel repudiandae quas maiores cum velit dicta quis, blanditiis cupiditate itaque vero, facilis odit dolores tempora sunt tempore numquam optio magnam dolorem quasi. Odio minima vero nihil error voluptas ratione, facere ad veritatis excepturi. Soluta consectetur inventore autem fuga? Facilis recusandae illo, ratione nulla repellendus veritatis eius, tenetur quidem incidunt unde nemo sequi quibusdam debitis quasi esse nesciunt iste! Eaque sunt, cupiditate rerum quam iste nihil vero commodi dolorum ut fugiat consequuntur! Illo inventore minus dolor suscipit adipisci sunt ipsa distinctio nostrum quia quam sint nesciunt, accusamus illum numquam. Possimus, tenetur molestiae! Iure nostrum eaque ea. In repellendus corporis, asperiores vero aspernatur minima. Labore incidunt quis accusantium perferendis cum, tenetur commodi voluptate eveniet cupiditate, ipsa vero optio reprehenderit facere magnam natus molestias, quisquam corporis. Vel atque autem quo ipsam accusantium, tempora similique! Impedit possimus nemo illo nam eligendi et veniam expedita minus, voluptatum facilis minima reiciendis quia repudiandae deserunt rerum atque animi doloribus vitae facere libero, corrupti alias unde debitis. Porro quidem quam corporis laudantium aliquid explicabo consequatur minima voluptates quibusdam eligendi, tenetur sed magni qui harum non culpa mollitia ipsa iure voluptatem. Nobis, laborum repudiandae iusto aut hic rerum nemo vitae aliquid alias consequatur accusantium, inventore culpa cum vel fugiat beatae? Consequatur iusto deleniti sunt dolorem? Praesentium quidem soluta libero sequi molestias et alias reprehenderit accusantium rerum dolorem ea non provident eaque fuga possimus cum commodi dicta sed aspernatur aliquam voluptas, porro voluptatum magni suscipit? Magnam voluptates nesciunt tempore omnis corporis dolores quasi totam hic aspernatur similique! Cumque cum nostrum facilis dolores inventore quod necessitatibus aut rerum dolor aliquam? Alias doloremque saepe eveniet consequuntur a, fugit neque? Esse nostrum maxime, inventore et similique pariatur praesentium non iure culpa saepe quas, officiis delectus minus sapiente porro rem! Quidem voluptate natus voluptatem. Repellat ipsa quaerat nemo similique, illo numquam tempore autem natus dolorem repellendus eligendi cupiditate voluptatibus minima in maxime perspiciatis beatae facilis dignissimos quas neque quod minus ut velit! Quaerat ipsam error, excepturi nostrum exercitationem impedit voluptas ab repellendus quisquam cupiditate velit quo dignissimos repellat enim. Iusto, maxime. Iure asperiores distinctio, facilis eaque itaque blanditiis odio recusandae reiciendis sequi similique a corporis, numquam perspiciatis ex et velit? Dolorum molestiae dolorem, accusantium corrupti voluptatem nulla qui dicta nesciunt velit earum in soluta dignissimos itaque eius eos, impedit deleniti sunt animi aliquam quidem sequi quis tempore! Laudantium, eum voluptatem sapiente vel fuga dolorem asperiores cupiditate amet incidunt distinctio? Voluptates ipsa culpa ex atque, eos, ratione esse porro dolore consequuntur autem iure, nihil quod veniam neque quibusdam deleniti magnam. Similique repudiandae magni maiores veniam dolores modi, fuga ipsa, numquam consectetur, molestias totam excepturi deserunt ut necessitatibus et in delectus odit. Beatae deserunt asperiores, laboriosam reiciendis numquam odio fuga ea totam repellat quam ex illum non maiores explicabo enim quisquam aliquam debitis praesentium mollitia! Magnam distinctio ipsam consectetur at vero commodi? Asperiores dolor molestiae autem molestias, quos quasi quis magnam quidem praesentium. Nobis illum ducimus doloremque eligendi necessitatibus? Eligendi maxime id incidunt atque odit ipsam reiciendis! Eius iusto, possimus est fugiat labore similique optio repudiandae nihil fugit debitis delectus magni necessitatibus consequuntur obcaecati laudantium cumque dolorum atque aspernatur, dignissimos, quasi saepe dolore impedit! Mollitia deserunt modi laborum voluptatibus non, fuga commodi quod ab vero repellat deleniti vel quis velit quae quos in, perspiciatis, quaerat optio. Provident quaerat, porro blanditiis nihil minus praesentium autem delectus temporibus tempora voluptas quasi rem quod consequatur omnis deserunt quidem iusto corporis tenetur. Omnis officiis qui ab, odit ad similique amet voluptatibus. Ab magni dignissimos ipsa voluptatem atque nisi dolorem explicabo sapiente ipsum quia eum nesciunt incidunt, accusantium, consectetur doloremque inventore tempora, iusto voluptate esse quas velit. Sint dolore, dolorum numquam sed exercitationem porro. Aliquid, quas nam. Doloribus officiis aut, dolor natus, quidem nisi mollitia dolore soluta non omnis, est commodi minus labore? Molestiae veritatis beatae id maxime, alias magni reiciendis saepe, quasi libero odit qui iste cumque culpa dolor amet deserunt quia sint. Delectus at doloremque rem sapiente beatae aliquam culpa, sequi voluptatibus magni recusandae iste placeat rerum odio pariatur unde dolorem impedit ex magnam consequatur aspernatur. Blanditiis ad rem in optio qui, explicabo dolores minus. Porro at amet ipsa necessitatibus sit ipsum tenetur soluta aspernatur velit blanditiis? Tempora magnam molestiae vel similique asperiores, vero quae, eius nisi vitae quasi, ullam perferendis amet neque sunt aut voluptas quam molestias alias. At ad perferendis ut reprehenderit iusto impedit sint, cum nostrum neque alias deserunt ipsa voluptatibus ipsum ex dignissimos quis nisi harum! Eos vitae labore deleniti, nam voluptatem voluptatibus consequuntur nobis, ipsam, repellat dolorem voluptatum.</div> */}
                         {filteredProducts.length > 0 ? (
                             <>
                                 <div className={`${!isFlexDisplay && 'grid s-1024:grid-cols-3 grid-cols-2 s-480:gap-x-[16px] gap-x-[8px] s-480:gap-y-[34px] gap-y-[16px]'} `}>

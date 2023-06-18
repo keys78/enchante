@@ -17,6 +17,7 @@ import useWindowSize from '../hooks/useWindowSize';
 
 interface Props {
     product: Product,
+    key?: any,
     isFlexDisplay?: boolean
     price_font_size: string,
     discount_font_size?: string,
@@ -25,7 +26,7 @@ interface Props {
     showControls?: boolean
 }
 
-const ProductFrame = ({ product, isFlexDisplay, price_font_size, discount_font_size, shop_button, icon_size, showControls }: Props) => {
+const ProductFrame = ({ product, key, isFlexDisplay, price_font_size, discount_font_size, shop_button, icon_size, showControls }: Props) => {
     const cart = useAppSelector((state: RootState) => state.cart);
     const { width } = useWindowSize();
     const addToCart = useAddToCart();
@@ -55,10 +56,10 @@ const ProductFrame = ({ product, isFlexDisplay, price_font_size, discount_font_s
         <motion.div
             key={product?.id}
             layout
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            initial={{ opacity: 0, translateX: -50 }}
+            animate={{ opacity: 1, translateX: 0 }}
+            transition={{ duration: 0.2, delay: key * 0.3 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
         >
             {isFlexDisplay ? (
                 //flex View Display

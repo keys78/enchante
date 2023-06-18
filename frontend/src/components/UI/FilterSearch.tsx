@@ -91,3 +91,4 @@ const FilterSearch: React.FC<FilterSearchProps> = ({ options }) => {
 };
 
 export default FilterSearch;
+// setShowSearchBar: (arg0: boolean) => void,

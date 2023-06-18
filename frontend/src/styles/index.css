@@ -174,9 +174,10 @@ select:-webkit-autofill:focus {
 }
 
 
-
-.sidebar-wrapper { box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; }
-.logo-main { z-index: 9999999999999 !important;}
+.update-closing { z-index: 9 !important; position: relative;}
+.sidebar-wrapper { box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; height: 100vh !important; position: fixed !important; background: #03061f45;}
+.filterbar-wrapper { box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; height: 100vh !important; position: fixed !important; z-index: 999 !important;}
+.logo-main { z-index:2 !important;}
 
 .slide-in {
   animation: slideIn 0.3s ease;
