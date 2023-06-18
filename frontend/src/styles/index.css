@@ -169,9 +169,14 @@ select:-webkit-autofill:focus {
 .currated-image { height: 450px;}
 }
 
+@media screen and (max-width: 480px) {
+  .cartbtn-fix {position: absolute;width: 100%;bottom: 8px;left:0 ; }
+}
+
+
+
 .sidebar-wrapper { box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; }
 .logo-main { z-index: 9999999999999 !important;}
-
 
 .slide-in {
   animation: slideIn 0.3s ease;

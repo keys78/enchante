@@ -15,7 +15,7 @@ export const products: Product[] = [
     {
         id: '32423',
         category: 'men',
-        name: 'Iphone Pro MAX',
+        name: 'Iphone Pro MAX long-lasting lipstick, the perfect addition to your makeup collection. Our lipstick offers a wide range of',
         image: image_s_x,
         desc: 'Introducing our vibrant and long-lasting lipstick, the perfect addition to your makeup collection. Our lipstick offers a wide range of stunning shades to suit every mood and occasion. With its creamy texture and nourishing formula, it glides on effortlessly, providing intense color payoff and a velvety matte finish. Get ready to make a statement with our high-quality lipstick that enhances your natural beauty and boosts your confidence.',
         sizes: ['S', 'M', 'L'],
@@ -35,7 +35,7 @@ export const products: Product[] = [
         desc: 'Introducing our vibrant and long-lasting lipstick, the perfect addition to your makeup collection. Our lipstick offers a wide range of stunning shades to suit every mood and occasion. With its creamy texture and nourishing formula, it glides on effortlessly, providing intense color payoff and a velvety matte finish. Get ready to make a statement with our high-quality lipstick that enhances your natural beauty and boosts your confidence.',
         sizes: ['S', 'M', 'L'],
         color: 'red',
-        free_shipping: true,
+        free_shipping: false,
         brand: 'Apple',
         price: 900,
         new: true,

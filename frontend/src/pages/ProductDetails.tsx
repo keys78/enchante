@@ -136,7 +136,7 @@ const ProductDetails = () => {
                                     </div>
                                 ) : (
                                     <button className={`flex items-center justify-center space-x-3 rounded-[5px] hover:opacity-70 transition duration-300 py-3 px-4 bg-black text-white w-full`} onClick={() => addToCart(productInfo)}>
-                                        <span>Add To Cart</span> <ShoppingCartSimple size={20} color="#f8f8f8" weight="regular" />
+                                        <span>ADD TO CART</span> <ShoppingCartSimple size={20} color="#f8f8f8" weight="regular" />
                                     </button>
                                 )}
                             </div>

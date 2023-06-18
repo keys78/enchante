@@ -12,10 +12,12 @@ import RangeSlider from '../components/filters/RangeSliders';
 import NewsLetter from '../components/home/NewsLetter';
 import RecentlyViewed from '../components/products/RecentlyViewed';
 import { AnimatePresence } from 'framer-motion';
+import useWindowSize from '../components/hooks/useWindowSize';
 
 
 const Products = () => {
     const dispatch = useAppDispatch();
+    const { width } = useWindowSize();
     const { products, filteredProducts, filterTerms } = useAppSelector((state: RootState) => state.products);
     const [priceRange, setPriceRange] = useState({ min: 0, max: getMaxPrice() });
     const [selectedRating, setSelectedRating] = useState<number | null>(null);
@@ -119,76 +121,89 @@ const Products = () => {
 
 
     return (
-        <section className="app-container mt-[12px] px-[120px]">
+        <section className="w-full mt-[12px] s-1024:px-[120px] s-767:px-[40px] px-[16px]">
             <div>
-                <div className='pt-[30px] pb-[18px] flex items-center space-x-2'>
+                <div className='s-480:pt-[30px] pt-[18px] pb-[18px] flex items-center space-x-2'>
                     <span className='flex items-center space-x-2' style={{ color: '#a6a4a4' }}><Link to={'/'}>Home</Link> <CaretRight size={14} /> </span> <span className='font-medium'>Products</span>
                 </div>
 
                 <div className='flex items-start space-x-5'>
 
-                    <div className="min-w-[200px] max-w-[200px] w-full rounded-[5px] border p-1">
-                        <ToggleFilters
-                            title="Category"
-                            selectedFilter={selectedFilters.category}
-                            options={getUniqueFilterValues(products, 'category')}
-                            handleFilterClick={(filterValue) => handleFilterClick('category', filterValue)}
-                        />
+                    {width > 767 &&
+                        <div className="min-w-[200px] max-w-[200px] w-full rounded-[5px] border p-1 ">
+                            <ToggleFilters
+                                title="Category"
+                                selectedFilter={selectedFilters.category}
+                                options={getUniqueFilterValues(products, 'category')}
+                                handleFilterClick={(filterValue) => handleFilterClick('category', filterValue)}
+                            />
 
-                        <ToggleFilters
-                            title="Color"
-                            selectedFilter={selectedFilters.color}
-                            options={getUniqueFilterValues(products, 'color')}
-                            handleFilterClick={(filterValue) => handleFilterClick('color', filterValue)}
-                        />
+                            <ToggleFilters
+                                title="Color"
+                                selectedFilter={selectedFilters.color}
+                                options={getUniqueFilterValues(products, 'color')}
+                                handleFilterClick={(filterValue) => handleFilterClick('color', filterValue)}
+                            />
 
-                        <ToggleFilters
-                            title="Brand"
-                            selectedFilter={selectedFilters.brand}
-                            options={getUniqueFilterValues(products, 'brand')}
-                            handleFilterClick={(filterValue) => handleFilterClick('brand', filterValue)}
-                        />
+                            <ToggleFilters
+                                title="Brand"
+                                selectedFilter={selectedFilters.brand}
+                                options={getUniqueFilterValues(products, 'brand')}
+                                handleFilterClick={(filterValue) => handleFilterClick('brand', filterValue)}
+                            />
 
-                        <StartRatings selectedRating={selectedRating} setSelectedRating={setSelectedRating} />
+                            <StartRatings selectedRating={selectedRating} setSelectedRating={setSelectedRating} />
 
-                        <RangeSlider
-                            priceRange={priceRange}
-                            setPriceRange={setPriceRange}
-                        />
+                            <RangeSlider
+                                priceRange={priceRange}
+                                setPriceRange={setPriceRange}
+                            />
 
-                        <div className='flex items-center justify-between rounded-[5px] px-3 py-2 mb-2 bg-gray-50 font-medium'>
-                            <h1>New Arrivals</h1>
-                            <input checked={isNewProduct} onChange={handleFilterByNewProducts} type="checkbox" className='cursor-pointer' />
+                            <div className='flex items-center justify-between rounded-[5px] px-3 py-2 mb-2 bg-gray-50 font-medium'>
+                                <h1>New Arrivals</h1>
+                                <input checked={isNewProduct} onChange={handleFilterByNewProducts} type="checkbox" className='cursor-pointer' />
+                            </div>
+
+                            <div className='flex items-center justify-between rounded-[5px] px-3 py-2 bg-gray-50 font-medium'>
+                                <h1>Free Shipping</h1>
+                                <input checked={isFreeShipment} onChange={handleFreeShipmentChange} type="checkbox" className='cursor-pointer' />
+                            </div>
+
+                            <button
+                                className='rounded-[5px] px-3 py-2 bg-gray-900 font-medium cursor-pointer border-2border-white text-white w-full mt-6 hover:bg-white hover:text-black transition duration-300 hover:border-2 hover:border-black'
+                                onClick={handleResetFilters}>
+                                Reset Filters
+                            </button>
                         </div>
-
-                        <div className='flex items-center justify-between rounded-[5px] px-3 py-2 bg-gray-50 font-medium'>
-                            <h1>Free Shipping</h1>
-                            <input checked={isFreeShipment} onChange={handleFreeShipmentChange} type="checkbox" className='cursor-pointer' />
-                        </div>
-
-                        <button
-                            className='rounded-[5px] px-3 py-2 bg-gray-900 font-medium cursor-pointer border-2border-white text-white w-full mt-6 hover:bg-white hover:text-black transition duration-300 hover:border-2 hover:border-black'
-                            onClick={handleResetFilters}>
-                            Reset Filters
-                        </button>
-                    </div>
+                    }
 
                     <div className='w-full'>
-                        <div className='flex items-center justify-between space-x-10 w-full mb-3'>
-                            <div className='w-[350px] flex items-center space-x-4'>
-                                <SquaresFour className='cursor-pointer' onClick={() => setIsFlexDisplay(false)} size={30} color={`${isFlexDisplay ? "" : '#f75a2c'}`} weight="fill" />
-                                <ListDashes className='cursor-pointer' onClick={() => setIsFlexDisplay(true)} size={30} color={`${!isFlexDisplay ? "" : '#f75a2c'}`} weight="fill" />
-                                <div><span className='font-medium text-[20px]'>{filteredProducts.length}</span> result{filteredProducts.length === 1 ? '' : 's'}</div>
-                            </div>
-                            <form className='flex space-x-3 items-center justify-center w-full mx-auto'>
+                        {width < 1024 &&
+                            <form className='flex space-x-3 items-center justify-center w-full mx-auto mb-[10px]'>
                                 <div className='flex space-x-2 border items-center rounded-[5px] px-2 w-full'>
                                     <MagnifyingGlass size={20} color="#9e9e9e" />
                                     <input className='w-full rounded-[5px] py-2 border-0 outline-none' type="email" placeholder='Search products, brands and categories' />
                                 </div>
                                 <button className='px-4 bg-[#202122] text-white rounded-[5px] py-2'>Search</button>
                             </form>
+                        }
+                        <div className='flex items-center justify-between space-x-10 w-full mb-3'>
+                            <div className='whitespace-nowrap flex items-center space-x-4'>
+                                <SquaresFour className='cursor-pointer' onClick={() => setIsFlexDisplay(false)} size={30} color={`${isFlexDisplay ? "" : '#f75a2c'}`} weight="fill" />
+                                <ListDashes className='cursor-pointer' onClick={() => setIsFlexDisplay(true)} size={30} color={`${!isFlexDisplay ? "" : '#f75a2c'}`} weight="fill" />
+                                <div><span className='font-medium text-[20px]'>{filteredProducts.length}</span> result{filteredProducts.length === 1 ? '' : 's'}</div>
+                            </div>
+                            {width > 1024 &&
+                                <form className='flex space-x-3 items-center justify-center w-full mx-auto'>
+                                    <div className='flex space-x-2 border items-center rounded-[5px] px-2 w-full'>
+                                        <MagnifyingGlass size={20} color="#9e9e9e" />
+                                        <input className='w-full rounded-[5px] py-2 border-0 outline-none' type="email" placeholder='Search products, brands and categories' />
+                                    </div>
+                                    <button className='px-4 bg-[#202122] text-white rounded-[5px] py-2'>Search</button>
+                                </form>
+                            }
 
-                            <div className="">
+                            <div>
                                 <select
                                     value={currentSelection}
                                     onChange={(e) => {
@@ -207,6 +222,7 @@ const Products = () => {
                             </div>
 
                         </div>
+
                         <div className='flex items-center space-x-2 text-xs mb-[12px]'>
                             {Object.keys(filterTerms).length > 0 && <h3 className="text-gray-400">Applied Filters:</h3>}
                             {Object.entries(filterTerms).map(([key, value], index) => (
@@ -230,16 +246,16 @@ const Products = () => {
 
                         {filteredProducts.length > 0 ? (
                             <>
-                                <div className={`${!isFlexDisplay && 'grid grid-cols-3 gap-x-[16px] gap-y-[34px]'} `}>
+                                <div className={`${!isFlexDisplay && 'grid s-1024:grid-cols-3 grid-cols-2 s-480:gap-x-[16px] gap-x-[8px] s-480:gap-y-[34px] gap-y-[16px]'} `}>
                                     {filteredProducts.map((product: Product, i: number) =>
-                                        <div className='relative w-full'>
+                                        <div className='relative w-full s-480:bg-white bg-gray-50 p-1 rounded-[5px]'>
                                             <AnimatePresence>
                                                 <ProductFrame
                                                     product={product}
                                                     showControls={true}
                                                     key={i}
                                                     isFlexDisplay={isFlexDisplay}
-                                                    price_font_size='text-[16px] font-bold'
+                                                    price_font_size='s-480:text-[18px] text-[16px] font-bold'
                                                     discount_font_size={'text-[12px]'}
                                                     shop_button={'p-[4px]'}
                                                     icon_size={18}
@@ -257,8 +273,8 @@ const Products = () => {
                 </div>
             </div>
 
-            <RecentlyViewed />
-            <NewsLetter newsletter_extras={'pt-[120px]'} />
+            {/* <RecentlyViewed /> */}
+            {/* <NewsLetter newsletter_extras={'pt-[120px]'} /> */}
 
 
         </section>

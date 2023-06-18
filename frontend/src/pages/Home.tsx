@@ -9,7 +9,7 @@ const Home = () => {
 
   return (
     <div className="app-container">
-      <Hero />
+      {/* <Hero /> */}
       <Brands />
       <DisplayText />
       <CurratedPicks />
