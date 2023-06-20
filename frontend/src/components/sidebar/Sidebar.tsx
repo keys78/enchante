@@ -3,10 +3,11 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { backdropVariant, modalVariants } from '../../utils/animations';
 
 interface Props {
-  isSideBar: boolean
+  isSideBar: boolean,
+  setIsSideBar: (arg0: boolean) => void
 }
 
-const Sidebar = ({ isSideBar }: Props) => {
+const Sidebar = ({ isSideBar, setIsSideBar }: Props) => {
 
   return (
     <AnimatePresence>
@@ -26,12 +27,12 @@ const Sidebar = ({ isSideBar }: Props) => {
             className='w-[300px] bg-white text-textGray h-[100vh] p-[20px]'>
             <div className='mt-[120px]'>
               <ul className="uppercase flex flex-col space-y-7 ">
-                <li> <NavLink to={'/#currated'} className="hover-underline-animation font-bold" >New Collections</NavLink></li>
-                <li> <NavLink to={'/#featured'} className="hover-underline-animation font-bold" >Popular</NavLink></li>
+                <li> <NavLink to={'/#currated'} onClick={() => setIsSideBar(!isSideBar)} className="hover-underline-animation font-bold" >New Collections</NavLink></li>
+                <li> <NavLink to={'/#featured'} onClick={() => setIsSideBar(!isSideBar)} className="hover-underline-animation font-bold" >Popular</NavLink></li>
                 <li>
                   <NavLink
                     to="/products"
-                    className={({ isActive }) => (isActive ? "border-b-2 border-orangeSkin" : "hover-underline-animation font-bold")}
+                    onClick={() => setIsSideBar(!isSideBar)} className={({ isActive }) => (isActive ? "border-b-2 border-orangeSkin" : "hover-underline-animation font-bold")}
                   >
                     Shop Now
                   </NavLink>

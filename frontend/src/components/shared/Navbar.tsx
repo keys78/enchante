@@ -143,7 +143,7 @@ const NavBar = () => {
 //             </div>
 //           )} */}
         {width < 1024 &&
-          <Sidebar isSideBar={isSideBar} />
+          <Sidebar isSideBar={isSideBar} setIsSideBar={setIsSideBar} />
 
         }
       </header>

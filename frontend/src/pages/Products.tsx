@@ -46,35 +46,14 @@ const Products = () => {
 
 
     return (
-        <section className="w-full mt-[12px] s-1024:px-[120px] s-767:px-[40px] px-[16px]">
+        <section className={`app-container w-full mt-[12px] s-1024:px-[120px] px-[16px] ${isFlexDisplay && width < 1024 ? 's-1220:px-[16px]' : 's-767:px-[40px]'}`}>
             <div>
                 <div className='s-480:pt-[30px] pt-[18px] pb-[18px] flex items-center space-x-2'>
                     <span className='flex items-center space-x-2' style={{ color: '#a6a4a4' }}><Link to={'/'}>Home</Link> <CaretRight size={14} /> </span> <span className='font-medium'>Products</span>
                 </div>
 
                 <div className='flex items-start space-x-5'>
-
-                    <AnimatePresence>
-                        {width > 767 ? (
-                            <AllFilters allFilterCompStyles={'min-w-[200px] max-w-[200px] w-full rounded-[5px] border p-1'} />
-                        ) : (
-                            showFiltersBar && (
-                                <motion.div
-                                    variants={modalVariants as any}
-                                    initial="initial"
-                                    animate="final"
-                                    exit="exit"
-                                    className="filterbar-wrapper w-[300px] bg-white text-textGray h-[100vh] fixed top-0 left-0 p-[20px]"
-                                >
-                                    <X size={26} onClick={() => setShowFiltersBar(!showFiltersBar)} className="absolute top-4 right-4" color="#070707" weight="regular" />
-                                    <h1>Select Filters</h1>
-                                    <AllFilters allFilterCompStyles={'mt-[80px] w-full rounded-[5px] border p-1'} />
-                                </motion.div>
-                            )
-                        )}
-                    </AnimatePresence>
-
-
+                    {width > 767 && (<AllFilters allFilterCompStyles={'min-w-[200px] max-w-[200px] w-full rounded-[5px] border p-1'} />)}
 
                     <div className='w-full'>
                         {width < 1024 &&
@@ -86,7 +65,7 @@ const Products = () => {
                                 <button className='px-4 bg-[#202122] text-white rounded-[5px] py-2'>Search</button>
                             </form>
                         }
-                        <div className='flex items-center justify-between space-x-10 w-full mb-3'>
+                        <div className='flex items-center justify-between s-480:space-x-10 space-x-3 w-full mb-3'>
                             <div className='whitespace-nowrap flex items-center s-480:space-x-4 space-x-3'>
                                 {width < 767 && <Funnel onClick={() => setShowFiltersBar(!showFiltersBar)} size={22} color="#141414" />}
                                 <SquaresFour className='cursor-pointer' onClick={() => setIsFlexDisplay(false)} size={width < 767 ? 22 : 30} color={`${isFlexDisplay ? "" : '#f75a2c'}`} weight="fill" />
@@ -103,23 +82,20 @@ const Products = () => {
                                 </form>
                             }
 
-                            <div>
-                                <select
-                                    value={currentSelection}
-                                    onChange={(e) => {
-                                        setCurrentSelection(e.target.value);
-                                        handleSelectionChange(e.target.value);
-                                    }}
-                                    className="border-2 border-black rounded p-2 text-sm cursor-pointer"
-                                >
-                                    <option disabled value="Select Order">Select Order...</option>
-                                    <option value="Price (Lowest)">Price (Lowest)</option>
-                                    <option value="Price (Highest)">Price (Highest)</option>
-                                    <option value="Name (A - Z)">Name (A - Z)</option>
-                                    <option value="Name (Z - A)">Name (Z - A)</option>
-                                </select>
-
-                            </div>
+                            <select
+                                value={currentSelection}
+                                onChange={(e) => {
+                                    setCurrentSelection(e.target.value);
+                                    handleSelectionChange(e.target.value);
+                                }}
+                                className="border border-gray-500 rounded p-2 text-sm cursor-pointer outline-none "
+                            >
+                                <option disabled value="Select Order">Select Order...</option>
+                                <option value="Price (Lowest)">Price (Lowest)</option>
+                                <option value="Price (Highest)">Price (Highest)</option>
+                                <option value="Name (A - Z)">Name (A - Z)</option>
+                                <option value="Name (Z - A)">Name (Z - A)</option>
+                            </select>
 
                         </div>
 
@@ -142,12 +118,11 @@ const Products = () => {
                             ))}
                         </div>
 
-
                         {filteredProducts.length > 0 ? (
                             <>
                                 <div className={`${!isFlexDisplay && 'grid s-1024:grid-cols-3 grid-cols-2 s-480:gap-x-[16px] gap-x-[8px] s-480:gap-y-[34px] gap-y-[16px]'} `}>
                                     {filteredProducts.map((product: Product, i: number) =>
-                                        <div className='relative w-full s-480:bg-white bg-gray-50 p-1 rounded-[5px]'>
+                                        <div className={`relative w-full p-1 rounded-[5px] ${!isFlexDisplay && 's-480:bg-white bg-gray-50'}`}>
                                             <AnimatePresence>
                                                 <ProductFrame
                                                     product={product}
@@ -170,6 +145,24 @@ const Products = () => {
                         )}
                     </div>
                 </div>
+
+                <AnimatePresence>
+                    {
+                        width < 767 && showFiltersBar && (
+                            <motion.div
+                                variants={modalVariants as never}
+                                initial="initial"
+                                animate="final"
+                                exit="exit"
+                                className="filterbar-wrapper w-[300px] bg-white h-[100vh] fixed top-0 left-0 p-[16px]"
+                            >
+                                <X size={24} onClick={() => setShowFiltersBar(!showFiltersBar)} className="absolute top-8 right-4" color="#070707" weight="regular" />
+                                <h1 className='font-medium pt-5'>Select Filters</h1>
+                                <AllFilters allFilterCompStyles={'mt-[50px] w-full rounded-[5px] border p-1'} />
+                            </motion.div>
+                        )
+                    }
+                </AnimatePresence>
             </div>
 
             {/* <RecentlyViewed /> */}

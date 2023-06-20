@@ -4,7 +4,7 @@ import { RootState } from '../../network/store';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import { CartItem, Product } from '../../types';
-import { Minus, Plus, ShoppingCartSimple } from '@phosphor-icons/react';
+import { CaretRight, Minus, Plus, ShoppingCartSimple } from '@phosphor-icons/react';
 import { Link } from 'react-router-dom';
 import QuantityControlsBtn from './QuantityControlsBtn';
 import { motion } from 'framer-motion';
@@ -63,48 +63,57 @@ const ProductFrame = ({ product, key, isFlexDisplay, price_font_size, discount_f
         >
             {isFlexDisplay ? (
                 //flex View Display
-                <div className='flex mb-[16px] bg-gray-50 p-3 rounded-[5px] '>
+                <div className='flex mb-[16px] border s-767:p-3 rounded-[5px] '>
                     <Link to={`/products/product-details/${product.id}`}>
-                        <div className='relative max-w-[400px] min-w-[400px]'>
+                        <div className='relative s-767:max-w-[400px] max-w-[300px] w-full s-767:p-0 p-[5px]'>
                             <img className='rounded-[5px]' src={product?.image} alt={'enchanté_fashon'} />
-                            {product?.new && <div className='absolute top-4 left-4 bg-orangeSkin text-white rounded-[5px] py-[1px] px-2'>new</div>}
-                            {product?.free_shipping && <img title='Free Shipping' className='absolute top-4 right-4 rounded-[30px] py-1 px-3 w-[74px]' src={free_shipping} alt="" />}
+                            {product?.new && <div className='absolute s-767:top-4 top-2 s-767:left-4 left-2 bg-orangeSkin text-white rounded-[5px] s-767:py-[1px] s-767:px-2 px-1 s-767:text-[16px] text-[12px]'>new</div>}
+                            {product?.free_shipping && width > 767 && <img title='Free Shipping' className='absolute top-4 right-4 rounded-[30px] py-1 px-3 w-[74px]' src={free_shipping} alt="" />}
                         </div>
                     </Link>
 
-                    <div className='w-full relative p-[16px]'>
-                        <div className="details flex item-center justify-between">
+                    <div className='w-full relative s-767:p-[16px] p-[0] s-767:py-0 py-1'>
+                        <div className="details s-767:flex block item-center justify-between s-767:px-0 px-2">
                             <div className='max-w-[400px]'>
-                                <h3 className='font-medium capitalize'>{product?.name}</h3>
-                                <h3 className=''>{characterLimit(product?.desc, 150)}...</h3>
+                                <h3 className='font-medium capitalize s-767:pb-2 pb-1 s-767:text-[16px] text-[12px]'>{width > 767 ? characterLimit(product?.name, 50) : characterLimit(product?.name, 20)}</h3>
+                                <h3 className='s-767:text-[16px] text-[12px] s-767:pb-0 pb-2'>{width > 767 ? characterLimit(product?.desc, 70) : characterLimit(product?.desc, 70)}...</h3>
                             </div>
                             <div className='flex items-start space-x-3'>
-                                <span className="text-[24px] font-medium montserrat">${product?.price}</span>
-                                {product?.discount && <span className='text-[16px] font-medium montserrat opacity-60 discount-strike'>${(product?.price * 0.3) + product?.price}</span>}
+                                <span className="s-1024:text-[24px] s-767:text-[16px] text-[13px] font-medium montserrat">${product?.price}</span>
+                                {product?.discount && <span className='s-1024:text-[16px] s-767:text-[12px] text-[10px] font-medium montserrat opacity-60 discount-strike'>${(product?.price * 0.3) + product?.price}</span>}
                             </div>
                         </div>
-                        <Link to={`/products/product/${product.id}`}> <div className='absolute bottom-4 left-4 underline'>more details...</div></Link>
-                        <div className='absolute bottom-4 right-4'>
+                        <Link to={`/products/product/${product.id}`}> <div className='s-767:pl-0 pl-2 s-767:pb-0 pb-2 s-767:text-[16px] text-[12px] s-767:absolute s-767:bottom-4 s-767:left-4 underline flex space-x-3 items-center text-orangeSkin'> more details {<CaretRight />}
+                        </div></Link>
+                        <div className='s-767:absolute s-767:bottom-4 s-767:right-4'>
                             {existingCartItem ? (
-                                <div className='flex items-center space-x-4'>
+                                <div className='s-767:pl-0 pl-2 flex items-center space-x-4'>
                                     <QuantityControlsBtn
                                         onClick={() => { decreaseQuantity(existingCartItem); setAnimationKey((prevKey) => prevKey + 1) }}
-                                        children={<Minus size={22} color="#f8f8f8" weight="bold" />}
-                                        className='rounded-[5px] hover:opacity-70 p-2 bg-black text-white'
+                                        children={<Minus size={width > 767 ? 22 : 14} color="#f8f8f8" weight="bold" />}
+                                        className='rounded-[5px] hover:opacity-70 s-767:p-2 p-1 bg-black text-white'
                                     />
 
                                     <motion.span key={animationKey} animate={{ scale: [1.3, 1] }} className='font-bold'>{existingCartItem.cartQuantity}</motion.span>
 
                                     <QuantityControlsBtn
                                         onClick={() => { addQuantity(existingCartItem); setAnimationKey((prevKey) => prevKey + 1) }}
-                                        children={<Plus size={22} color="#f8f8f8" weight="bold" />}
-                                        className='rounded-[5px] hover:opacity-70 p-2 bg-black text-white'
+                                        children={<Plus size={width > 767 ? 22 : 14} color="#f8f8f8" weight="bold" />}
+                                        className='rounded-[5px] hover:opacity-70 s-767:p-2 p-1 bg-black text-white'
                                     />
                                 </div>
                             ) : (
-                                <button className="rounded-[5px] hover:opacity-70 transition duration-300 p-3 bg-black text-white" onClick={() => addToCart(product)}>
-                                    <ShoppingCartSimple size={22} color="#f8f8f8" weight="regular" />
-                                </button>
+                                <>
+                                    {width > 767 ? (
+                                        <button className="rounded-[5px] hover:opacity-70 transition duration-300 p-3 bg-black text-white" onClick={() => addToCart(product)}>
+                                            <ShoppingCartSimple size={22} color="#f8f8f8" weight="regular" />
+                                        </button>
+                                    ) : (
+                                        <button className={`whitespace-nowrap flex items-center justify-center space-x-3 rounded-[5px] hover:opacity-70 transition duration-300 py-1 px-2 text-[12px] bg-black text-white w-[96%] mx-auto`} onClick={() => addToCart(product)}>
+                                            <span>ADD TO CART</span> <ShoppingCartSimple size={14} color="#f8f8f8" weight="regular" />
+                                        </button>
+                                    )}
+                                </>
                             )}
                         </div>
                     </div>
@@ -133,7 +142,6 @@ const ProductFrame = ({ product, key, isFlexDisplay, price_font_size, discount_f
 
                             </div>
                             {showControls && (
-                                // <div className='absolute bottom-2 left-0 w-full'>
                                 <div className='cartbtn-fix'>
                                     {existingCartItem ? (
                                         <>
