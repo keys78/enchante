@@ -65,7 +65,7 @@ const Products = () => {
                                 <button className='px-4 bg-[#202122] text-white rounded-[5px] py-2'>Search</button>
                             </form>
                         }
-                        <div className='flex items-center justify-between s-480:space-x-10 space-x-3 w-full mb-3'>
+                        <div className='flex items-center justify-between s-480:space-x-10 space-x-3 w-full s-480:mb-3 mb-5'>
                             <div className='whitespace-nowrap flex items-center s-480:space-x-4 space-x-3'>
                                 {width < 767 && <Funnel onClick={() => setShowFiltersBar(!showFiltersBar)} size={22} color="#141414" />}
                                 <SquaresFour className='cursor-pointer' onClick={() => setIsFlexDisplay(false)} size={width < 767 ? 22 : 30} color={`${isFlexDisplay ? "" : '#f75a2c'}`} weight="fill" />
