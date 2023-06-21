@@ -81,7 +81,7 @@ const Cart = () => {
                   <div className="border-b border-gray-300 py-4 px-[10px] flex items-center justify-between">
                     <h1>Cart ({cartTotalQuantity})</h1>
                     <button className="flex items-center" onClick={() => dispatch(clearCart())}>
-                      <TrashSimple size={16} color="#141414" />&nbsp;&nbsp;Clear Cart 
+                      <TrashSimple size={16} color="#141414" />&nbsp;&nbsp;Clear Cart
                     </button>
                   </div>
                   <div className="px-[10px]">
@@ -163,7 +163,7 @@ const Cart = () => {
         </div>
       }
 
-      <NewsLetter newsletter_extras={"pt-[144px]"} />
+      <NewsLetter newsletter_extras={'s-480:pb-20 pb-10 s-767:pt-[144px] pt-[50px]'} />
     </section>
   );
 };

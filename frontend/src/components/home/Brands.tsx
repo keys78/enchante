@@ -29,43 +29,29 @@ const marqueeVariants = {
 
 const Brands = () => {
     return (
-        <section className="py-[200px]">
-            {/* <h1 className="pl-[40px] text-[42px] font-nunitosans font-bold leading-tight">High End ~ Ivys </h1> */}
+        <section className="s-1120:py-[200px] s-1025:py-[100px] s-767:py-[70px] py-[40px]">
             <div className="marquee">
-                <motion.div className="track flex items-center space-x-24" variants={marqueeVariants} animate="animate" >
-                    <img className="w-[250px] inline-block" src={patek} loading="lazy" />
-                    <img className="w-[250px] inline-block" src={dior} loading="lazy" />
-                    <img className="w-[80px] inline-block" src={lv} loading="lazy" />
-                    <img className="w-[150px] inline-block" src={channel} loading="lazy" />
-                    <img className="w-[100px] inline-block" src={adidas} loading="lazy" />
+                <motion.div className="track flex items-center s-767:space-x-24 space-x-10" variants={marqueeVariants} animate="animate" >
+                    <img className="s-767:w-[250px] w-[125px] inline-block" src={patek} loading="lazy" />
+                    <img className="s-767:w-[250px] w-[125px] inline-block" src={dior} loading="lazy" />
+                    <img className="s-767:w-[80px] w-[40px] inline-block" src={lv} loading="lazy" />
+                    <img className="s-767:w-[150px] w-[75px] inline-block" src={channel} loading="lazy" />
+                    <img className="s-767:w-[100px] w-[50px] inline-block" src={adidas} loading="lazy" />
                     <img className="brand-logo" src={versace} loading="lazy" />
-                    <img className="w-[100px] inline-block" src={vs} loading="lazy" />
+                    <img className="s-767:w-[100px] w-[50px] inline-block" src={vs} loading="lazy" />
                     <img className="brand-logo" src={nb} loading="lazy" />
                     <img className="brand-logo" src={hb} loading="lazy" />
                     <img className="brand-logo" src={zara} loading="lazy" />
                     <img className="brand-logo" src={fendi} loading="lazy" />
                     <img className="brand-logo" src={armani} loading="lazy" />
                     <img className="brand-logo" src={cartier} loading="lazy" />
-                    <img className="w-[250px] inline-block" src={patek} loading="lazy" />
-                    <img className="w-[250px] inline-block" src={dior} loading="lazy" />
-                    <img className="w-[80px] inline-block" src={lv} loading="lazy" />
-                    <img className="w-[150px] inline-block" src={channel} loading="lazy" />
-                    <img className="w-[100px] inline-block" src={adidas} loading="lazy" />
+                    <img className="s-767:w-[250px] w-[125px] inline-block" src={patek} loading="lazy" />
+                    <img className="s-767:w-[250px] w-[125px] inline-block" src={dior} loading="lazy" />
+                    <img className="s-767:w-[80px] w-[40px] inline-block" src={lv} loading="lazy" />
+                    <img className="s-767:w-[150px] w-[75px] inline-block" src={channel} loading="lazy" />
+                    <img className="s-767:w-[100px] w-[50px] inline-block" src={adidas} loading="lazy" />
                     <img className="brand-logo" src={versace} loading="lazy" />
-                    <img className="w-[100px] inline-block" src={vs} loading="lazy" />
-                    <img className="brand-logo" src={nb} loading="lazy" />
-                    <img className="brand-logo" src={hb} loading="lazy" />
-                    <img className="brand-logo" src={zara} loading="lazy" />
-                    <img className="brand-logo" src={fendi} loading="lazy" />
-                    <img className="brand-logo" src={armani} loading="lazy" />
-                    <img className="brand-logo" src={cartier} loading="lazy" />
-                    <img className="w-[250px] inline-block" src={patek} loading="lazy" />
-                    <img className="w-[250px] inline-block" src={dior} loading="lazy" />
-                    <img className="w-[80px] inline-block" src={lv} loading="lazy" />
-                    <img className="w-[150px] inline-block" src={channel} loading="lazy" />
-                    <img className="w-[100px] inline-block" src={adidas} loading="lazy" />
-                    <img className="brand-logo" src={versace} loading="lazy" />
-                    <img className="w-[100px] inline-block" src={vs} loading="lazy" />
+                    <img className="s-767:w-[100px] w-[50px] inline-block" src={vs} loading="lazy" />
                     <img className="brand-logo" src={nb} loading="lazy" />
                     <img className="brand-logo" src={hb} loading="lazy" />
                     <img className="brand-logo" src={zara} loading="lazy" />

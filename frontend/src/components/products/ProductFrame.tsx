@@ -91,7 +91,7 @@ const ProductFrame = ({ product, key, isFlexDisplay, price_font_size, discount_f
                                     <QuantityControlsBtn
                                         onClick={() => { decreaseQuantity(existingCartItem); setAnimationKey((prevKey) => prevKey + 1) }}
                                         children={<Minus size={width > 767 ? 22 : 14} color="#f8f8f8" weight="bold" />}
-                                        className='rounded-[5px] hover:opacity-70 s-767:p-2 p-1 bg-black text-white'
+                                        className='rounded-[5px] s-767:hover:opacity-70 s-767:p-2 p-1 bg-black text-white'
                                     />
 
                                     <motion.span key={animationKey} animate={{ scale: [1.3, 1] }} className='font-bold'>{existingCartItem.cartQuantity}</motion.span>
@@ -99,7 +99,7 @@ const ProductFrame = ({ product, key, isFlexDisplay, price_font_size, discount_f
                                     <QuantityControlsBtn
                                         onClick={() => { addQuantity(existingCartItem); setAnimationKey((prevKey) => prevKey + 1) }}
                                         children={<Plus size={width > 767 ? 22 : 14} color="#f8f8f8" weight="bold" />}
-                                        className='rounded-[5px] hover:opacity-70 s-767:p-2 p-1 bg-black text-white'
+                                        className='rounded-[5px] s-767:hover:opacity-70 s-767:p-2 p-1 bg-black text-white'
                                     />
                                 </div>
                             ) : (
@@ -109,7 +109,7 @@ const ProductFrame = ({ product, key, isFlexDisplay, price_font_size, discount_f
                                             <ShoppingCartSimple size={22} color="#f8f8f8" weight="regular" />
                                         </button>
                                     ) : (
-                                        <button className={`whitespace-nowrap flex items-center justify-center space-x-3 rounded-[5px] hover:opacity-70 transition duration-300 py-1 px-2 text-[12px] bg-black text-white w-[96%] mx-auto`} onClick={() => addToCart(product)}>
+                                        <button className={`whitespace-nowrap flex items-center justify-center space-x-3 rounded-[5px] s-767:hover:opacity-70 transition duration-300 py-1 px-2 text-[12px] bg-black text-white w-[96%] mx-auto`} onClick={() => addToCart(product)}>
                                             <span>ADD TO CART</span> <ShoppingCartSimple size={14} color="#f8f8f8" weight="regular" />
                                         </button>
                                     )}
@@ -166,7 +166,7 @@ const ProductFrame = ({ product, key, isFlexDisplay, price_font_size, discount_f
                                                     <QuantityControlsBtn
                                                         onClick={() => { decreaseQuantity(existingCartItem); setAnimationKey((prevKey) => prevKey + 1) }}
                                                         children={<Minus size={17} color="#f8f8f8" weight="bold" />}
-                                                        className={`rounded-[5px] hover:opacity-70 p-2 bg-black text-white ${shop_button}`}
+                                                        className={`rounded-[5px] s-767:hover:opacity-70 p-2 bg-black text-white ${shop_button}`}
                                                     />
 
                                                     <motion.span key={animationKey} animate={{ scale: [1.3, 1] }} className='font-bold'>{existingCartItem.cartQuantity}</motion.span>
@@ -174,7 +174,7 @@ const ProductFrame = ({ product, key, isFlexDisplay, price_font_size, discount_f
                                                     <QuantityControlsBtn
                                                         onClick={() => { addQuantity(existingCartItem); setAnimationKey((prevKey) => prevKey + 1) }}
                                                         children={<Plus size={17} color="#f8f8f8" weight="bold" />}
-                                                        className={`rounded-[5px] hover:opacity-70 p-2 bg-black text-white ${shop_button}`}
+                                                        className={`rounded-[5px] s-767:hover:opacity-70 p-2 bg-black text-white ${shop_button}`}
                                                     />
 
                                                 </span>
@@ -188,7 +188,7 @@ const ProductFrame = ({ product, key, isFlexDisplay, price_font_size, discount_f
                                                     <ShoppingCartSimple size={icon_size} color="#f8f8f8" weight="regular" />
                                                 </button>
                                             ) : (
-                                                <button className={`whitespace-nowrap flex items-center justify-center space-x-3 rounded-[5px] hover:opacity-70 transition duration-300 py-2 px-3 text-[13px] bg-black text-white w-[96%] mx-auto`} onClick={() => addToCart(product)}>
+                                                <button className={`whitespace-nowrap flex items-center justify-center space-x-3 rounded-[5px] s-767:hover:opacity-70 transition duration-300 py-2 px-3 text-[13px] bg-black text-white w-[96%] mx-auto`} onClick={() => addToCart(product)}>
                                                     <span>ADD TO CART</span> <ShoppingCartSimple size={15} color="#f8f8f8" weight="regular" />
                                                 </button>
                                             )}

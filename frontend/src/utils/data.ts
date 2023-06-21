@@ -93,7 +93,7 @@ export const products: Product[] = [
 export const footerLinks: footerProps[] = [
     {
         header: 'Shop',
-        links: ['All Collections', 'Harmattan Collections', 'Discount',]
+        links: ['All Collections', 'Genz-Style', 'Discount',]
     },
     {
         header: 'Company',

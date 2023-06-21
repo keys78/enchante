@@ -105,9 +105,6 @@ select:-webkit-autofill:focus {
 .marquee { position: relative; width: 100vw; max-width: 100%; height: 206px; overflow: hidden;  }
 .track { position: absolute; white-space: nowrap; }
 .brand-logo { width: 150px; display: inline-block;}
-
-
-.currated-image { height: 100%;}
 .discount-strike { text-decoration-color: #f75a2c !important; text-decoration: line-through;}
 
 
@@ -163,22 +160,10 @@ select:-webkit-autofill:focus {
 .marky-active { height: 4px; width: 100%; margin-top: 10px; border-top-right-radius: 8px; border-top-left-radius: 8px; background: #4f4d4d;}
 
 
-/* MEDIA QUERIES */
-@media screen and (max-width: 1600px) {
-.slideshow { margin: 0 auto; overflow: hidden; width: 100%; max-width: 450px; position: relative; background: #000; }
-.slide { display: inline-block; max-width: 450px;}
-.currated-image { height: 450px;}
-}
-
-@media screen and (max-width: 480px) {
-  .cartbtn-fix {position: absolute;width: 100%;bottom: 8px;left:0 ; }
-}
-
-
 .update-closing { z-index: 9 !important; position: relative;}
 .sidebar-wrapper { box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; height: 100vh !important; position: fixed !important; background: #03061f45;}
 .filterbar-wrapper { box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; z-index: 999 !important;}
-.logo-main { z-index:1000 !important;}
+.logo-main { z-index:1 !important;}
 
 .slide-in {
   animation: slideIn 0.3s ease;
@@ -194,3 +179,34 @@ select:-webkit-autofill:focus {
     opacity: 1;
   }
 }
+
+
+
+
+/* MEDIA QUERIES */
+@media screen and (min-width: 1600px) {
+  .currated-image { height: 100%;}
+}
+@media screen and (max-width: 1600px) {
+.slideshow { margin: 0 auto; overflow: hidden; width: 100%; max-width: 450px; position: relative; background: #000; }
+.slide { display: inline-block; max-width: 450px;}
+}
+
+@media screen and (max-width: 767px) {
+  .brand-logo { width: 75px;}
+  .img-flexor { all: unset;}
+  .is-sticky { padding: 16px 16px;}
+  .marquee { height: 150px; }
+}
+
+@media screen and (max-width: 480px) {
+  .cartbtn-fix {position: absolute;width: 100%;bottom: 8px;left:0 ; }
+  .swiper-button-next,
+  .swiper-button-prev { background-size: 16px; padding: 10px; width: 16px; height: 16px;}
+  .swiper-button-prev { left: -40px; bottom: -7px;}
+  .swiper-button-next { right: 0px; bottom: -7px;}
+  .swiper-button-next, .swiper-button-prev { margin-bottom: 0px;}
+}
+
+
+

@@ -6,8 +6,8 @@ import { sortByHighestPrice, sortByLowestPrice, sortByNameAZ, sortByNameZA } fro
 import { Link } from 'react-router-dom';
 import { CaretRight, SquaresFour, ListDashes, MagnifyingGlass, Funnel, X } from '@phosphor-icons/react';
 import ProductFrame from '../components/products/ProductFrame';
-// import NewsLetter from '../components/home/NewsLetter';
-// import RecentlyViewed from '../components/products/RecentlyViewed';
+import NewsLetter from '../components/home/NewsLetter';
+import RecentlyViewed from '../components/products/RecentlyViewed';
 import { AnimatePresence, motion } from 'framer-motion';
 import useWindowSize from '../components/hooks/useWindowSize';
 import AllFilters from '../components/filters/AllFilters';
@@ -46,8 +46,9 @@ const Products = () => {
 
 
     return (
-        <section className={`app-container w-full mt-[12px] s-1024:px-[120px] px-[16px] ${isFlexDisplay && width < 1024 ? 's-1220:px-[16px]' : 's-767:px-[40px]'}`}>
-            <div>
+        // <section className={`app-container w-full mt-[12px] s-1024:px-[120px] px-[16px] ${isFlexDisplay && width < 1024 ? 's-1220:px-[16px]' : 's-767:px-[40px]'}`}>
+        <section className={`app-container w-full mt-[12px] s-1025:px-[80px] s-767:px-[40px] px-[16px] `}>
+            <div className='w-full'>
                 <div className='s-480:pt-[30px] pt-[18px] pb-[18px] flex items-center space-x-2'>
                     <span className='flex items-center space-x-2' style={{ color: '#a6a4a4' }}><Link to={'/'}>Home</Link> <CaretRight size={14} /> </span> <span className='font-medium'>Products</span>
                 </div>
@@ -165,8 +166,8 @@ const Products = () => {
                 </AnimatePresence>
             </div>
 
-            {/* <RecentlyViewed /> */}
-            {/* <NewsLetter newsletter_extras={'pt-[120px]'} /> */}
+            <RecentlyViewed />
+            <NewsLetter newsletter_extras={'s-480:pb-20 pb-10 s-767:pt-[144px] pt-[50px]'} />
 
 
         </section>
