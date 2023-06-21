@@ -50,7 +50,7 @@ const Hero = () => {
                     <div className="text-card-container">
                         {heroDisplayTexts.map((val, index) => (
                             <div className={`text-card ${determineClasses(index)}`} key={val.tag}>
-                                <h1 className={`s-767:text-[42px] s-480:text-[32px] text-[18px] font-nunitosans font-bold leading-tight s-767:pb-[30px] pb-[10px] s-767:text-left text-center`}>
+                                <h1 className={`s-767:text-[42px] s-480:text-[32px] text-[21px] font-nunitosans font-bold leading-tight s-767:pb-[30px] pb-[10px] s-767:text-left text-center`}>
                                     {val.title}
                                 </h1>
                                 <p className='text-textGray s-767:text-[16px] text-[14px] s-767:text-left text-center'>{val.desc}</p>
