@@ -9,6 +9,7 @@ import useWindowSize from "../hooks/useWindowSize";
 import Sidebar from "../sidebar/Sidebar";
 import { AnimatePresence, motion } from "framer-motion";
 import { searchBarVariants } from "../../utils/animations";
+import LogoMain from "../../assets/svg/LogoMain";
 
 
 const NavBar = () => {
@@ -55,7 +56,7 @@ const NavBar = () => {
       <header className="header-section flex items-center justify-between text-black relative border-b border-gray-200 pt-[30px] pb-[24px] app-container s-767:px-[40px] px-[16px]">
         <Link to="/">
           <div className="logo-main bg-black text-white py-[30px] px-[20px] absolute top-0 left-0">
-            <h1 className="s-767:text-[30px] text-[18px]">enchanté</h1>
+            <LogoMain logo_width="s-480:w-[140px] w-[90px]" />
           </div>
         </Link>
 

@@ -1,5 +1,6 @@
 import { StripeLogo, CurrencyBtc, PaypalLogo } from "@phosphor-icons/react"
 import { footerLinks } from "../../utils/data"
+import LogoMain from "../../assets/svg/LogoMain";
 
 const Footer = () => {
   const getYear = () => {
@@ -13,8 +14,8 @@ const Footer = () => {
 
         <div className="s-991:flex block s-767:py-[40px] py-[20px] item-start">
           <div className="s-1440:min-w-[450px] s-767:min-w-[200px] min-w-[100%] s-991:pb-0 pb-[30px]">
-            <h1 className="s-767:text-[40px] text-[26px]">enchanté</h1>
-            <p className="max-w-[350px] s-767:text-[16px] text-[12px] w-full">The midas in sourcing and curating high-end fashion products.</p>
+            <LogoMain logo_width="s-480:w-[70px] w-[120px]" />
+            <p className="max-w-[350px] s-767:text-[16px] text-[14px] w-full pt-[14px]">The midas in sourcing and curating high-end fashion products.</p>
           </div>
 
           <div className="w-full">
