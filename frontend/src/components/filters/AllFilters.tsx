@@ -7,14 +7,17 @@ import { filterByFreeShipment, filterByNewProducts, filterProductsByBrand, filte
 import ToggleFilters from './ToggleFilters'
 import RangeSlider from '../filters/RangeSliders'
 import StartRatings from './StartRatings'
+import useWindowSize from '../hooks/useWindowSize';
 
 interface Props {
     allFilterCompStyles?: string,
+    setShowFiltersBar?: ((arg0: boolean) => void) | undefined;
 }
 
-const AllFilters = ({ allFilterCompStyles }: Props) => {
+const AllFilters = ({ allFilterCompStyles, setShowFiltersBar }: Props) => {
     const dispatch = useAppDispatch();
-    const { products } = useAppSelector((state: RootState) => state.products);
+    const { width } = useWindowSize();
+    const { products, filteredProducts } = useAppSelector((state: RootState) => state.products);
     const [priceRange, setPriceRange] = useState({ min: 0, max: getMaxPrice() });
     const [selectedRating, setSelectedRating] = useState<number | null>(null);
     const [isFreeShipment, setIsFreeShipment] = useState<boolean>(false)
@@ -133,11 +136,20 @@ const AllFilters = ({ allFilterCompStyles }: Props) => {
                 <input checked={isFreeShipment} onChange={handleFreeShipmentChange} type="checkbox" className='cursor-pointer' />
             </div>
 
-            <button
-                className='rounded-[5px] px-3 py-2 bg-gray-900 font-medium cursor-pointer border-2border-white text-white w-full mt-6 hover:bg-white hover:text-black transition duration-300 hover:border-2 hover:border-black'
-                onClick={handleResetFilters}>
-                Reset Filters
-            </button>
+            <div className='flex items-center space-x-3'>
+                <button
+                    className='rounded-[5px] px-3 py-2 bg-gray-900 font-medium cursor-pointer border-2 border-black text-white w-full mt-6 s-767:hover:bg-white s-767:hover:text-black transition duration-300 s-767:hover:border-2 s-767:hover:border-black'
+                    onClick={handleResetFilters}>
+                    Reset Filters
+                </button>
+                {width < 768 &&
+                    <button
+                        className='rounded-[5px] px-3 py-2 bg-white font-medium cursor-pointer border-2 border-gray-900 text-gray-900 w-full mt-6 '
+                        onClick={() => setShowFiltersBar && setShowFiltersBar(false)}>
+                        Show ({filteredProducts?.length})
+                    </button>
+                }
+            </div>
         </div>
     )
 }

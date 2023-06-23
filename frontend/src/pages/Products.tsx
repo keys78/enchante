@@ -46,7 +46,6 @@ const Products = () => {
 
 
     return (
-        // <section className={`app-container w-full mt-[12px] s-1024:px-[120px] px-[16px] ${isFlexDisplay && width < 1024 ? 's-1220:px-[16px]' : 's-767:px-[40px]'}`}>
         <section className={`app-container w-full mt-[12px] s-1025:px-[80px] s-767:px-[40px] px-[16px] `}>
             <div className='w-full'>
                 <div className='s-480:pt-[30px] pt-[18px] pb-[18px] flex items-center space-x-2'>
@@ -155,11 +154,11 @@ const Products = () => {
                                 initial="initial"
                                 animate="final"
                                 exit="exit"
-                                className="filterbar-wrapper w-[300px] bg-white h-[100vh] fixed top-0 left-0 p-[16px]"
+                                className="filterbar-wrapper w-[300px] bg-white h-[100vh] fixed top-0 left-0 p-[16px] overflow-y-auto"
                             >
                                 <X size={24} onClick={() => setShowFiltersBar(!showFiltersBar)} className="absolute top-8 right-4" color="#070707" weight="regular" />
                                 <h1 className='font-medium pt-5'>Select Filters</h1>
-                                <AllFilters allFilterCompStyles={'mt-[50px] w-full rounded-[5px] border p-1'} />
+                                <AllFilters setShowFiltersBar={setShowFiltersBar} allFilterCompStyles={'mt-[50px] w-full rounded-[5px] border p-1'} />
                             </motion.div>
                         )
                     }

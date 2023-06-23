@@ -41,10 +41,10 @@ const ThumbnailsGallery = ({ imgArr }: Props) => {
   return (
     <div>
       <div className='relative w-full overflow-x-hidden'>
-        <img className={`w-full h-[400px] rounded-[5px] ${slideAnimation}`} src={currentView} alt="Current View" />
+        <img className={`w-full s-767:h-[400px] h-auto rounded-[5px] ${slideAnimation}`} src={currentView} alt="Current View" />
         <div className='absolute w-full top-0'>
-          <div className='w-full h-[400px] flex items-center justify-center'>
-            <div className='w-full flex items-center justify-between px-4'>
+          <div className='w-full s-767:h-[400px] h-auto flex items-center justify-center'>
+            <div className='w-full flex items-center justify-between px-4 s-767:mt-0 mt-[110px]'>
               <div className='prev cursor-pointer h-[26px] w-[26px] rounded-[5px] bg-[#f75a2c] flex items-center justify-center' onClick={handlePrevClick}>
                 <CaretLeft size={20} color="#f1f1f1" weight='bold' />
               </div>
@@ -55,14 +55,14 @@ const ThumbnailsGallery = ({ imgArr }: Props) => {
           </div>
         </div>
       </div>
-      <div className='flex space-x-4 mt-3'>
+      <div className='flex s-767:space-x-4 space-x-[3px] mt-3'>
         {thumbnails.map((thumbnail, index) => (
           <div
-            className={`cursor-pointer rounded-[5px] ${thumbnail === currentView ? 'border-2 border-orangeSkin' : 'border-2 border-white'}`}
+            className={`cursor-pointer rounded-[5px] w-[150px] ${thumbnail === currentView ? 'border-2 border-orangeSkin' : 'border-2 border-white'}`}
             key={index}
             onClick={() => setCurrentView(thumbnail)}
           >
-            <img className="w-[150px] rounded-[5px]" src={thumbnail} alt="Thumbnail" />
+            <img className=" rounded-[5px]" src={thumbnail} alt="Thumbnail" />
           </div>
         ))}
       </div>

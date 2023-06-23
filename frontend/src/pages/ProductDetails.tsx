@@ -11,9 +11,13 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import Tabs from "../components/UI/Tabs";
 import { Pager } from "../components/UI/Pager";
+import { characterLimit } from "../utils/general";
+import useWindowSize from "../components/hooks/useWindowSize";
+import NewsLetter from "../components/home/NewsLetter";
 
 const ProductDetails = () => {
     const { id } = useParams();
+    const { width }= useWindowSize();
     const { filteredProducts } = useAppSelector(state => state.products)
     const productInfo: any = filteredProducts.find(val => val.id === id)
 
@@ -52,21 +56,21 @@ const ProductDetails = () => {
 
 
     return (
-        <section className="app-container mt-[12px] px-[120px]">
-            <div className="">
+        <section className="app-container mt-[12px] s-1025:px-[80px] s-767:px-[40px] px-[16px]">
+            <div>
                 <div className='pt-[30px] pb-[18px] flex items-center space-x-2'>
                     <span className='flex items-center space-x-2' style={{ color: '#a6a4a4' }}><Link to={'/'}>Home</Link> <CaretRight size={14} /> </span>
                     <span className='flex items-center space-x-2' style={{ color: '#a6a4a4' }}><Link to={'/products'}>Products</Link> <CaretRight size={14} /> </span>
-                    <span className='font-bold'>{productInfo?.name}</span>
+                    <span className='font-bold'>{characterLimit(productInfo?.name, 16)}</span>
                 </div>
 
-                <div className="flex w-full space-x-5 pb-[50px]">
-                    <div className="max-w-[50%] min-w-[50%]" >
+                <div className="s-767:flex w-full s-767:space-x-5 s-767:pb-[50px]">
+                    <div className="s-767:max-w-[50%] s-767:min-w-[50%] s-767:pb-0 pb-[30px]" >
                         <ThumbnailsGallery imgArr={productInfo} />
                     </div>
-                    <div className="w-full pl-[30px]">
+                    <div className="w-full s-767:pl-[30px]">
                         <div className="flex items-start justify-between">
-                            <h1 className="text-[24px]">{productInfo?.name} <span className="italic text-[12px]">{productInfo?.brand}</span></h1>
+                            <h1 className="s-767:text-[24px] text-[16px]">{productInfo?.name} <span className="italic text-[12px]">{productInfo?.brand}</span></h1>
                             <div className="cursor-pointer" onClick={() => seLoved(!loved)}>
                                 {loved ?
                                     <Heart size={22} color="#f75a2c" weight="regular" /> :
@@ -88,10 +92,10 @@ const ProductDetails = () => {
                             </div>
                         </div>
                         <div className='flex items-start space-x-3 py-4'>
-                              <span className="text-[24px] font-medium montserrat">${productInfo?.price}</span>
-                              {productInfo?.discount && <span className='text-[16px] font-medium montserrat opacity-60 discount-strike'>${(productInfo?.price * 0.3) + productInfo?.price}</span>}
-                            </div>
-                        <div className="py-6 my-6 border-t border-b border-gray-100 w-full flex items-center justify-between">
+                            <span className="s-767:text-[24px] text-[16px] font-medium montserrat">${productInfo?.price}</span>
+                            {productInfo?.discount && <span className='s-767:text-[16px] text-[13px] font-medium montserrat opacity-60 discount-strike'>${(productInfo?.price * 0.3) + productInfo?.price}</span>}
+                        </div>
+                        <div className="py-6 s-767:my-6 border-t border-b border-gray-100 w-full flex items-center justify-between s-767:text-[16px] text-[14px]">
                             <div>
                                 <h1 className="font-medium pb-4">Available Sizes</h1>
                                 <div className="flex space-x-5 items-center">
@@ -112,9 +116,9 @@ const ProductDetails = () => {
                             </div>
                         </div>
 
-                        <div className="my-3 py-4 w-full">
-                            <div className="flex items-center justify-between pb-[20px]">
-                                <div className="pb-3"><span className="font-medium">{Math.max(1, Math.floor(Math.random() * 10)).toFixed(0)}</span> left in stock!</div>
+                        <div className="my-3 s-767:py-4 py-2 w-full s-767:text-[16px] text-[14px]">
+                            <div className="flex items-center justify-between s-767:pb-[20px] pb-[6px]">
+                                <div className="s-767:pb-3 pb-0"><span className="font-medium">{Math.max(1, Math.floor(Math.random() * 10)).toFixed(0)}</span> left in stock!</div>
                                 {productInfo?.free_shipping && <button className="bg-black text-white px-3 py-[3px] text-[10px] rounded-[5px] cursor-none">free shipping available</button>}
                             </div>
                             <div>
@@ -122,7 +126,7 @@ const ProductDetails = () => {
                                     <div className='flex items-center space-x-4'>
                                         <QuantityControlsBtn
                                             onClick={() => { decreaseQuantity(existingCartItem); setAnimationKey((prevKey) => prevKey + 1) }}
-                                            children={<Minus size={24} color="#f8f8f8" weight="bold" />}
+                                            children={<Minus size={width > 767 ? 24 : 20} color="#f8f8f8" weight="bold" />}
                                             className={`rounded-[5px] hover:opacity-70 bg-black text-white p-[6px]`}
                                         />
 
@@ -130,7 +134,7 @@ const ProductDetails = () => {
 
                                         <QuantityControlsBtn
                                             onClick={() => { addQuantity(existingCartItem); setAnimationKey((prevKey) => prevKey + 1) }}
-                                            children={<Plus size={24} color="#f8f8f8" weight="bold" />}
+                                            children={<Plus size={width > 767 ? 24 : 20} color="#f8f8f8" weight="bold" />}
                                             className={`rounded-[5px] hover:opacity-70 bg-black text-white p-[6px]`}
                                         />
                                     </div>
@@ -150,12 +154,15 @@ const ProductDetails = () => {
 
             <Pager value={tabsList.indexOf(activeTab)}>
                 {tabsList.map((tab, index) => (
-                    <div key={index}>
+                    <div className="s-767:text-[16px] text-[14px]" key={index}>
                         {tab === "Product Description" ? productDescription : 'No Comments / Discussions yet'}
                     </div>
                 ))}
             </Pager>
-            <RecentlyViewed />
+            <div className="s-767:pb-[150px] pb-[50px]">
+                <RecentlyViewed />
+                <NewsLetter newsletter_extras={'pb-0 s-767:pt-[144px] pt-0'} />
+            </div>
         </section>
     );
 };
