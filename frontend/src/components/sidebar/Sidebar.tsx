@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { backdropVariant, modalVariants } from '../../utils/animations';
 
@@ -8,6 +8,7 @@ interface Props {
 }
 
 const Sidebar = ({ isSideBar, setIsSideBar }: Props) => {
+  const auth = false
 
   return (
     <AnimatePresence>
@@ -37,8 +38,24 @@ const Sidebar = ({ isSideBar, setIsSideBar }: Props) => {
                     Shop Now
                   </NavLink>
                 </li>
-                <li>User</li>
-
+                <li><p className='font-bold'>User</p>
+                  <ul>
+                    <li className="py-3 px-4 hover:bg-[#e4e4e4] cursor-pointer text-[14px]">My Account</li>
+                    <li className="py-3 px-4 hover:bg-[#e4e4e4] cursor-pointer text-[14px]">My Orders</li>
+                    <li className="py-3 px-4 hover:bg-[#e4e4e4] cursor-pointer text-[14px]">Saved Items</li>
+                    <br />
+                    {auth ? (
+                      <li className="pt-[8px] mt-[8px] px-4">
+                        <button className="bg-[#000] rounded-[5px] py-[10px] px-[auto] w-full text-[#fff] mb-[4px] font-medium">LOG OUT</button>
+                      </li>
+                    ) : (
+                      <Link to="/login"><li className="pb-[8px] mb-[8px] px-4">
+                        <button className="bg-[#000] rounded-[5px] py-[10px] px-[auto] w-full text-[#fff] mb-[4px] font-medium">LOG IN</button>
+                      </li>
+                      </Link>
+                    )}
+                  </ul>
+                </li>
               </ul>
             </div>
           </motion.div>

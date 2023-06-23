@@ -8,13 +8,15 @@ import FilterSearch from "../UI/FilterSearch";
 import useWindowSize from "../hooks/useWindowSize";
 import Sidebar from "../sidebar/Sidebar";
 import { AnimatePresence, motion } from "framer-motion";
-import { searchBarVariants } from "../../utils/animations";
+import { modalVariants, searchBarVariants } from "../../utils/animations";
 import LogoMain from "../../assets/svg/LogoMain";
+import UserActionsPanel from "../UI/UserActionsPanel";
 
 
 const NavBar = () => {
   const dispatch = useAppDispatch();
   const { width } = useWindowSize();
+  const [showUserCTA, setShowUserCTA] = useState<boolean>(false)
   const [isSideBar, setIsSideBar] = useState<boolean>(false)
   const [showSearchBar, setShowSearchBar] = useState<boolean>(false)
   const { cartTotalQuantity } = useAppSelector((state) => state.cart);
@@ -90,20 +92,23 @@ const NavBar = () => {
         <div className="flex items-center justify-end space-x-8 w-[300px]">
           {width > 767 && <FilterSearch options={options} />}
 
-          <AnimatePresence> {
-            width < 767 && showSearchBar &&
-            <motion.div
-              variants={searchBarVariants as any}
-              initial="initial"
-              animate="final"
-              exit="exit"
-              className="w-full bg-black fixed top-0 left-0 z-50 flex items-center justify-center py-[27px]">
-              <X size={22} onClick={() => setShowSearchBar(false)} className="absolute top-2 right-2" color="#f1f1f1" />
-              {<FilterSearch options={options} />}
-            </motion.div>
-          }
+          <AnimatePresence>
+            {
+              width < 767 && showSearchBar &&
+              <motion.div
+                variants={searchBarVariants as any}
+                initial="initial"
+                animate="final"
+                exit="exit"
+                className="w-full bg-black fixed top-0 left-0 z-50 flex items-center justify-center py-[27px]">
+                <X size={22} onClick={() => setShowSearchBar(false)} className="absolute top-2 right-2" color="#f1f1f1" />
+                {<FilterSearch options={options} />}
+              </motion.div>
+            }
           </AnimatePresence>
+
           {width < 767 && <MagnifyingGlass onClick={() => setShowSearchBar(!showSearchBar)} size={22} color="#070707" weight="regular" />}
+
           <Link to="/cart">
             <div className="relative">
               <ShoppingCartSimple size={26} color="#070707" weight="regular" />
@@ -112,9 +117,26 @@ const NavBar = () => {
               absolute -top-2 -right-2 text-[12px]">{cartTotalQuantity}</span>
             </div>
           </Link>
-          {width > 767 && <div className="w-[26px]">
-            <UserCircle size={26} color="#070707" weight="regular" />
-          </div>}
+
+          {
+            width > 767 &&
+            <div className="w-[26px] relative">
+              <UserCircle onClick={() => setShowUserCTA(!showUserCTA)} size={26} className="cursor-pointer" color="#070707" weight="regular" />
+              <AnimatePresence>
+                {showUserCTA &&
+                  <motion.div
+                    variants={modalVariants as any}
+                    initial="initial"
+                    animate="final"
+                    exit="exit"
+                    className="border-2-border-black absolute mt-[20px] -left-[220px]">
+                    <UserActionsPanel />
+                  </motion.div>
+                }
+              </AnimatePresence>
+            </div>
+          }
+
           <div className="w-[26px]">
             {width < 787 &&
               <>
@@ -128,21 +150,7 @@ const NavBar = () => {
             }
           </div>
         </div>
-        {/* {auth ? (
-//             <button
-//               onClick={() => {
-//                 // dispatch(logoutUser(null));
-//                 toast.warning("Logged out!", { position: "bottom-left" });
-//               }}
-//             >
-//               Logout
-//             </button>
-//           ) : (
-//             <div>
-//               <Link to="/login">Login</Link>
-//               <Link to="register">Register</Link>
-//             </div>
-//           )} */}
+
         {width < 1024 &&
           <Sidebar isSideBar={isSideBar} setIsSideBar={setIsSideBar} />
 
