@@ -28,7 +28,7 @@ const CheckoutButton = ({ cartItems }: CheckoutButtonProps) => {
             className="p-2 bg-black text-white rounded-[5px] w-full"
             onClick={() => handleCheckout()}
         >
-            CHECKOUT (${cart.cartTotalAmount})
+            CHECK OUT (${cart.cartTotalAmount})
         </button>
     );
 };

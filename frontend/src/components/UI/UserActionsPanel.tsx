@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 const UserActionsPanel = () => {
-    const auth = true;
+    const auth = false;
 
     return (
         <div className="bg-[#fff] w-[250px] shadow rounded-[5px]">
