@@ -182,7 +182,7 @@ const Cart = () => {
                 ) : (
                   <button
                     className="p-2 bg-black text-white rounded-[5px] w-full"
-                    onClick={() => navigate("/login")}
+                    onClick={() => navigate("/auth/login")}
                   >
                     LOGIN TO CHECKOUT
                   </button>

@@ -4,7 +4,6 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import authService from './authService'
 
 
-
 type User = {
     username: string,
     email: string
@@ -65,8 +64,6 @@ export const verifyEmail = createAsyncThunk<any, any>(
         }
     }
 )
-
-
 
 
 export const logout = createAsyncThunk('auth/logout', () => {

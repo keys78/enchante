@@ -7,7 +7,7 @@ const UserActionsPanel = () => {
         <div className="bg-[#fff] w-[250px] shadow rounded-[5px]">
             <ul className="py-2 flex flex-col">
                 {!auth && (
-                    <Link to="/login"><li className="pb-[8px] border-b mb-[8px] px-4">
+                    <Link to="/auth/login"><li className="pb-[8px] border-b mb-[8px] px-4">
                         <button className="bg-[#000] rounded-[5px] py-[10px] px-[auto] w-full text-[#fff] mb-[4px] font-medium">LOG IN</button>
                     </li>
                     </Link>

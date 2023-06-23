@@ -135,12 +135,6 @@ const Login = () => {
                                     >
                                         {props.touched.password && props.errors.password}
                                     </span>
-                                    {/* <div className="py-2">
-                                        <Link to={"/auth/forgot-password"}>
-                                            <span className="text-[#000]">Forgot password?</span>
-                                        </Link>
-                                    </div> */}
-
                                     <br />
                                     <div className="my-2 lg:block flex justify-center items-center">
                                         <button
@@ -149,10 +143,9 @@ const Login = () => {
                                             className="gen-btn-class bg-[#000] text-[#fff] w-full h-[48px] rounded-[5px] text-[18px] flex items-center justify-center font-medium"
                                         >
                                             {!isLoading ? (
-                                                <Loader /> 
-                                            ) : (
                                                 "LOG IN"
-                                                
+                                            ) : (
+                                                <Loader />
                                             )}
                                         </button>
                                     </div>

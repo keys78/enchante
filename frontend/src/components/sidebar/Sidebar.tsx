@@ -49,7 +49,7 @@ const Sidebar = ({ isSideBar, setIsSideBar }: Props) => {
                         <button className="bg-[#000] rounded-[5px] py-[10px] px-[auto] w-full text-[#fff] mb-[4px] font-medium">LOG OUT</button>
                       </li>
                     ) : (
-                      <Link to="/login"><li className="pb-[8px] mb-[8px] px-4">
+                      <Link to="/auth/login"><li className="pb-[8px] mb-[8px] px-4">
                         <button className="bg-[#000] rounded-[5px] py-[10px] px-[auto] w-full text-[#fff] mb-[4px] font-medium">LOG IN</button>
                       </li>
                       </Link>
