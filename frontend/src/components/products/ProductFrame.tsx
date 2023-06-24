@@ -33,13 +33,13 @@ const ProductFrame = ({ product, key, isFlexDisplay, price_font_size, discount_f
     const addQuantity = useAddQuantity();
     const decreaseQuantity = useDecreaseQuantity();
     const [animationKey, setAnimationKey] = useState<number>(0);
-    const existingCartItem = cart.cartItems.find((item: CartItem) => item.id === product.id);
+    const existingCartItem = cart.cartItems.find((item: CartItem) => item.id === product._id);
     const dispatch = useAppDispatch();
     const { recentlyViewed } = useAppSelector(state => state.products)
 
 
     const addToRecentlyViewedAction = (product: Product) => {
-        const existingRecentlyViewedItem = recentlyViewed.find((item) => item.id === product.id);
+        const existingRecentlyViewedItem = recentlyViewed.find((item) => item._id === product._id);
 
         if (!existingRecentlyViewedItem) {
             const recentlyViewedItem: Product = {
@@ -54,7 +54,7 @@ const ProductFrame = ({ product, key, isFlexDisplay, price_font_size, discount_f
     return (
 
         <motion.div
-            key={product?.id}
+            key={product?._id}
             layout
             initial={{ opacity: 0, translateX: -50 }}
             animate={{ opacity: 1, translateX: 0 }}
@@ -64,7 +64,7 @@ const ProductFrame = ({ product, key, isFlexDisplay, price_font_size, discount_f
             {isFlexDisplay ? (
                 //flex View Display
                 <div className='flex mb-[16px] border s-767:p-3 rounded-[5px] '>
-                    <Link to={`/products/product-details/${product.id}`}>
+                    <Link to={`/products/product-details/${product._id}`}>
                         <div className='relative s-767:max-w-[400px] max-w-[300px] w-full s-767:p-0 p-[5px]'>
                             <img className='rounded-[5px]' src={product?.image} alt={'enchanté_fashon'} />
                             {product?.new && <div className='absolute s-767:top-4 top-2 s-767:left-4 left-2 bg-orangeSkin text-white rounded-[5px] s-767:py-[1px] s-767:px-2 px-1 s-767:text-[16px] text-[12px]'>new</div>}
@@ -83,7 +83,7 @@ const ProductFrame = ({ product, key, isFlexDisplay, price_font_size, discount_f
                                 {product?.discount && <span className='s-1024:text-[16px] s-767:text-[12px] text-[10px] font-medium montserrat opacity-60 discount-strike'>${(product?.price * 0.3) + product?.price}</span>}
                             </div>
                         </div>
-                        <Link to={`/products/product/${product.id}`}> <div className='s-767:pl-0 pl-2 s-767:pb-0 pb-2 s-767:text-[16px] text-[12px] s-767:absolute s-767:bottom-4 s-767:left-4 underline flex space-x-3 items-center text-orangeSkin'> more details {<CaretRight />}
+                        <Link to={`/products/product/${product._id}`}> <div className='s-767:pl-0 pl-2 s-767:pb-0 pb-2 s-767:text-[16px] text-[12px] s-767:absolute s-767:bottom-4 s-767:left-4 underline flex space-x-3 items-center text-orangeSkin'> more details {<CaretRight />}
                         </div></Link>
                         <div className='s-767:absolute s-767:bottom-4 s-767:right-4'>
                             {existingCartItem ? (
@@ -123,7 +123,7 @@ const ProductFrame = ({ product, key, isFlexDisplay, price_font_size, discount_f
                 (
                     //Grid View Display
                     <div>
-                        <Link onClick={() => addToRecentlyViewedAction(product)} to={`/products/product-details/${product.id}`}>
+                        <Link onClick={() => addToRecentlyViewedAction(product)} to={`/products/product-details/${product._id}`}>
                             <div className='relative'>
                                 <img className='rounded-[5px]' src={product?.image} alt={'enchanté_fashon'} />
                                 {product?.new && <div className='absolute s-480:top-4 top-1 s-480:left-4 left-1 bg-orangeSkin text-white rounded-[5px] s-480:py-[1px] s-480:px-2 px-1 s-480:text-[16px] text-[12px]'>new</div>}

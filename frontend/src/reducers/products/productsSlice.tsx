@@ -1,34 +1,89 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { products } from "../../utils/data";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+// import { products } from "../../utils/data";
 import { Product } from "../../types";
+import errorHandler from "../../utils/errorHandler";
+import productService from "./productService";
+
+const storedRecentlyViewed = localStorage.getItem("enchante-rv");
+// filterTerms: Record<string, string | null | number>;
+
+const emptyProduct: Product = {
+  _id: '',
+  category: '',
+  name: '',
+  image: '',
+  desc: '',
+  sizes: [],
+  price: 0,
+  color: '',
+  brand: '',
+  free_shipping: false,
+  new: false,
+  star_ratings: 0,
+};
 
 interface ProductsState {
   products: Product[];
   filteredProducts: Product[];
-  // filterTerms: Record<string, string | null | number>;
+  product: Product;
   filterTerms: Record<any, any>;
-  recentlyViewed: Product[]
+  recentlyViewed: Product[];
+  isError: boolean,
+  isSuccess: boolean,
+  isLoading: boolean,
+  message: any;
 }
 
-const storedRecentlyViewed = localStorage.getItem("enchante-rv");
-
-
-
 const initialState: ProductsState = {
-  products: products,
-  filteredProducts: products,
+  products: [],
+  filteredProducts: [],
+  product:emptyProduct,
   recentlyViewed: storedRecentlyViewed ? JSON.parse(storedRecentlyViewed) : [],
   filterTerms: {},
+  isError: false,
+  isSuccess: false,
+  isLoading: false,
+  message: '',
 };
+
+
+export const getAllProducts = createAsyncThunk<Product[], void>(
+  '/products',
+  async (_, thunkAPI) => {
+    try {
+      return await productService.getAllProducts();
+    } catch (error: any) {
+      errorHandler(error, thunkAPI);
+      throw error; // Rethrow the error to propagate it to the rejected case
+    }
+  }
+);
+
+export const getSingleProduct = createAsyncThunk<Product, { productId: string; }>(
+  'products/product/:productId',
+  async ({ productId }, thunkAPI) => {
+    try {
+      return await productService.getSingleProduct(productId)
+    } catch (error: any) {
+      errorHandler(error, thunkAPI)
+      if(error.response && error.response.status === 404) {
+        window.location.href = "/user/dashboard"
+      }
+    }
+  }
+);
+
+
+
 
 const productsSlice = createSlice({
   name: "products",
   initialState,
   reducers: {
     addToRecentlyViewed(state, action: PayloadAction<Product>) {
-      const { id } = action.payload;
-      const existingItemIndex = state.recentlyViewed.findIndex((item) => item.id === id);
-    
+      const { _id } = action.payload;
+      const existingItemIndex = state.recentlyViewed.findIndex((item) => item._id === _id);
+
       if (existingItemIndex !== -1) {
         // Item already exists, we need to it to the front
         const existingItem = state.recentlyViewed[existingItemIndex];
@@ -40,16 +95,16 @@ const productsSlice = createSlice({
         const newlyViewedItem = { ...action.payload, cartQuantity: 1 };
         state.recentlyViewed.unshift(newlyViewedItem);
       }
-    
+
       // Limiting the number of items to a maximum of 5
       if (state.recentlyViewed.length > 4) {
         state.recentlyViewed.pop();
       }
-    
+
       localStorage.setItem("enchante-rv", JSON.stringify(state.recentlyViewed));
     },
-    
-    
+
+
 
 
     filterProductsByPrice: (state, action: PayloadAction<{ maxRange: string }>) => {
@@ -199,7 +254,6 @@ const productsSlice = createSlice({
     },
 
     //SORTING PRODUCTS
-
     sortByLowestPrice: (state) => {
       const sortedProducts = [...state.filteredProducts].sort((a, b) => a.price - b.price);
       state.filteredProducts = sortedProducts;
@@ -219,15 +273,44 @@ const productsSlice = createSlice({
     },
 
 
-
-
-
     resetAllFilters: (state) => {
       state.filteredProducts = state.products;
       state.filterTerms = {};
     },
   },
-  extraReducers: {},
+
+
+
+  extraReducers: (builder) => {
+    builder
+      .addCase(getAllProducts.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(getAllProducts.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.products = action.payload
+        state.filteredProducts = action.payload
+      })
+      .addCase(getAllProducts.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload as string
+      })
+      .addCase(getSingleProduct.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(getSingleProduct.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.product = action.payload
+      })
+      .addCase(getSingleProduct.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload as string
+      })
+  }
 });
 
 export const {

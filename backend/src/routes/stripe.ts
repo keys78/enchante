@@ -19,7 +19,7 @@ export const checkout = router.post('/create-checkout-session', async (req, res)
             // description: item.desc,
             metadata: {
               id: item.id,
-              app_name: 'pickMe Commerce',
+              app_name: 'Enchante Commerce',
             }
           },
           unit_amount: item.price * 100,

@@ -17,7 +17,7 @@ interface CartState {
   cartTotalAmount: number;
 }
 
-const storedCartItems = localStorage.getItem("pickme-cart");
+const storedCartItems = localStorage.getItem("enchante-cart");
 
 const initialState: CartState = {
   cartItems: storedCartItems ? JSON.parse(storedCartItems) : [],
@@ -44,7 +44,7 @@ const cartSlice = createSlice({
         toast.success(`${newCartItem.name} added to cart`, { position: "bottom-right", autoClose: 500, });
       }
 
-      localStorage.setItem("pickme-cart", JSON.stringify(state.cartItems));
+      localStorage.setItem("enchante-cart", JSON.stringify(state.cartItems));
     },
 
     decreaseCart(state, action: PayloadAction<CartItem>) {
@@ -61,7 +61,7 @@ const cartSlice = createSlice({
         }
       }
 
-      localStorage.setItem("pickme-cart", JSON.stringify(state.cartItems));
+      localStorage.setItem("enchante-cart", JSON.stringify(state.cartItems));
     },
 
     decreaseCartQuantity(state, action: PayloadAction<CartItem>) {
@@ -75,7 +75,7 @@ const cartSlice = createSlice({
         }
       }
 
-      localStorage.setItem("pickme-cart", JSON.stringify(state.cartItems));
+      localStorage.setItem("enchante-cart", JSON.stringify(state.cartItems));
     },
 
     removeFromCart(state, action: PayloadAction<CartItem>) {
@@ -90,7 +90,7 @@ const cartSlice = createSlice({
         });
       }
 
-      localStorage.setItem("pickme-cart", JSON.stringify(state.cartItems));
+      localStorage.setItem("enchante-cart", JSON.stringify(state.cartItems));
     },
 
 
@@ -115,13 +115,13 @@ const cartSlice = createSlice({
       state.cartTotalQuantity = quantity;
       state.cartTotalAmount = parseFloat(total.toFixed(2));
 
-      localStorage.setItem("pickme-cart", JSON.stringify(state.cartItems));
+      localStorage.setItem("enchante-cart", JSON.stringify(state.cartItems));
     },
 
 
     clearCart(state) {
       state.cartItems = [];
-      localStorage.setItem("pickme-cart", JSON.stringify(state.cartItems));
+      localStorage.setItem("enchante-cart", JSON.stringify(state.cartItems));
       toast.error("Cart cleared", { position: "bottom-right", autoClose: 500, });
     },
   },

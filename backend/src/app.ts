@@ -3,6 +3,7 @@ import morgan from "morgan";
 import cors from "cors"
 import createHttpError, { isHttpError } from "http-errors";
 import authRoutes from "./routes/auth";
+import productRoutes from "./routes/products";
 import { checkout } from "./routes/stripe";
 const app = express();
 app.use(cors());
@@ -13,11 +14,11 @@ app.use(express.json());
 
 // authentication 
 app.use('/auth', authRoutes);
-
+app.use('/products', productRoutes);
 app.use("/stripe", checkout);
 
 app.get("/", (req, res) =>
-    res.json({ success: true, message: "pickme api is running!" })
+    res.json({ success: true, message: "enchante api is running!" })
 );
 
 
