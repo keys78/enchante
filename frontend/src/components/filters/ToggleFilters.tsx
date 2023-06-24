@@ -10,6 +10,7 @@ type FilterProps = {
 
 const ToggleFilters: React.FC<FilterProps> = ({ title, selectedFilter, options, handleFilterClick }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isColorGroup] = useState(true)
 
   const caretStyle = {
     transform: isOpen ? "rotate(90deg)" : "rotate(0)",
@@ -42,15 +43,32 @@ const ToggleFilters: React.FC<FilterProps> = ({ title, selectedFilter, options, 
         {options.map(option => (
           <li
             key={option}
-            className={`pl-2 ${selectedFilter === option ? "active-hero-text" : "active-hero-text-before cursor-pointer my-2"}`}
+            className={`pl-2 capitalize pb-1 pt-2 hover:bg-gray-100 ${selectedFilter === option ? "active-hero-text" : "active-hero-text-before cursor-pointer my-2"}`}
             onClick={() => handleFilterClick(option)}
           >
-            {option}
+            {isColorGroup && selectedFilter !== option ? (
+              <div className="grid grid-cols-2">
+                <span>{option}</span>
+                {isColorGroup && option === "white" ? (
+                  <div style={{ border: `2px solid ${'#000'}` }} className="h-[20px] w-[20px] rounded-[100%] flex items-center justify-center">
+                  <div style={{ background: `${'#fbfbfb'}` }} className="h-[12px] w-[12px] rounded-[100%]"></div>
+                </div>
+                ) : (
+                  <div style={{ border: `2px solid ${option}` }} className="h-[20px] w-[20px] rounded-[100%] flex items-center justify-center">
+                  <div style={{ background: `${option}` }} className="h-[12px] w-[12px] rounded-[100%]"></div>
+                </div>
+                )
+              }
+              </div>
+            ) : (
+              option
+            )}
           </li>
+
         ))}
       </ul>
 
-    </div>
+    </div >
   );
 };
 

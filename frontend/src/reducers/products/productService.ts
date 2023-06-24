@@ -1,5 +1,4 @@
 import axios from "axios"
-import { Product } from "../../types"
 
 
 const config = {
@@ -18,9 +17,15 @@ const getSingleProduct = async (productId: string) => {
     return data
 }
 
+const searchProducts = async (queryParam: string) => {
+    const { data } = await axios.get(import.meta.env.VITE_APP_BASE_API + `products/search/${queryParam}`, config)
+    return data
+}
+
 const productService = {
     getAllProducts,
-    getSingleProduct
+    getSingleProduct,
+    searchProducts
 }
 
   export default productService;
