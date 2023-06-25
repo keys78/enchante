@@ -9,7 +9,7 @@ export const useAddToCart = () => {
 
 
   return (product: Product) => {
-    const existingCartItem = cart.cartItems.find((item: CartItem) => item.id === product.id);
+    const existingCartItem = cart.cartItems.find((item: CartItem) => item._id === product._id);
     if (existingCartItem) {
       return;
     } else {

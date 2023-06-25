@@ -13,7 +13,7 @@ import image_ss_xx from '../assets/png/img_ss_xx.jpg'
 
 export const products: Product[] = [
     {
-        id: '32423',
+        _id: '32423',
         category: 'men',
         name: 'Iphone Pro MAX long-lasting lipstick, the perfect addition to your makeup collection. Our lipstick offers a wide range of',
         image: image_s_x,
@@ -28,7 +28,7 @@ export const products: Product[] = [
         star_ratings: 3,
     },
     {
-        id: '3242243',
+        _id: '3242243',
         category: 'women',
         name: 'WOmen Red',
         image: image_ss_x,
@@ -43,7 +43,7 @@ export const products: Product[] = [
         star_ratings: 1,
     },
     {
-        id: '23522',
+        _id: '23522',
         category: 'men',
         name: 'Apple Vision Pro',
         image: image_ss_xx,
@@ -58,7 +58,7 @@ export const products: Product[] = [
         star_ratings: 5,
     },
     {
-        id: '2342',
+        _id: '2342',
         category: 'women',
         name: 'Mara Mo',
         image: image_s_2,
@@ -73,7 +73,7 @@ export const products: Product[] = [
         star_ratings: 5,
     },
     {
-        id: '99403',
+        _id: '99403',
         category: 'pants',
         name: 'Pie Chart',
         image: image_ss_x,

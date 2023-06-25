@@ -60,7 +60,6 @@ const RangeSlider: React.FC<RangerProps> = ({ priceRange, setPriceRange }) => {
         };
     }, [getMaxPrice]);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     function getMaxPrice(): number {
         let maxPrice = 0;
         products.forEach((product: Product) => {

@@ -17,9 +17,10 @@ const getSingleProduct = async (productId: string) => {
     return data
 }
 
-const searchProducts = async (queryParam: string) => {
+const searchProducts = async (queryParam: any) => {
     const { data } = await axios.get(import.meta.env.VITE_APP_BASE_API + `products/search/${queryParam}`, config)
-    return data
+    console.log('resultttttttt', data)
+    return data.data
 }
 
 const productService = {
@@ -28,4 +29,4 @@ const productService = {
     searchProducts
 }
 
-  export default productService;
+export default productService;

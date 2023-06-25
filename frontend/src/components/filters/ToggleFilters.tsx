@@ -35,7 +35,7 @@ const ToggleFilters: React.FC<FilterProps> = ({ title, selectedFilter, options, 
       </div>
       <ul className="filter-options-list mt-1" style={optionsStyle}>
         <li
-          className={`pl-2 ${selectedFilter === "all" ? "active-hero-text" : "active-hero-text-before cursor-pointer my-2"}`}
+          className={`pl-2 hover:text-orangeSkin transition duration-300 text-[14px] ${selectedFilter === "all" ? "active-hero-text" : "active-hero-text-before cursor-pointer my-2"}`}
           onClick={() => handleFilterClick("all")}
         >
           All
@@ -43,22 +43,22 @@ const ToggleFilters: React.FC<FilterProps> = ({ title, selectedFilter, options, 
         {options.map(option => (
           <li
             key={option}
-            className={`pl-2 capitalize pb-1 pt-2 hover:bg-gray-100 ${selectedFilter === option ? "active-hero-text" : "active-hero-text-before cursor-pointer my-2"}`}
+            className={`pl-2 capitalize pb-1 pt-1 hover:text-orangeSkin transition duration-300 text-[14px] ${selectedFilter === option ? "active-hero-text" : "active-hero-text-before cursor-pointer my-2"}`}
             onClick={() => handleFilterClick(option)}
           >
             {isColorGroup && selectedFilter !== option ? (
               <div className="grid grid-cols-2">
                 <span>{option}</span>
                 {isColorGroup && option === "white" ? (
-                  <div style={{ border: `2px solid ${'#000'}` }} className="h-[20px] w-[20px] rounded-[100%] flex items-center justify-center">
-                  <div style={{ background: `${'#fbfbfb'}` }} className="h-[12px] w-[12px] rounded-[100%]"></div>
-                </div>
+                  <div style={{ border: `2px solid ${'#000'}` }} className="h-[14px] w-[14px] rounded-[100%] flex items-center justify-center">
+                    <div style={{ background: `${'#fbfbfb'}` }} className="h-[12px] w-[12px] rounded-[100%]"></div>
+                  </div>
                 ) : (
-                  <div style={{ border: `2px solid ${option}` }} className="h-[20px] w-[20px] rounded-[100%] flex items-center justify-center">
-                  <div style={{ background: `${option}` }} className="h-[12px] w-[12px] rounded-[100%]"></div>
-                </div>
+                  <div style={{ border: `2px solid ${option}` }} className="h-[14px] w-[14px] rounded-[100%] flex items-center justify-center">
+                    <div style={{ background: `${option}` }} className="h-[7px] w-[7px] p-2 rounded-[100%]"></div>
+                  </div>
                 )
-              }
+                }
               </div>
             ) : (
               option

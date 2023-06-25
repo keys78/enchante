@@ -15,7 +15,7 @@ const Footer = () => {
         <div className="s-991:flex block s-767:py-[40px] py-[20px] item-start">
           <div className="s-1440:min-w-[450px] s-767:min-w-[200px] min-w-[100%] s-991:pb-0 pb-[30px]">
             <LogoMain logo_width="s-480:w-[170px] w-[120px]" />
-            <p className="max-w-[350px] s-767:text-[16px] text-[14px] w-full pt-[14px]">The midas in sourcing and curating high-end fashion products.</p>
+            <p className="max-w-[350px] s-767:text-[16px] text-[14px] w-full pt-[14px] pr-[10px]">The midas in sourcing and curating high-end fashion products.</p>
           </div>
 
           <div className="w-full">

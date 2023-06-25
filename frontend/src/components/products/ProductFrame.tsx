@@ -33,7 +33,7 @@ const ProductFrame = ({ product, key, isFlexDisplay, price_font_size, discount_f
     const addQuantity = useAddQuantity();
     const decreaseQuantity = useDecreaseQuantity();
     const [animationKey, setAnimationKey] = useState<number>(0);
-    const existingCartItem = cart.cartItems.find((item: CartItem) => item.id === product._id);
+    const existingCartItem = cart.cartItems.find((item: CartItem) => item._id === product._id);
     const dispatch = useAppDispatch();
     const { recentlyViewed } = useAppSelector(state => state.products)
 

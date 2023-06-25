@@ -15,6 +15,16 @@ interface Props {
 }
 
 const AllFilters = ({ allFilterCompStyles, setShowFiltersBar }: Props) => {
+    function getMaxPrice(): number {
+        let maxPrice = 0;
+        products.forEach((product: Product) => {
+          if (product.price > maxPrice) {
+            maxPrice = product.price;
+          }
+        });
+        return maxPrice;
+      }
+      
     const dispatch = useAppDispatch();
     const { width } = useWindowSize();
     const { products, filteredProducts } = useAppSelector((state: RootState) => state.products);
@@ -30,13 +40,13 @@ const AllFilters = ({ allFilterCompStyles, setShowFiltersBar }: Props) => {
     });
 
 
-    function getMaxPrice(): number {
-        let maxPrice = 0;
-        products.forEach((product: Product) => {
-            if (product.price > maxPrice) { maxPrice = product.price; }
-        });
-        return maxPrice;
-    }
+    // function getMaxPrice(): number {
+    //     let maxPrice = 0;
+    //     products.forEach((product: Product) => {
+    //         if (product.price > maxPrice) { maxPrice = product.price; }
+    //     });
+    //     return maxPrice;
+    // }
 
 
     const handleFilterClick = (filterType: 'category' | 'color' | 'brand', filterValue: string) => {

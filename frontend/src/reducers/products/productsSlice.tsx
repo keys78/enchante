@@ -37,7 +37,7 @@ interface ProductsState {
 const initialState: ProductsState = {
   products: [],
   filteredProducts: [],
-  product:emptyProduct,
+  product: emptyProduct,
   recentlyViewed: storedRecentlyViewed ? JSON.parse(storedRecentlyViewed) : [],
   filterTerms: {},
   isError: false,
@@ -54,7 +54,7 @@ export const getAllProducts = createAsyncThunk<Product[], void>(
       return await productService.getAllProducts();
     } catch (error: any) {
       errorHandler(error, thunkAPI);
-      throw error; // Rethrow the error to propagate it to the rejected case
+      throw error;
     }
   }
 );
@@ -66,9 +66,20 @@ export const getSingleProduct = createAsyncThunk<Product, { productId: string; }
       return await productService.getSingleProduct(productId)
     } catch (error: any) {
       errorHandler(error, thunkAPI)
-      if(error.response && error.response.status === 404) {
-        window.location.href = "/user/dashboard"
-      }
+      throw error;
+    }
+  }
+);
+
+export const searchProducts = createAsyncThunk<Product[], { queryParam: any }>(
+  'products/search',
+  async ({ queryParam }, thunkAPI) => {
+    try {
+      const searchResults = await productService.searchProducts(queryParam);
+      return searchResults || [];
+    } catch (error: any) {
+      errorHandler(error, thunkAPI);
+      throw error;
     }
   }
 );
@@ -296,6 +307,20 @@ const productsSlice = createSlice({
         state.isLoading = false
         state.isError = true
         state.message = action.payload as string
+      })
+      .addCase(searchProducts.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(searchProducts.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.products = action.payload
+        state.filteredProducts = action.payload
+      })
+      .addCase(searchProducts.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload || "Something went wrong";
       })
       .addCase(getSingleProduct.pending, (state) => {
         state.isLoading = true

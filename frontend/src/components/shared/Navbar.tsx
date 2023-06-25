@@ -3,7 +3,7 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../network/hooks";
 import { getTotals } from "../../reducers/cart/cartSlice";
 import { RootState } from "../../network/store";
-import { List, MagnifyingGlass, ShoppingCartSimple, UserCircle, X } from "@phosphor-icons/react";
+import { BaseballCap, Dress, List, MagnifyingGlass, Pants, ShoppingCartSimple, UserCircle, X } from "@phosphor-icons/react";
 import FilterSearch from "../UI/FilterSearch";
 import useWindowSize from "../hooks/useWindowSize";
 import Sidebar from "../sidebar/Sidebar";
@@ -23,9 +23,9 @@ const NavBar = () => {
   const cart = useAppSelector((state: RootState) => state.cart);
   // const auth = true;
   const options = [
-    { label: 'Men', value: 'men' },
-    { label: 'Women', value: 'women' },
-    { label: 'Pants', value: 'pants' },
+    { label: 'Men', value: 'men', icon: <BaseballCap /> },
+    { label: 'Women', value: 'women', icon: <Dress /> },
+    { label: 'Pants', value: 'pants', icon: <Pants /> },
   ];
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const NavBar = () => {
 
   useEffect(() => {
     const isSticky = () => {
-      const header: any = document.querySelector('.header-section');
+      const header = document.querySelector('.header-section');
       const scrollTop = window.scrollY;
       scrollTop >= 50 ? header?.classList.add('is-sticky') : header?.classList.remove('is-sticky');
     };
@@ -96,7 +96,7 @@ const NavBar = () => {
             {
               width < 767 && showSearchBar &&
               <motion.div
-                variants={searchBarVariants as any}
+                variants={searchBarVariants}
                 initial="initial"
                 animate="final"
                 exit="exit"
@@ -125,7 +125,7 @@ const NavBar = () => {
               <AnimatePresence>
                 {showUserCTA &&
                   <motion.div
-                    variants={modalVariants as any}
+                    variants={modalVariants}
                     initial="initial"
                     animate="final"
                     exit="exit"

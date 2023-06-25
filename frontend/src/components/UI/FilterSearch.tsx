@@ -1,12 +1,12 @@
 import { MagnifyingGlass } from '@phosphor-icons/react';
 import React, { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { useAppDispatch } from '../../network/hooks';
-import { filterProductsByCategory } from '../../reducers/products/productsSlice';
+import { useNavigate } from 'react-router-dom';
+
 
 type Option = {
   label: string;
   value: string;
+  icon: any;
 };
 
 type FilterSearchProps = {
@@ -14,7 +14,7 @@ type FilterSearchProps = {
 };
 
 const FilterSearch: React.FC<FilterSearchProps> = ({ options }) => {
-  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const [filteredOptions, setFilteredOptions] = useState<Option[]>(options);
@@ -45,8 +45,8 @@ const FilterSearch: React.FC<FilterSearchProps> = ({ options }) => {
   const handleOptionClick = (option: Option) => {
     setSearchValue(option.label);
     setIsOpen(false);
-    dispatch(filterProductsByCategory({category: option.label.toLowerCase()}))
-    console.log(option.label)
+    const queryParams = new URLSearchParams({ q: option.label });
+    navigate(`/catalog/?${queryParams.toString()}`);
   };
 
   const handleClickOutside = (event: MouseEvent) => {
@@ -62,9 +62,9 @@ const FilterSearch: React.FC<FilterSearchProps> = ({ options }) => {
     }
 
     return filteredOptions.map((option) => (
-      <Link to={`/products/?${option.value}`} onClick={() => handleOptionClick(option)} key={option.value}>
-        <li >{option.label}</li>
-      </Link>
+      <div onClick={() => handleOptionClick(option)} key={option.value}>
+       <li className='flex items-center'>{option.icon} &nbsp; {option.label}</li>
+      </div>
     ));
   };
 

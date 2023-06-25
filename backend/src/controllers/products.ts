@@ -60,30 +60,28 @@ export const getProduct: RequestHandler = async (req, res, next) => {
 //   };
   
 export const searchProducts: RequestHandler = async (req, res, next) => {
-    const { queryParam } = req.params;
-  
-    if (!queryParam) {
-        throw createHttpError(400, "Missing query parameter")
-    }
-  
-    try {
-      const searchResults = await ProductModel.find({
-        $or: [
-          { category: { $regex: new RegExp(`^${queryParam}$`, 'i') } },
-          { name: { $regex: queryParam, $options: 'i' } },
-          { brand: { $regex: queryParam, $options: 'i' } },
-        ],
-      }).exec();
+  const { queryParam } = req.params;
 
-      if (searchResults.length === 0) {
-        return res.json({ message: 'No matching results found' });
-      }  
-  
-      res.json({ results: searchResults });
-    } catch (error) {
-      next(error);
-    }
-  };
+  if (!queryParam) {
+    throw createHttpError(400, "Missing query parameter");
+  }
+
+  try {
+    const searchResults = await ProductModel.find({
+      $or: [
+        { category: { $regex: new RegExp(`^${queryParam}$`, 'i') } },
+        { name: { $regex: queryParam, $options: 'i' } },
+        { brand: { $regex: queryParam, $options: 'i' } },
+      ],
+    }).exec();
+
+    res.json({ data: searchResults || [] }); // Return an empty array if searchResults is falsy
+
+  } catch (error) {
+    next(error);
+  }
+};
+
   
 
 // Create a product

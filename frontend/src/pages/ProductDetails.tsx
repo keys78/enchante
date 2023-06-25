@@ -34,7 +34,7 @@ const ProductDetails = () => {
     const [animationKey, setAnimationKey] = useState<number>(0);
     const [loved, seLoved] = useState<boolean>(false);
     const [activeSize, setActiveSize] = useState<number>(0);
-    const existingCartItem = cart.cartItems.find((item: CartItem) => item.id === id);
+    const existingCartItem = cart.cartItems.find((item: CartItem) => item._id === id);
     const [activeTab, setActiveTab] = useState("Product Description");
 
 

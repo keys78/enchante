@@ -90,7 +90,7 @@ const Cart = () => {
                   <div className="px-[10px]">
                     {cart.cartItems &&
                       cart.cartItems.map((cartItem: CartItem) => (
-                        <div className="s-480:flex items-start justify-between rounded-[5px] mb-[12px] my-[20px]" key={cartItem.id}>
+                        <div className="s-480:flex items-start justify-between rounded-[5px] mb-[12px] my-[20px]" key={cartItem._id}>
                           <div className="flex space-x-5">
                             <img className="s-700:max-w-[300px] max-w-[120px] w-full rounded-[5px]" src={cartItem.image} alt={cartItem.name} />
                             <div className="w-full">

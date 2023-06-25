@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 
 
 interface CartItem {
-  id: string;
+  _id: string;
   name: string,
   image: string,
   desc: string,
@@ -32,8 +32,8 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart(state, action: PayloadAction<CartItem>) {
-      const { id } = action.payload;
-      const existingItem = state.cartItems.find((item) => item.id === id);
+      const { _id } = action.payload;
+      const existingItem = state.cartItems.find((item) => item._id === _id);
 
       if (existingItem) {
         existingItem.cartQuantity += 1;
@@ -48,8 +48,8 @@ const cartSlice = createSlice({
     },
 
     decreaseCart(state, action: PayloadAction<CartItem>) {
-      const { id } = action.payload;
-      const itemIndex = state.cartItems.findIndex((item) => item.id === id);
+      const { _id } = action.payload;
+      const itemIndex = state.cartItems.findIndex((item) => item._id === _id);
 
       if (itemIndex >= 0) {
         if (state.cartItems[itemIndex].cartQuantity > 1) {
@@ -65,8 +65,8 @@ const cartSlice = createSlice({
     },
 
     decreaseCartQuantity(state, action: PayloadAction<CartItem>) {
-      const { id } = action.payload;
-      const itemIndex = state.cartItems.findIndex((item) => item.id === id);
+      const { _id } = action.payload;
+      const itemIndex = state.cartItems.findIndex((item) => item._id === _id);
 
       if (itemIndex >= 0) {
         if (state.cartItems[itemIndex].cartQuantity > 1) {
@@ -79,14 +79,14 @@ const cartSlice = createSlice({
     },
 
     removeFromCart(state, action: PayloadAction<CartItem>) {
-      const { id } = action.payload;
-      const selectedCartItem = state.cartItems.find((item) => item.id === id);
+      const { _id } = action.payload;
+      const selectedCartItem = state.cartItems.find((item) => item._id === _id);
 
       if (selectedCartItem) {
-        state.cartItems = state.cartItems.filter((item) => item.id !== id);
+        state.cartItems = state.cartItems.filter((item) => item._id !== _id);
         toast.error(`${selectedCartItem.name} removed from cart`, {
           position: "bottom-right",
-          delay: 1000,
+          autoClose: 500,
         });
       }
 
