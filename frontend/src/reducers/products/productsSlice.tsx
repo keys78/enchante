@@ -25,9 +25,12 @@ const emptyProduct: Product = {
 interface ProductsState {
   products: Product[];
   filteredProducts: Product[];
+  totalPages:any,
+
   product: Product;
   filterTerms: Record<any, any>;
   recentlyViewed: Product[];
+
   isError: boolean,
   isSuccess: boolean,
   isLoading: boolean,
@@ -37,9 +40,12 @@ interface ProductsState {
 const initialState: ProductsState = {
   products: [],
   filteredProducts: [],
+  totalPages: '',
+
   product: emptyProduct,
   recentlyViewed: storedRecentlyViewed ? JSON.parse(storedRecentlyViewed) : [],
   filterTerms: {},
+
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -47,11 +53,11 @@ const initialState: ProductsState = {
 };
 
 
-export const getAllProducts = createAsyncThunk<Product[], void>(
+export const getAllProducts = createAsyncThunk<Product[], number>(
   '/products',
-  async (_, thunkAPI) => {
+  async (page, thunkAPI) => {
     try {
-      return await productService.getAllProducts();
+      return await productService.getAllProducts(page);
     } catch (error: any) {
       errorHandler(error, thunkAPI);
       throw error;
@@ -300,8 +306,9 @@ const productsSlice = createSlice({
       .addCase(getAllProducts.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.products = action.payload
-        state.filteredProducts = action.payload
+        state.products = action.payload.results
+        state.filteredProducts = action.payload.results
+        state.totalPages = action.payload.totalPages
       })
       .addCase(getAllProducts.rejected, (state, action) => {
         state.isLoading = false

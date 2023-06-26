@@ -7,8 +7,8 @@ const config = {
     },
 }
 
-const getAllProducts = async () => {
-    const { data } = await axios.get(import.meta.env.VITE_APP_BASE_API + `products/`, config)
+const getAllProducts = async (page: number) => {
+    const { data } = await axios.get(import.meta.env.VITE_APP_BASE_API + `products/?page=${page}&limit=1`, config)
     return data
 }
 
@@ -20,7 +20,7 @@ const getSingleProduct = async (productId: string) => {
 const searchProducts = async (queryParam: any) => {
     const { data } = await axios.get(import.meta.env.VITE_APP_BASE_API + `products/search/${queryParam}`, config)
     console.log('resultttttttt', data)
-    return data.data
+    return data.results
 }
 
 const productService = {

@@ -15,14 +15,19 @@ import Loader from '../components/UI/Loader';
 import SortComponent from '../components/sort/SortComponent';
 import FiltersDisplayPanel from '../components/UI/FiltersDisplayPanel';
 import MobileProductsFilters from '../components/filters/MobileProductsFilters';
+import Pagination from '../components/pagination/Pagination';
 
 
 const Products = () => {
     const dispatch = useAppDispatch();
     const { width } = useWindowSize();
-    const { filteredProducts, isLoading, isError, isSuccess, message } = useAppSelector((state: RootState) => state.products);
+    const { filteredProducts, totalPages, isLoading, isError, isSuccess, message } = useAppSelector((state: RootState) => state.products);
     const [showFiltersBar, setShowFiltersBar] = useState<boolean>(false)
     const [isFlexDisplay, setIsFlexDisplay] = useState<boolean>(false)
+    const [currentPage, setCurrentPage] = useState(1);
+    // const [totalPages, setTotalPages] = useState(0);
+
+    console.log('tp', totalPages)
 
     const [searchInput, setSearchInput] = useState("");
     const navigate = useNavigate();
@@ -39,8 +44,8 @@ const Products = () => {
 
 
     useEffect(() => {
-        dispatch(getAllProducts())
-    }, [dispatch])
+        dispatch(getAllProducts(currentPage))
+    }, [dispatch, currentPage])
 
 
 
@@ -119,6 +124,11 @@ const Products = () => {
                                         )}
                                     </div>
                                     <p className='pt-[30px]'>Add Pagination from backend here</p>
+                                    <Pagination 
+                                    currentPage={currentPage}
+                                    setCurrentPage={setCurrentPage}
+                                    totalPages={totalPages}
+                                    />
                                 </>
                             ) : (
                                 <p className='flex items-center justify-center h-[300px]'>No products available.</p>
@@ -126,11 +136,15 @@ const Products = () => {
                         </div>
                     </div>
                 }
+
                 <MobileProductsFilters showFiltersBar={showFiltersBar} setShowFiltersBar={setShowFiltersBar} />
+
             </div>
 
             <RecentlyViewed />
             <NewsLetter newsletter_extras={'s-480:pb-20 pb-10 s-767:pt-[144px] pt-[50px]'} />
+
+
         </section>
     );
 };
