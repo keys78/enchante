@@ -32,6 +32,7 @@ const Catalog = () => {
 
     useEffect(() => {
         dispatch(searchProducts({ queryParam: queryParam }))
+        setSearchInput(queryParam as any)
     }, [dispatch, queryParam])
 
     const navigate = useNavigate();

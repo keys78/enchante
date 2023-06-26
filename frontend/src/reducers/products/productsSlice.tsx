@@ -26,6 +26,7 @@ interface ProductsState {
   products: Product[];
   filteredProducts: Product[];
   totalPages:any,
+  totalResults:any,
 
   product: Product;
   filterTerms: Record<any, any>;
@@ -41,6 +42,7 @@ const initialState: ProductsState = {
   products: [],
   filteredProducts: [],
   totalPages: '',
+  totalResults: '',
 
   product: emptyProduct,
   recentlyViewed: storedRecentlyViewed ? JSON.parse(storedRecentlyViewed) : [],
@@ -309,6 +311,7 @@ const productsSlice = createSlice({
         state.products = action.payload.results
         state.filteredProducts = action.payload.results
         state.totalPages = action.payload.totalPages
+        state.totalResults = action.payload.totalResults
       })
       .addCase(getAllProducts.rejected, (state, action) => {
         state.isLoading = false

@@ -206,15 +206,19 @@ select:-webkit-autofill:focus {
 
 
 
+.pagination-controls:disabled {
+  background: gray !important;
+  cursor: not-allowed;
+}
 
 .page-link {
   position: relative;
   display: inline-flex;
-  /* border: 1px solid #dee2e6; */
-  /* background-color: #ffffff; */
-  padding: 0px 10px;
+  /* border: 1px solid #dee2e6;
+  background-color: #ffffff; */
+  padding: 4px 16px;
   color: #545F7D;
-  font-size: 10px;
+  font-size: 16px;
   font-weight: 500;
   text-decoration: none;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
@@ -222,24 +226,10 @@ select:-webkit-autofill:focus {
   cursor: pointer;
 }
 
-.page-link:first-child {
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
-}
-
-.page-link:last-child {
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
-}
-
-.page-link:not(:first-child) {
-  margin-left: -1px;
-}
 
 .page-link:hover,
 .page-link:focus {
-  color: #545F7D;
-  /* background-color: #e9ecef; */
+  color: red;
 }
 
 .page-link:focus {
@@ -248,8 +238,10 @@ select:-webkit-autofill:focus {
 
 .page-link.active {
   z-index: 2;
-  color: #000000;
-  font-weight: 700;
+  /* color: #f75a2c; */
+  color: #000;
+  font-weight: 800;
+  border-bottom:2px solid #f75a2c;
 }
 
 .page-link.disabled {

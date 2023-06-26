@@ -20,17 +20,14 @@ import Pagination from '../components/pagination/Pagination';
 
 const Products = () => {
     const dispatch = useAppDispatch();
-    const { width } = useWindowSize();
-    const { filteredProducts, totalPages, isLoading, isError, isSuccess, message } = useAppSelector((state: RootState) => state.products);
-    const [showFiltersBar, setShowFiltersBar] = useState<boolean>(false)
-    const [isFlexDisplay, setIsFlexDisplay] = useState<boolean>(false)
-    const [currentPage, setCurrentPage] = useState(1);
-    // const [totalPages, setTotalPages] = useState(0);
-
-    console.log('tp', totalPages)
-
-    const [searchInput, setSearchInput] = useState("");
     const navigate = useNavigate();
+    const { width } = useWindowSize();
+    const [isFlexDisplay, setIsFlexDisplay] = useState<boolean>(false)
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [searchInput, setSearchInput] = useState<string>("");
+    const [showFiltersBar, setShowFiltersBar] = useState<boolean>(false)
+    const { filteredProducts, totalPages, isLoading, isError, isSuccess, message } = useAppSelector((state: RootState) => state.products);
+   
 
     const handleSearchInputChange = (event) => {
         setSearchInput(event.target.value);
@@ -82,7 +79,9 @@ const Products = () => {
                                     {width < 767 && <Funnel onClick={() => setShowFiltersBar(!showFiltersBar)} size={22} color="#141414" />}
                                     <SquaresFour className='cursor-pointer' onClick={() => setIsFlexDisplay(false)} size={width < 767 ? 22 : 30} color={`${isFlexDisplay ? "" : '#f75a2c'}`} weight="fill" />
                                     <ListDashes className='cursor-pointer' onClick={() => setIsFlexDisplay(true)} size={width < 767 ? 22 : 30} color={`${!isFlexDisplay ? "" : '#f75a2c'}`} weight="fill" />
-                                    <div><span className='font-medium s-480:text-[20px] text-[16px]'>{filteredProducts.length}</span> result{filteredProducts.length === 1 ? '' : 's'}</div>
+                                    <div><span className='font-medium s-480:text-[20px] text-[16px]'>{filteredProducts.length}
+                                    {/* <sup>{totalResults}</sup> */}
+                                    </span> result{filteredProducts.length === 1 ? '' : 's' }</div>
                                 </div>
                                 {width > 1024 &&
                                     <form onSubmit={handleSearchSubmit} className='flex space-x-3 items-center justify-center w-full mx-auto'>
@@ -123,12 +122,13 @@ const Products = () => {
                                             </div>
                                         )}
                                     </div>
-                                    <p className='pt-[30px]'>Add Pagination from backend here</p>
-                                    <Pagination 
-                                    currentPage={currentPage}
-                                    setCurrentPage={setCurrentPage}
-                                    totalPages={totalPages}
-                                    />
+                                    <div className='pt-[100px]'>
+                                        <Pagination
+                                            currentPage={currentPage}
+                                            setCurrentPage={setCurrentPage}
+                                            totalPages={totalPages}
+                                        />
+                                    </div>
                                 </>
                             ) : (
                                 <p className='flex items-center justify-center h-[300px]'>No products available.</p>

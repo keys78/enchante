@@ -8,7 +8,7 @@ const config = {
 }
 
 const getAllProducts = async (page: number) => {
-    const { data } = await axios.get(import.meta.env.VITE_APP_BASE_API + `products/?page=${page}&limit=1`, config)
+    const { data } = await axios.get(import.meta.env.VITE_APP_BASE_API + `products/?page=${page}&limit=6`, config)
     return data
 }
 
