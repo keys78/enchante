@@ -26,8 +26,8 @@ const Products = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [searchInput, setSearchInput] = useState<string>("");
     const [showFiltersBar, setShowFiltersBar] = useState<boolean>(false)
-    const { filteredProducts, totalPages, isLoading, isError, isSuccess, message } = useAppSelector((state: RootState) => state.products);
-   
+    const { filteredProducts, totalPages, totalResults, isLoading, isError, isSuccess, message } = useAppSelector((state: RootState) => state.products);
+
 
     const handleSearchInputChange = (event) => {
         setSearchInput(event.target.value);
@@ -58,7 +58,7 @@ const Products = () => {
                 {isError && <div className='flex items-center justify-center my-[200px] text-red-400'>An error has occured: {message}</div>}
                 {
                     isSuccess && !isError && !isLoading &&
-                    <div className='flex items-start space-x-5'>
+                    <div className='flex items-start s-767:space-x-5'>
                         {width > 767 && (<AllFilters allFilterCompStyles={'min-w-[200px] max-w-[200px] w-full rounded-[5px] border p-1'} />)}
 
                         <div className='w-full'>
@@ -79,9 +79,8 @@ const Products = () => {
                                     {width < 767 && <Funnel onClick={() => setShowFiltersBar(!showFiltersBar)} size={22} color="#141414" />}
                                     <SquaresFour className='cursor-pointer' onClick={() => setIsFlexDisplay(false)} size={width < 767 ? 22 : 30} color={`${isFlexDisplay ? "" : '#f75a2c'}`} weight="fill" />
                                     <ListDashes className='cursor-pointer' onClick={() => setIsFlexDisplay(true)} size={width < 767 ? 22 : 30} color={`${!isFlexDisplay ? "" : '#f75a2c'}`} weight="fill" />
-                                    <div><span className='font-medium s-480:text-[20px] text-[16px]'>{filteredProducts.length}
-                                    {/* <sup>{totalResults}</sup> */}
-                                    </span> result{filteredProducts.length === 1 ? '' : 's' }</div>
+                                    <div><span className='font-medium s-480:text-[20px] text-[16px]'>{filteredProducts.length} <span className='font-normal text-xs'>of {totalResults}</span>
+                                    </span> result{filteredProducts.length === 1 ? '' : 's'}</div>
                                 </div>
                                 {width > 1024 &&
                                     <form onSubmit={handleSearchSubmit} className='flex space-x-3 items-center justify-center w-full mx-auto'>
@@ -122,7 +121,7 @@ const Products = () => {
                                             </div>
                                         )}
                                     </div>
-                                    <div className='pt-[100px]'>
+                                    <div className='s-480:pt-[100px] pt-[50px] s-480:pb-0 pb-[50px] '>
                                         <Pagination
                                             currentPage={currentPage}
                                             setCurrentPage={setCurrentPage}
@@ -138,7 +137,6 @@ const Products = () => {
                 }
 
                 <MobileProductsFilters showFiltersBar={showFiltersBar} setShowFiltersBar={setShowFiltersBar} />
-
             </div>
 
             <RecentlyViewed />

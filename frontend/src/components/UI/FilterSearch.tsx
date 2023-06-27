@@ -73,7 +73,7 @@ const FilterSearch: React.FC<FilterSearchProps> = ({ options }) => {
       <div className="flex items-center rounded-[5px] bg-[#fafafa] cursor-pointer">
         <input
           type="text"
-          placeholder="Search..."
+          placeholder="Quick Search..."
           onClick={handleInputClick}
           value={searchValue}
           onChange={handleInputChange}

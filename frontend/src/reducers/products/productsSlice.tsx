@@ -27,27 +27,33 @@ interface ProductsState {
   filteredProducts: Product[];
   totalPages:any,
   totalResults:any,
-
   product: Product;
   filterTerms: Record<any, any>;
   recentlyViewed: Product[];
-
   isError: boolean,
   isSuccess: boolean,
   isLoading: boolean,
   message: any;
 }
 
+interface GetAllProductsPayload {
+  results: Product[]; // Add the 'results' property
+  totalPages: number;
+  totalResults: number;
+}
+
+
+
+
+
 const initialState: ProductsState = {
   products: [],
   filteredProducts: [],
   totalPages: '',
   totalResults: '',
-
   product: emptyProduct,
   recentlyViewed: storedRecentlyViewed ? JSON.parse(storedRecentlyViewed) : [],
   filterTerms: {},
-
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -55,7 +61,7 @@ const initialState: ProductsState = {
 };
 
 
-export const getAllProducts = createAsyncThunk<Product[], number>(
+export const getAllProducts = createAsyncThunk<GetAllProductsPayload, number>(
   '/products',
   async (page, thunkAPI) => {
     try {
@@ -66,6 +72,7 @@ export const getAllProducts = createAsyncThunk<Product[], number>(
     }
   }
 );
+
 
 export const getSingleProduct = createAsyncThunk<Product, { productId: string; }>(
   'products/product/:productId',
@@ -79,11 +86,11 @@ export const getSingleProduct = createAsyncThunk<Product, { productId: string; }
   }
 );
 
-export const searchProducts = createAsyncThunk<Product[], { queryParam: any }>(
+export const searchProducts = createAsyncThunk<GetAllProductsPayload, { queryParam: any, page: number }>(
   'products/search',
-  async ({ queryParam }, thunkAPI) => {
+  async ({ queryParam, page }, thunkAPI) => {
     try {
-      const searchResults = await productService.searchProducts(queryParam);
+      const searchResults = await productService.searchProducts(queryParam, page);
       return searchResults || [];
     } catch (error: any) {
       errorHandler(error, thunkAPI);
@@ -324,8 +331,10 @@ const productsSlice = createSlice({
       .addCase(searchProducts.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.products = action.payload
-        state.filteredProducts = action.payload
+        state.products = action.payload.results
+        state.filteredProducts = action.payload.results
+        state.totalPages = action.payload.totalPages
+        state.totalResults = action.payload.totalResults
       })
       .addCase(searchProducts.rejected, (state, action) => {
         state.isLoading = false

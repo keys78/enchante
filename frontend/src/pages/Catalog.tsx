@@ -17,25 +17,28 @@ import SortComponent from '../components/sort/SortComponent';
 import FiltersDisplayPanel from '../components/UI/FiltersDisplayPanel';
 import MobileProductsFilters from '../components/filters/MobileProductsFilters';
 import SearchFailedIcon from '../assets/svg/SearchFailedIcon';
+import Pagination from '../components/pagination/Pagination';
 
 
 const Catalog = () => {
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const { width } = useWindowSize();
     const { search } = useLocation();
     const queryParam = new URLSearchParams(search).get('q');
-    const { filteredProducts, isLoading, isError, isSuccess, message } = useAppSelector((state: RootState) => state.products);
+    const { filteredProducts, totalPages, totalResults, isLoading, isError, isSuccess, message } = useAppSelector((state: RootState) => state.products);
     const [showFiltersBar, setShowFiltersBar] = useState<boolean>(false)
     const [isFlexDisplay, setIsFlexDisplay] = useState<boolean>(false)
     const [searchInput, setSearchInput] = useState("");
+    const [currentPage, setCurrentPage] = useState<number>(1);
+
 
 
     useEffect(() => {
-        dispatch(searchProducts({ queryParam: queryParam }))
-        setSearchInput(queryParam as any)
-    }, [dispatch, queryParam])
+        dispatch(searchProducts({ queryParam: queryParam, page: currentPage }));
+        setSearchInput(queryParam as never);
+    }, [dispatch, queryParam, currentPage]);
 
-    const navigate = useNavigate();
 
     const handleSearchInputChange = (event) => {
         setSearchInput(event.target.value);
@@ -84,7 +87,7 @@ const Catalog = () => {
                                     {width < 767 && <Funnel onClick={() => setShowFiltersBar(!showFiltersBar)} size={22} color="#141414" />}
                                     <SquaresFour className='cursor-pointer' onClick={() => setIsFlexDisplay(false)} size={width < 767 ? 22 : 30} color={`${isFlexDisplay ? "" : '#f75a2c'}`} weight="fill" />
                                     <ListDashes className='cursor-pointer' onClick={() => setIsFlexDisplay(true)} size={width < 767 ? 22 : 30} color={`${!isFlexDisplay ? "" : '#f75a2c'}`} weight="fill" />
-                                    <div><span className='font-medium s-480:text-[20px] text-[16px]'>{filteredProducts?.length}</span> result{filteredProducts?.length === 1 ? '' : 's'}</div>
+                                    <div><span className='font-medium s-480:text-[20px] text-[16px]'>{filteredProducts?.length} <span className='font-normal text-xs'>of {totalResults}</span></span> result{filteredProducts?.length === 1 ? '' : 's'}</div>
                                 </div>
                                 {width > 1024 &&
                                     <form onSubmit={handleSearchSubmit} className='flex space-x-3 items-center justify-center w-full mx-auto'>
@@ -123,7 +126,13 @@ const Catalog = () => {
                                             </div>
                                         )}
                                     </div>
-                                    <p className='pt-[30px]'>Add Pagination from backend here</p>
+                                    <div className='s-480:pt-[100px] pt-[50px] s-480:pb-0 pb-[50px] '>
+                                        <Pagination
+                                            currentPage={currentPage}
+                                            setCurrentPage={setCurrentPage}
+                                            totalPages={totalPages}
+                                        />
+                                    </div>
                                 </>
                             ) : (
                                 <div className='flex items-center justify-center s-480:text-[16px] text-[14px]'>

@@ -11,6 +11,7 @@ interface Props {
 
 const MobileProductsFilters = ({setShowFiltersBar, showFiltersBar}: Props) => {
     const  { width } = useWindowSize();
+
     return (
         <AnimatePresence>
             {
