@@ -15,6 +15,23 @@ export const modalVariants = {
     }
   };
 
+export const modalVariantsShort = {
+    initial: {
+      opactity: 0,
+      x: "-10vw",
+    },
+    final: {
+      opactity: 1,
+      x: 0,
+      transition: { duration: 0.4, delay: 0}
+    },
+    exit: {
+      opactity: 0,
+      x: "-10vw",
+      transition: { duration: 0.2, delay: 0.1 },
+    }
+  };
+
 export const searchBarVariants = {
     initial: {
       opactity: 0,

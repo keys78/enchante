@@ -29,12 +29,16 @@ const Login = () => {
     const token2 = storedToken ? JSON.parse(storedToken) : '';
 
 
+    // useEffect(() => {
+    //     if (token2 || token) {
+    //         navigate('/')
+    //     }
+    //     dispatch(reset())
+    // }, [isError, isSuccess, message, navigate, dispatch, token, token2])
+
     useEffect(() => {
-        if (token2 || token) {
-            navigate('/')
-        }
-        dispatch(reset())
-    }, [isError, isSuccess, message, navigate, dispatch, token, token2])
+        // navigate('/')
+    }, [navigate])
 
 
     const LoginValidation = yup.object().shape({

@@ -11,6 +11,7 @@ export const paginateResults = async (model: mongoose.Model<unknown>, query: unk
     const skipCount = (parsedPage - 1) * parsedLimit;
 
     const results = await model.find(query)
+        .sort({ _id: 1 })
         .skip(skipCount)
         .limit(parsedLimit)
         .exec();

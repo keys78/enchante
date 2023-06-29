@@ -207,7 +207,7 @@ select:-webkit-autofill:focus {
 
 
 .pagination-controls:disabled {
-  background: gray !important;
+  /* background: gray !important; */
   cursor: not-allowed;
 }
 

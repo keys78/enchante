@@ -3,6 +3,7 @@ import morgan from "morgan";
 import cors from "cors"
 import createHttpError, { isHttpError } from "http-errors";
 import authRoutes from "./routes/auth";
+import userRoutes from "./routes/user";
 import productRoutes from "./routes/products";
 import { checkout } from "./routes/stripe";
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.json());
 
 // authentication 
 app.use('/auth', authRoutes);
+app.use('/user', userRoutes);
 app.use('/products', productRoutes);
 app.use("/stripe", checkout);
 

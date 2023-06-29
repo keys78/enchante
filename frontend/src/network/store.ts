@@ -2,20 +2,22 @@ import { configureStore } from '@reduxjs/toolkit'
 import cartReducer from '../reducers/cart/cartSlice'
 import productsReducer from '../reducers/products/productsSlice'
 import authReducer from '../reducers/auth/authSlice'
+import userReducer from '../reducers/private/user/userSlice'
 
 
 
 export const store = configureStore({
   reducer: {
-        auth: authReducer,
-        cart: cartReducer,
-        products: productsReducer,
+    auth: authReducer,
+    user: userReducer,
+    cart: cartReducer,
+    products: productsReducer,
 
-      },
-      middleware: (getDefaultMiddleware) => getDefaultMiddleware({
-        immutableCheck: false,
-        serializableCheck: false,
-    })
+  },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    immutableCheck: false,
+    serializableCheck: false,
+  })
 })
 
 

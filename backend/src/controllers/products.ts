@@ -3,13 +3,24 @@ import ProductModel, { Product } from "../models/product";
 import createHttpError from "http-errors";
 import mongoose from "mongoose";
 import { paginateResults } from "../middlewares/pagination";
-
-
+import { getFromCache, setInCache } from "../redisCache";
 
 
 export const getAllProducts: RequestHandler = async (req, res, next) => {
   try {
+    const limit = Number(req.query.limit)
+    const cacheKey = `allProducts:${limit}`;
+
+    const cachedData = await getFromCache(cacheKey);
+    if (cachedData) {
+      res.status(200).json(cachedData);
+      return;
+    }
+
     const paginatedResults = await paginateResults(ProductModel, {}, req);
+
+    // Store the fetched data in the cache
+    await setInCache(cacheKey, paginatedResults);
 
     res.status(200).json(paginatedResults);
   } catch (error) {
@@ -58,7 +69,7 @@ export const searchProducts: RequestHandler = async (req, res, next) => {
       ],
     }, req);
 
-    res.json(searchResults || [] );
+    res.json(searchResults || []);
   } catch (error) {
     next(error);
   }

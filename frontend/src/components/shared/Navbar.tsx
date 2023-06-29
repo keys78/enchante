@@ -8,9 +8,10 @@ import FilterSearch from "../UI/FilterSearch";
 import useWindowSize from "../hooks/useWindowSize";
 import Sidebar from "../sidebar/Sidebar";
 import { AnimatePresence, motion } from "framer-motion";
-import { modalVariants, searchBarVariants } from "../../utils/animations";
+import { modalVariantsShort, searchBarVariants } from "../../utils/animations";
 import LogoMain from "../../assets/svg/LogoMain";
 import UserActionsPanel from "../UI/UserActionsPanel";
+import { getUser } from "../../reducers/private/user/userSlice";
 
 
 const NavBar = () => {
@@ -21,7 +22,9 @@ const NavBar = () => {
   const [showSearchBar, setShowSearchBar] = useState<boolean>(false)
   const { cartTotalQuantity } = useAppSelector((state) => state.cart);
   const cart = useAppSelector((state: RootState) => state.cart);
-  // const auth = true;
+  const storedToken = localStorage.getItem('ent-token');
+  const { user } = useAppSelector(state => state.user)
+
   const options = [
     { label: 'Men', value: 'men', icon: <BaseballCap /> },
     { label: 'Women', value: 'women', icon: <Dress /> },
@@ -30,7 +33,10 @@ const NavBar = () => {
 
   useEffect(() => {
     dispatch(getTotals());
-  }, [dispatch, cart]);
+    if (storedToken) {
+      dispatch(getUser())
+    }
+  }, [dispatch, cart, storedToken]);
 
   useEffect(() => {
     const isSticky = () => {
@@ -121,11 +127,16 @@ const NavBar = () => {
           {
             width > 767 &&
             <div className="w-[26px] relative">
-              <UserCircle onClick={() => setShowUserCTA(!showUserCTA)} size={26} className="cursor-pointer" color="#070707" weight="regular" />
+              {user?.username ?
+                <span className="text-black" >{user?.username}</span>
+                :
+                <UserCircle onClick={() => setShowUserCTA(!showUserCTA)} size={26} className="cursor-pointer" color="#070707" weight="regular" />
+
+              }
               <AnimatePresence>
                 {showUserCTA &&
                   <motion.div
-                    variants={modalVariants}
+                    variants={modalVariantsShort}
                     initial="initial"
                     animate="final"
                     exit="exit"
@@ -153,7 +164,6 @@ const NavBar = () => {
 
         {width < 1024 &&
           <Sidebar isSideBar={isSideBar} setIsSideBar={setIsSideBar} />
-
         }
       </header>
 
