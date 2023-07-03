@@ -1,9 +1,11 @@
 import { RequestHandler } from "express";
 import ProductModel, { Product } from "../models/product";
+import UserModel from "../models/user";
 import createHttpError from "http-errors";
 import mongoose from "mongoose";
 import { paginateResults } from "../middlewares/pagination";
 import { getFromCache, setInCache } from "../redisCache";
+import { AuthRequest } from "./user";
 
 
 export const getAllProducts: RequestHandler = async (req, res, next) => {
@@ -27,6 +29,35 @@ export const getAllProducts: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+
+
+// export const getAllProducts: RequestHandler = async (req, res, next) => {
+//   try {
+//     const limit = Number(req.query.limit);
+//     const cacheKey = `allProducts:${limit}`;
+
+//     const cachedData = await getFromCache(cacheKey);
+//     if (cachedData) {
+//       res.status(200).json(cachedData);
+//       return;
+//     }
+
+//     const paginatedResults = await paginateResults(ProductModel, {}, req);
+
+//     // const productIds = paginatedResults.results.map(product => product.savedItems);
+
+//     // Populate the savedItems field with product data
+//     await ProductModel.populate(paginatedResults.results, { path: 'savedItems', select: 'name price' });
+
+//     // Store the fetched data in the cache
+//     await setInCache(cacheKey, paginatedResults);
+
+//     res.status(200).json(paginatedResults);
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+
 
 
 
@@ -74,6 +105,64 @@ export const searchProducts: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+
+
+export const toggleSavedProduct: RequestHandler = async (req: AuthRequest, res, next) => {
+  try {
+    const productId = req.params.productId;
+    const userId = req.user.id;
+
+    if (!mongoose.isValidObjectId(productId)) {
+      throw createHttpError(400, 'Invalid product ID');
+    }
+
+    const user = await UserModel.findById(userId).exec();
+
+    if (!user) {
+      throw createHttpError(404, 'User not found');
+    }
+
+    const isProductSaved = user.savedItems.includes(productId);
+
+    if (isProductSaved) {
+      user.savedItems = user.savedItems.filter((item) => item.toString() !== productId);
+    } else {
+      user.savedItems.push(productId);
+    }
+
+    await user.save();
+
+    res.json({ message: 'Saved Items Updated' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+// export const toggleSavedProduct: RequestHandler = async (req: AuthRequest, res, next) => {
+//   try {
+//     const productId = req.params.productId;
+//     const userId = req.user.id; // Assuming you have user authentication in place
+
+//     if (!mongoose.isValidObjectId(productId)) {
+//       throw createHttpError(400, 'Invalid product ID');
+//     }
+
+//     const user = await UserModel.findByIdAndUpdate(userId, {
+//       $addToSet: { savedItems: productId },
+//       $pull: { savedItems: productId }
+//     }, { new: true }).exec();
+
+//     if (!user) {
+//       throw createHttpError(404, 'User not found');
+//     }
+
+//     res.json({ message: 'Saved Items Updated' });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+
 
 
 

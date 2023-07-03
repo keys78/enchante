@@ -12,7 +12,6 @@ import Catalog from "./pages/Catalog";
 import Accounts from "./pages/user/Accounts";
 import SavedItems from "./pages/user/SavedItems";
 import PrivateRoute from "./components/PrivateRoute";
-import { useAppSelector } from "./network/hooks";
 
 
 function App() {
@@ -25,8 +24,8 @@ function App() {
         <Routes>
           <Route path="/auth/login" element={<Login />} />
           <Route path="/auth/signup" element={<SignUp />} />
-          <Route path="/user/accounts" element={<PrivateRoute Component={<Layout><Accounts /></Layout>} redirectPath={'/auth/login'} />} />
-          <Route path="/user/saved-items" element={<PrivateRoute Component={<Layout><SavedItems /></Layout>} redirectPath={'/auth/login'} />} />
+          <Route path="/user/accounts" element={<PrivateRoute Component={<Layout><Accounts /></Layout>} />} />
+          <Route path="/user/saved-items" element={<PrivateRoute Component={<Layout><SavedItems /></Layout>} />} />
 
 
 

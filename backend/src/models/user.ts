@@ -11,6 +11,7 @@ interface User extends mongoose.Document {
     username: string;
     email: string;
     verified: boolean,
+    savedItems: string[];
     password: string;
     resetPasswordToken: string,
     resetPasswordExpire: string,
@@ -36,6 +37,7 @@ const userSchema = new Schema({
         }
     },
     verified: { type: Boolean, default: false },
+    savedItems: [{ type: Schema.Types.ObjectId, ref: 'Product' }], 
     password: {
         type: String,
         required: [true, "Please add a password"],

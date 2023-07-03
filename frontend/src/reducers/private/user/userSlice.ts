@@ -88,6 +88,7 @@ const storedToken = typeof window !== 'undefined' ? localStorage.getItem('ent-to
 const token2 = storedToken ? JSON.parse(storedToken) : '';
 
 type User = {
+    savedItems: any;
     _id: string;
     username: string;
     email: string;
@@ -107,6 +108,7 @@ const initialState: IUserState = {
         _id: '',
         username: '',
         email: '',
+        savedItems:[],
         role: ''
     },
     isError: false,

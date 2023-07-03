@@ -23,9 +23,8 @@ const Cart = () => {
   const { cartTotalQuantity } = useAppSelector((state) => state.cart);
   const [animationKey, setAnimationKey] = useState<number>(0);
   const addQuantity = useAddQuantity();
+  const { user } = useAppSelector(state => state.user)
   const decreaseQuantity = useDecreaseQuantity();
-  //   const auth = useSelector((state) => state.auth);
-  const auth = false
   useEffect(() => {
     dispatch(getTotals());
   }, [cart, dispatch]);
@@ -92,7 +91,7 @@ const Cart = () => {
                       cart.cartItems.map((cartItem: CartItem) => (
                         <div className="s-480:flex items-start justify-between rounded-[5px] mb-[12px] my-[20px]" key={cartItem._id}>
                           <div className="flex space-x-5">
-                            <img className="s-700:max-w-[300px] max-w-[120px] w-full rounded-[5px]" src={cartItem.image} alt={cartItem.name} />
+                            <img className="s-700:max-w-[300px] max-w-[120px] w-full rounded-[5px] bg-red-500" src={cartItem.image} alt={cartItem.name} />
                             <div className="w-full">
                               <h3 className="font-medium s-480:mb-[50px] s-480:text-[16px] text-[13px]">{width > 767 ? characterLimit(cartItem?.name, 50) : characterLimit(cartItem?.name, 20)}</h3>
                               {width > 480 &&
@@ -177,7 +176,7 @@ const Cart = () => {
                   <span className="font-medium opacity-60">Discount</span>
                   <span className="montserrat font-medium s-480:text-[18px]">${0}</span>
                 </div>
-                {auth ? (
+                {user?.username ? (
                   <CheckoutButton cartItems={cart.cartItems} />
                 ) : (
                   <button
