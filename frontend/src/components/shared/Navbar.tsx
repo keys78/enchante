@@ -3,7 +3,7 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../network/hooks";
 import { getTotals } from "../../reducers/cart/cartSlice";
 import { RootState } from "../../network/store";
-import { BaseballCap, Dress, List, MagnifyingGlass, Pants, ShoppingCartSimple, UserCircle, X } from "@phosphor-icons/react";
+import { BaseballCap, CaretDown, Dress, List, MagnifyingGlass, Pants, ShoppingCartSimple, UserCircle, X } from "@phosphor-icons/react";
 import FilterSearch from "../UI/FilterSearch";
 import useWindowSize from "../hooks/useWindowSize";
 import Sidebar from "../sidebar/Sidebar";
@@ -127,12 +127,17 @@ const NavBar = () => {
           {
             width > 767 &&
             <div className="w-[26px] relative">
-              {user?.username ?
-                <span className="text-black" >{user?.username}</span>
-                :
-                <UserCircle onClick={() => setShowUserCTA(!showUserCTA)} size={26} className="cursor-pointer" color="#070707" weight="regular" />
+              <div className="flex items-center space-x-1 cursor-pointer" onClick={() => setShowUserCTA(!showUserCTA)}>
+                <div>
+                  {user?.username ?
+                    <span className="text-black uppercase font-medium text-[18px]" >{user?.username.slice(0, 2)}</span>
+                    :
+                    <div className=""><UserCircle size={26} color="#070707" weight="regular" /></div>
+                  }
+                </div>
+                <div className="h-[10px] w-[10px] -mt-1"><CaretDown size={15} color="#070707" weight="regular" /></div>
+              </div>
 
-              }
               <AnimatePresence>
                 {showUserCTA &&
                   <motion.div

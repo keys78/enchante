@@ -19,6 +19,7 @@ const Login = () => {
     const [inputType, setInputType] = useState<string>("password");
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
+    const { user } = useAppSelector(state => state.user);
 
 
     const { isSuccess, isLoading, isError, message, token } = useAppSelector((state) => state.auth);
@@ -37,8 +38,13 @@ const Login = () => {
     // }, [isError, isSuccess, message, navigate, dispatch, token, token2])
 
     useEffect(() => {
-        // navigate('/')
-    }, [navigate])
+        // if (user.username) {
+        //     navigate('/')
+        // }
+             if (token2 || token) {
+            navigate('/')
+        }
+    }, [navigate, token, token2, user.username])
 
 
     const LoginValidation = yup.object().shape({
