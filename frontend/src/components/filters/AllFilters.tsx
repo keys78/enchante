@@ -112,8 +112,7 @@ const AllFilters = ({ allFilterCompStyles, setShowFiltersBar }: Props) => {
                 selectedFilter={selectedFilters.color}
                 options={getUniqueFilterValues(products, 'color')}
                 handleFilterClick={(filterValue) => handleFilterClick('color', filterValue)}
-                isColorGroupSelected={isColorGroupSelected} 
-
+                isColorGroupSelected={isColorGroupSelected}
             />
 
             <ToggleFilters

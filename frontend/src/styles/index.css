@@ -200,28 +200,12 @@ select:-webkit-autofill:focus {
 @keyframes shimmer { from { background-position: 100% 100%;} to { background-position: 0 0;}} 
 .product-image { 
   width: 100%; height: 250px;background-image: linear-gradient(90deg, #d6d6d6 0%, #d6d6d6 40%, #f2f2f2 50%, #f2f2f2 55%, #d6d6d6 65%, #d6d6d6 100%);
-
- background-size: 400%; animation: shimmer 1000ms infinite;
-
+ background-size: 400%; animation: shimmer 1000ms infinite
 }
 
-.round-rainbow-button {
-  background: linear-gradient(to right, red, orange,blue, yellow, green, indigo, violet, pink, cyan);
-}
-
-.round-rainbow-button:hover {
-  animation: rainbow 4s linear infinite;
-}
-
-@keyframes rainbow {
-  0% {
-    background-position: 0% 50%;
-  }
-  100% {
-    background-position: 100% 50%;
-  }
-}
-
+.round-rainbow-button { background: linear-gradient(to right, red, orange,blue, yellow, green, indigo, violet, pink, cyan);}
+.round-rainbow-button:hover { animation: rainbow 4s linear infinite;}
+@keyframes rainbow { 0% {   background-position: 0% 50%; } 100% {   background-position: 100% 50%; }}
 
 
 

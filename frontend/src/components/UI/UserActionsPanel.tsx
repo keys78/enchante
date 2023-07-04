@@ -18,7 +18,6 @@ const UserActionsPanel = ({ setShowUserCTA }: Props) => {
     function logoutUser() {
         dispatch(logout())
         dispatch(resetUser());
-        localStorage.removeItem('countdown_start');
         window.location.href = '/';
     }
 

@@ -12,10 +12,11 @@ import Catalog from "./pages/Catalog";
 import Accounts from "./pages/user/Accounts";
 import SavedItems from "./pages/user/SavedItems";
 import PrivateRoute from "./components/PrivateRoute";
+import AccountLayout from "./components/AccountLayout";
 
 
 function App() {
- 
+
 
 
   return (
@@ -42,7 +43,13 @@ function App() {
             }
           /> */}
 
-          <Route path="/user/accounts" element={<Layout><Accounts /></Layout>} />
+          <Route path="/user/account" element={
+            <Layout>
+              <AccountLayout title={"My Account"}>
+                <Accounts />
+              </AccountLayout>
+            </Layout>}
+          />
           <Route path="/user/saved-items" element={<Layout><SavedItems /></Layout>} />
           <Route path="/" element={<Layout><Home /></Layout>} />
           <Route path="/products" element={<Layout><Products /></Layout>} />
