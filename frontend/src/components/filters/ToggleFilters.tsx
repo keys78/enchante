@@ -5,12 +5,12 @@ type FilterProps = {
   title: string;
   selectedFilter: string;
   options: string[];
+  isColorGroupSelected?: boolean,
   handleFilterClick: (value: string) => void;
 };
 
-const ToggleFilters: React.FC<FilterProps> = ({ title, selectedFilter, options, handleFilterClick }) => {
+const ToggleFilters: React.FC<FilterProps> = ({ title, selectedFilter, options, isColorGroupSelected, handleFilterClick }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isColorGroup] = useState(true)
 
   const caretStyle = {
     transform: isOpen ? "rotate(90deg)" : "rotate(0)",
@@ -38,7 +38,14 @@ const ToggleFilters: React.FC<FilterProps> = ({ title, selectedFilter, options, 
           className={`pl-2 hover:text-orangeSkin transition duration-300 text-[14px] ${selectedFilter === "all" ? "active-hero-text" : "active-hero-text-before cursor-pointer my-2"}`}
           onClick={() => handleFilterClick("all")}
         >
-          All
+          {selectedFilter === 'all' && isColorGroupSelected ? (
+            <div className="flex items-center space-x-2">
+              <div className="inline-block w-[14px] h-[14px] rounded-full round-rainbow-button"></div>
+              <span>All</span>
+            </div>
+          ) : (
+            'All'
+          )}
         </li>
         {options.map(option => (
           <li
@@ -46,10 +53,9 @@ const ToggleFilters: React.FC<FilterProps> = ({ title, selectedFilter, options, 
             className={`pl-2 capitalize pb-1 pt-1 hover:text-orangeSkin transition duration-300 text-[14px] ${selectedFilter === option ? "active-hero-text" : "active-hero-text-before cursor-pointer my-2"}`}
             onClick={() => handleFilterClick(option)}
           >
-            {isColorGroup && selectedFilter !== option ? (
-              <div className="grid grid-cols-2">
-                <span>{option}</span>
-                {isColorGroup && option === "white" ? (
+            {isColorGroupSelected && selectedFilter !== option ? (
+              <div className="flex items-center space-x-2">
+                {isColorGroupSelected && option === "white" ? (
                   <div style={{ border: `2px solid ${'#000'}` }} className="h-[14px] w-[14px] rounded-[100%] flex items-center justify-center">
                     <div style={{ background: `${'#fbfbfb'}` }} className="h-[12px] w-[12px] rounded-[100%]"></div>
                   </div>
@@ -57,8 +63,8 @@ const ToggleFilters: React.FC<FilterProps> = ({ title, selectedFilter, options, 
                   <div style={{ border: `2px solid ${option}` }} className="h-[14px] w-[14px] rounded-[100%] flex items-center justify-center">
                     <div style={{ background: `${option}` }} className="h-[7px] w-[7px] p-2 rounded-[100%]"></div>
                   </div>
-                )
-                }
+                )}
+                <span>{option}</span>
               </div>
             ) : (
               option

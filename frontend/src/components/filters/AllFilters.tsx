@@ -32,21 +32,13 @@ const AllFilters = ({ allFilterCompStyles, setShowFiltersBar }: Props) => {
     const [selectedRating, setSelectedRating] = useState<number | null>(null);
     const [isFreeShipment, setIsFreeShipment] = useState<boolean>(false)
     const [isNewProduct, setIsNewProduct] = useState<boolean>(false)
+    const [isColorGroupSelected] = useState(true)
     const [selectedFilters, setSelectedFilters] = useState({
         category: "all",
         color: "all",
         brand: "all",
         star_ratings: ''
     });
-
-
-    // function getMaxPrice(): number {
-    //     let maxPrice = 0;
-    //     products.forEach((product: Product) => {
-    //         if (product.price > maxPrice) { maxPrice = product.price; }
-    //     });
-    //     return maxPrice;
-    // }
 
 
     const handleFilterClick = (filterType: 'category' | 'color' | 'brand', filterValue: string) => {
@@ -120,6 +112,8 @@ const AllFilters = ({ allFilterCompStyles, setShowFiltersBar }: Props) => {
                 selectedFilter={selectedFilters.color}
                 options={getUniqueFilterValues(products, 'color')}
                 handleFilterClick={(filterValue) => handleFilterClick('color', filterValue)}
+                isColorGroupSelected={isColorGroupSelected} 
+
             />
 
             <ToggleFilters

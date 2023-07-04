@@ -38,7 +38,12 @@ const UserActionsPanel = ({ setShowUserCTA }: Props) => {
                     </Link>
                 )}
                 {pagesList.map(val =>
-                    <li onClick={() => { navigate(val?.link); setShowUserCTA(false) }} className={`py-3 px-4 hover:bg-[#e4e4e4] cursor-pointer ${location.pathname === val.link && 'bg-[#e4e4e4]'}`}>{val.title}</li>
+                    <li
+                        onClick={() => { navigate(val?.link); setShowUserCTA(false) }}
+                        className={`py-3 px-4 hover:bg-[#e4e4e4] cursor-pointer  ${location.pathname === val.link && 'bg-[#e4e4e4] text-orangeSkin'}`}
+                    >
+                        {val.title}
+                    </li>
                 )}
                 {user.username && (
                     <li onClick={() => logoutUser()} className="pt-[8px] border-t mt-[8px] px-4">
@@ -50,4 +55,4 @@ const UserActionsPanel = ({ setShowUserCTA }: Props) => {
     )
 }
 
-export default UserActionsPanel
+export default UserActionsPanel;

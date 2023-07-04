@@ -38,6 +38,13 @@ const ProductDetails = () => {
     const { user } = useAppSelector(state => state.user)
     const isSaved = user?.savedItems.find(val => val._id === product?._id)
 
+    const toggleSavedButton = () => {
+        dispatch(toggleSavedProducts({ productId: product?._id }))
+        setTimeout(() => {
+            dispatch(getSingleProduct({ productId: id as string }))
+        }, 2000)
+    }
+
 
     const getCurrentIndex = (tab) => {
         setActiveTab(tab);
@@ -78,12 +85,15 @@ const ProductDetails = () => {
                     <div className="w-full s-767:pl-[30px]">
                         <div className="flex items-start justify-between">
                             <h1 className="s-767:text-[24px] text-[16px]">{product?.name} <span className="italic text-[12px]">{product?.brand}</span></h1>
-                            <div className="cursor-pointer" onClick={() => { dispatch(toggleSavedProducts({productId: product?._id})); dispatch(getSingleProduct({ productId: id as string }))}}>
+                            <motion.div
+                                whileTap={{ scale: 1.05 }}
+                                whileHover={{ scale: 0.85 }}
+                                className="cursor-pointer" onClick={toggleSavedButton}>
                                 {!isSaved ?
                                     <Heart size={22} color="#f75a2c" weight="regular" /> :
                                     <Heart size={22} color="#f75a2c" weight="fill" />
                                 }
-                            </div>
+                            </motion.div>
                         </div>
                         <div className="flex items-center space-x-5">
                             <div className='flex mt-2'>

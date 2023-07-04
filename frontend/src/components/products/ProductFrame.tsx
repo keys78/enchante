@@ -25,7 +25,7 @@ interface Props {
     discount_font_size?: string,
     shop_button?: string,
     icon_size: number,
-    details_adjust?:string,
+    details_adjust?: string,
     showControls?: boolean,
     showSavedToggle?: boolean,
 }
@@ -53,6 +53,14 @@ const ProductFrame = ({ product, key, isFlexDisplay, price_font_size, discount_f
             dispatch(addToRecentlyViewed(recentlyViewedItem));
         }
     };
+
+
+    const toggleSavedItems = () => {
+        dispatch(toggleSavedProducts({ productId: product?._id }));
+        setTimeout(() => {
+            dispatch(getUser())
+        }, 3000)
+    }
 
 
     return (
@@ -88,9 +96,13 @@ const ProductFrame = ({ product, key, isFlexDisplay, price_font_size, discount_f
                                 {product?.discount && <span className='s-1024:text-[16px] s-767:text-[12px] text-[10px] font-medium montserrat opacity-60 discount-strike'>${(product?.price * 0.3) + product?.price}</span>}
                             </div>
                         </div>
+
                         <Link to={`/products/product/${product._id}`}>
                             <div className='s-767:pl-0 pl-2 s-767:pb-0 pb-2 s-767:text-[16px] text-[12px] s-767:absolute s-767:bottom-4 s-767:left-4 underline flex space-x-3 items-center text-orangeSkin'> more details {<CaretRight />}</div>
                         </Link>
+
+                        {showSavedToggle && <div onClick={toggleSavedItems} className='text-orangeSkin underline cursor-pointer s-767:text-[16px] text-[12px] s-767:pl-0 pl-2 py-2'> Remove </div>}
+
 
 
                         {showControls && <div className='s-767:absolute s-767:bottom-4 s-767:right-4'>
@@ -150,8 +162,7 @@ const ProductFrame = ({ product, key, isFlexDisplay, price_font_size, discount_f
                                     {product?.discount && <span className={`font-medium montserrat opacity-80 discount-strike ${discount_font_size}`}>${(product?.price * 0.3) + product?.price}</span>}
                                 </div>
                                 {product?.free_shipping && width < 480 && <img title='Free Shipping' className='w-[44px]' src={free_shipping} alt="" />}
-                                {showSavedToggle && <div onClick={() => { dispatch(toggleSavedProducts({ productId: product?._id })); dispatch(getUser())}} className='text-orangeSkin underline cursor-pointer'> Remove </div>
-                                }
+                                {showSavedToggle && <div onClick={toggleSavedItems} className='text-orangeSkin underline cursor-pointer s-767:text-[16px] text-[12px]'> Remove </div>}
                             </div>
                             {showControls && (
                                 <div className='cartbtn-fix'>

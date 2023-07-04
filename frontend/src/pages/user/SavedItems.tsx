@@ -18,7 +18,7 @@ const SavedItems = () => {
   const [filteredSearch, setFilteredSearch] = useState(user?.savedItems)
   const [isFlexDisplay, setIsFlexDisplay] = useState<boolean>(false)
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [productPerPage] = useState<number>(10)
+  const [productPerPage] = useState<number>(9)
   const totalPages = Math.ceil(filteredSearch.length / productPerPage);
   const [searchTerm, setSearchTerm] = useState<string>("");
 
@@ -106,7 +106,7 @@ const SavedItems = () => {
         )}
       </div>
 
-      <NewsLetter newsletter_extras={'s-480:pb-20 pb-10 s-767:pt-[144px] pt-[50px]'} />
+      <NewsLetter newsletter_extras={'s-480:pb-20 pb-10 s-767:pt-[144px] pt-[20px]'} />
     </section>
   )
 }
