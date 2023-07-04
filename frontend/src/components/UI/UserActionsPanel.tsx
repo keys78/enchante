@@ -13,16 +13,15 @@ const UserActionsPanel = ({ setShowUserCTA }: Props) => {
     const navigate = useNavigate()
     const dispatch = useAppDispatch();
 
-    console.log('loccation', location)
 
     function logoutUser() {
         dispatch(logout())
-        dispatch(resetUser());
         window.location.href = '/';
+        setTimeout(() => {dispatch(resetUser());}, 3000)
     }
 
     const pagesList = [
-        { title: 'My Account', link: '/user/accounts' },
+        { title: 'My Account', link: '/user/account' },
         { title: 'My Orders', link: '/user/my-orders' },
         { title: 'Saved Items', link: '/user/saved-items' },
     ]

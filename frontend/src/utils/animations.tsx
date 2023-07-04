@@ -62,3 +62,18 @@ export const searchBarVariants = {
         },
     },
 };
+
+export const menuVariations = {
+  closed: {
+      opacity: 0,
+      y: -10,
+      pointerEvents: 'none',
+      transition: { duration: 0.2, delay: 0.2 }
+  },
+  open: {
+      opacity: 1,
+      y: 0,
+      pointerEvents: 'auto',
+      transition: { duration: 0.2 }
+  },
+};

@@ -1,6 +1,6 @@
 
 import { Navigate } from "react-router-dom";
-import { useAppSelector } from "../network/hooks";
+import { useAppSelector } from "../../network/hooks";
 
 
 const PrivateRoute = ({ Component }) => {
@@ -8,15 +8,14 @@ const PrivateRoute = ({ Component }) => {
     const token2 = JSON.parse(storedToken as string);
     const { user } = useAppSelector(state => state.user);
     const { token } = useAppSelector(state => state.auth);
-    const isAuthenticated = token2 !== null && token2 === token && user !== null;
+    const isAuthenticated = token2 !== null && user?.username!== null;
 
 
     return isAuthenticated ? (
-        Component
+        <Component />
     ) : (
         <Navigate to={'/auth/login'} replace />
     );
 };
 
 export default PrivateRoute;
-

@@ -1,13 +1,9 @@
-// import React, { ReactNode } from 'react';
-// import Footer from './shared/Footer';
-// import Navbar from './shared/Navbar';
-
 import { Link } from "react-router-dom";
-import AccountSidebar from "./sidebar/AccountSidebar";
+import AccountSidebar from "../sidebar/AccountSidebar";
 import { CaretRight } from "@phosphor-icons/react";
-import NewsLetter from "./home/NewsLetter";
-import Loader from "./UI/Loader";
-import { useAppSelector } from "../network/hooks";
+import NewsLetter from "../home/NewsLetter";
+import Loader from "../UI/Loader";
+import { useAppSelector } from "../../network/hooks";
 import { ReactNode } from "react";
 
 interface AccountLayoutProps {
@@ -17,13 +13,13 @@ interface AccountLayoutProps {
 
 
 const AccountLayout: React.FC<AccountLayoutProps> = ({ children, title }) => {
-    const { user, isLoading, isError, message } = useAppSelector(state => state.user)
+    const { isLoading, isError, message } = useAppSelector(state => state.user)
 
     return (
         <section className={`app-container w-full mt-[12px] s-1025:px-[80px] s-767:px-[40px] px-[16px] `}>
             <div className='w-full'>
                 <div className='s-480:pt-[30px] pt-[18px] pb-[18px] flex items-center space-x-2'>
-                    <span className='flex items-center space-x-2' style={{ color: '#a6a4a4' }}><Link to={'/user/accounts'}>Accounts</Link> <CaretRight size={14} /> </span> <span className='font-medium'>{title}</span>
+                    <span className='flex items-center space-x-2' style={{ color: '#a6a4a4' }}><Link to={'/user/account'}>Accounts</Link> <CaretRight size={14} /> </span> <span className='font-medium'>{title}</span>
                 </div>
 
                 <div className='s-767:flex items-start s-767:space-x-3 w-full'>

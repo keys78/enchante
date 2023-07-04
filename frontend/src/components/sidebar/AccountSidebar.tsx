@@ -9,11 +9,11 @@ const AccountSidebar = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const { width } = useWindowSize();
-    function logoutUser() {
 
+    function logoutUser() {
         dispatch(logout())
-        dispatch(resetUser());
         window.location.href = '/';
+        setTimeout(() => {dispatch(resetUser());}, 3000)
     }
 
     const pagesList = [

@@ -30,6 +30,7 @@ export default {
         newWhite:"#fdfdfd",
         textGray:"#c3c3c3",
         btnGray: "#444757",
+        mainRed: "#EA5555",
         orangeSkin:"#f75a2c",
       },
       letterSpacing: {
