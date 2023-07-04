@@ -1,13 +1,19 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { resetUser } from "../../reducers/private/user/userSlice";
 import { useAppDispatch, useAppSelector } from "../../network/hooks";
 import { logout } from "../../reducers/auth/authSlice";
 
-const UserActionsPanel = () => {
+interface Props {
+    setShowUserCTA: (arg: boolean) => void
+}
+
+const UserActionsPanel = ({ setShowUserCTA }: Props) => {
     const { user } = useAppSelector(state => state.user)
+    const location = useLocation()
     const navigate = useNavigate()
-    // const auth = false;
     const dispatch = useAppDispatch();
+
+    console.log('loccation', location)
 
     function logoutUser() {
         dispatch(logout())
@@ -15,6 +21,12 @@ const UserActionsPanel = () => {
         localStorage.removeItem('countdown_start');
         window.location.href = '/';
     }
+
+    const pagesList = [
+        { title: 'My Account', link: '/user/accounts' },
+        { title: 'My Orders', link: '/user/my-orders' },
+        { title: 'Saved Items', link: '/user/saved-items' },
+    ]
 
     return (
         <div className="bg-[#fff] w-[250px] shadow rounded-[5px]">
@@ -25,9 +37,9 @@ const UserActionsPanel = () => {
                     </li>
                     </Link>
                 )}
-                <li onClick={() => navigate('/user/accounts')} className="py-3 px-4 hover:bg-[#e4e4e4] cursor-pointer">My Account</li>
-                <li onClick={() => navigate('/user/my-orders')} className="py-3 px-4 hover:bg-[#e4e4e4] cursor-pointer">My Orders</li>
-                <li onClick={() => navigate('/user/saved-items')} className="py-3 px-4 hover:bg-[#e4e4e4] cursor-pointer">Saved Items</li>
+                {pagesList.map(val =>
+                    <li onClick={() => { navigate(val?.link); setShowUserCTA(false) }} className={`py-3 px-4 hover:bg-[#e4e4e4] cursor-pointer ${location.pathname === val.link && 'bg-[#e4e4e4]'}`}>{val.title}</li>
+                )}
                 {user.username && (
                     <li onClick={() => logoutUser()} className="pt-[8px] border-t mt-[8px] px-4">
                         <button className="bg-[#000] rounded-[5px] py-[10px] px-[auto] w-full text-[#fff] mb-[4px] font-medium">LOG OUT</button>

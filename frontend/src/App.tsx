@@ -24,8 +24,8 @@ function App() {
         <Routes>
           <Route path="/auth/login" element={<Login />} />
           <Route path="/auth/signup" element={<SignUp />} />
-          <Route path="/user/accounts" element={<PrivateRoute Component={<Layout><Accounts /></Layout>} />} />
-          <Route path="/user/saved-items" element={<PrivateRoute Component={<Layout><SavedItems /></Layout>} />} />
+          {/* <Route path="/user/accounts" element={<PrivateRoute Component={<Layout><Accounts /></Layout>} />} /> */}
+          {/* <Route path="/user/saved-items" element={<PrivateRoute Component={<Layout><SavedItems /></Layout>} />} /> */}
 
 
 
@@ -42,6 +42,8 @@ function App() {
             }
           /> */}
 
+          <Route path="/user/accounts" element={<Layout><Accounts /></Layout>} />
+          <Route path="/user/saved-items" element={<Layout><SavedItems /></Layout>} />
           <Route path="/" element={<Layout><Home /></Layout>} />
           <Route path="/products" element={<Layout><Products /></Layout>} />
           <Route path="/catalog" element={<Layout><Catalog /></Layout>} />

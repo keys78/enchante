@@ -127,7 +127,7 @@ export const toggleSavedProduct: RequestHandler = async (req: AuthRequest, res, 
     if (isProductSaved) {
       user.savedItems = user.savedItems.filter((item) => item.toString() !== productId);
     } else {
-      user.savedItems.push(productId);
+      user.savedItems.unshift(productId);
     }
 
     await user.save();

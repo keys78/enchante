@@ -146,7 +146,7 @@ const NavBar = () => {
                     animate="final"
                     exit="exit"
                     className="border-2-border-black absolute mt-[20px] -left-[220px]">
-                    <UserActionsPanel />
+                    <UserActionsPanel setShowUserCTA={setShowUserCTA}/>
                   </motion.div>
                 }
               </AnimatePresence>

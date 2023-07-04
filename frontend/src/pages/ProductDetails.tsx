@@ -14,7 +14,7 @@ import { Pager } from "../components/UI/Pager";
 import { characterLimit } from "../utils/general";
 import useWindowSize from "../components/hooks/useWindowSize";
 import NewsLetter from "../components/home/NewsLetter";
-import { getSingleProduct } from "../reducers/products/productsSlice";
+import { getSingleProduct, toggleSavedProducts } from "../reducers/products/productsSlice";
 
 const ProductDetails = () => {
     const { id } = useParams();
@@ -25,17 +25,18 @@ const ProductDetails = () => {
     useEffect(() => {
         dispatch(getSingleProduct({ productId: id as string }))
     }, [dispatch, id])
-    // const product: any = filteredProducts.find(val => val.id === id)
 
     const cart = useAppSelector((state: RootState) => state.cart);
     const addToCart = useAddToCart();
     const addQuantity = useAddQuantity();
     const decreaseQuantity = useDecreaseQuantity();
     const [animationKey, setAnimationKey] = useState<number>(0);
-    const [loved, seLoved] = useState<boolean>(false);
     const [activeSize, setActiveSize] = useState<number>(0);
     const existingCartItem = cart.cartItems.find((item: CartItem) => item._id === id);
     const [activeTab, setActiveTab] = useState("Product Description");
+
+    const { user } = useAppSelector(state => state.user)
+    const isSaved = user?.savedItems.find(val => val._id === product?._id)
 
 
     const getCurrentIndex = (tab) => {
@@ -77,8 +78,8 @@ const ProductDetails = () => {
                     <div className="w-full s-767:pl-[30px]">
                         <div className="flex items-start justify-between">
                             <h1 className="s-767:text-[24px] text-[16px]">{product?.name} <span className="italic text-[12px]">{product?.brand}</span></h1>
-                            <div className="cursor-pointer" onClick={() => seLoved(!loved)}>
-                                {!loved ?
+                            <div className="cursor-pointer" onClick={() => { dispatch(toggleSavedProducts({productId: product?._id})); dispatch(getSingleProduct({ productId: id as string }))}}>
+                                {!isSaved ?
                                     <Heart size={22} color="#f75a2c" weight="regular" /> :
                                     <Heart size={22} color="#f75a2c" weight="fill" />
                                 }

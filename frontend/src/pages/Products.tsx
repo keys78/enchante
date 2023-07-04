@@ -110,6 +110,7 @@ const Products = () => {
                                                     <ProductFrame
                                                         product={product}
                                                         showControls={true}
+                                                        details_adjust='mb-[50px]'
                                                         key={i}
                                                         isFlexDisplay={isFlexDisplay}
                                                         price_font_size='s-480:text-[18px] text-[16px] font-bold'

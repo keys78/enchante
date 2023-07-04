@@ -1,10 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 // import { products } from "../../utils/data";
-import { Product } from "../../types";
+import { IToken, Product } from "../../types";
 import errorHandler from "../../utils/errorHandler";
 import productService from "./productService";
+import { Auth } from "../auth/authSlice";
 
 const storedRecentlyViewed = localStorage.getItem("enchante-rv");
+const storedToken = typeof window !== 'undefined' ? localStorage.getItem('ent-token') : null;
+export const token2 = storedToken ? JSON.parse(storedToken) : '';
 // filterTerms: Record<string, string | null | number>;
 
 const emptyProduct: Product = {
@@ -25,8 +29,8 @@ const emptyProduct: Product = {
 interface ProductsState {
   products: Product[];
   filteredProducts: Product[];
-  totalPages:any,
-  totalResults:any,
+  totalPages: number,
+  totalResults: number,
   product: Product;
   filterTerms: Record<any, any>;
   recentlyViewed: Product[];
@@ -49,8 +53,8 @@ interface GetAllProductsPayload {
 const initialState: ProductsState = {
   products: [],
   filteredProducts: [],
-  totalPages: '',
-  totalResults: '',
+  totalPages: 0,
+  totalResults: 0,
   product: emptyProduct,
   recentlyViewed: storedRecentlyViewed ? JSON.parse(storedRecentlyViewed) : [],
   filterTerms: {},
@@ -99,6 +103,18 @@ export const searchProducts = createAsyncThunk<GetAllProductsPayload, { queryPar
   }
 );
 
+export const toggleSavedProducts = createAsyncThunk<any, any>(
+  'products/toggleSavedProduct',
+  async ({ productId }, thunkAPI) => {
+    const token: IToken = token2 || (thunkAPI.getState() as { auth: Auth }).auth.token;
+
+    try {
+      return await productService.toggleSavedProduct(token, productId)
+    } catch (error: any) {
+      errorHandler(error, thunkAPI)
+    }
+  }
+)
 
 
 
@@ -350,6 +366,17 @@ const productsSlice = createSlice({
         state.product = action.payload
       })
       .addCase(getSingleProduct.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload as string
+      })
+      .addCase(toggleSavedProducts.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(toggleSavedProducts.fulfilled, (state) => {
+        state.isLoading = false
+      })
+      .addCase(toggleSavedProducts.rejected, (state, action) => {
         state.isLoading = false
         state.isError = true
         state.message = action.payload as string

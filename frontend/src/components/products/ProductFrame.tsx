@@ -10,10 +10,11 @@ import QuantityControlsBtn from './QuantityControlsBtn';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import free_shipping from '../../assets/png/free_shipping.jpg'
-import { addToRecentlyViewed } from '../../reducers/products/productsSlice';
+import { addToRecentlyViewed, toggleSavedProducts } from '../../reducers/products/productsSlice';
 import { characterLimit } from '../../utils/general';
 import useWindowSize from '../hooks/useWindowSize';
 import sample from '../../assets/png/img_s_2.jpg'
+import { getUser } from '../../reducers/private/user/userSlice';
 
 
 interface Props {
@@ -24,10 +25,12 @@ interface Props {
     discount_font_size?: string,
     shop_button?: string,
     icon_size: number,
-    showControls?: boolean
+    details_adjust?:string,
+    showControls?: boolean,
+    showSavedToggle?: boolean,
 }
 
-const ProductFrame = ({ product, key, isFlexDisplay, price_font_size, discount_font_size, shop_button, icon_size, showControls }: Props) => {
+const ProductFrame = ({ product, key, isFlexDisplay, price_font_size, discount_font_size, shop_button, icon_size, details_adjust, showControls, showSavedToggle }: Props) => {
     const cart = useAppSelector((state: RootState) => state.cart);
     const { width } = useWindowSize();
     const addToCart = useAddToCart();
@@ -67,7 +70,8 @@ const ProductFrame = ({ product, key, isFlexDisplay, price_font_size, discount_f
                 <div className='flex mb-[16px] border s-767:p-3 rounded-[5px] '>
                     <Link to={`/products/product-details/${product._id}`}>
                         <div className='relative s-767:max-w-[400px] max-w-[300px] w-full s-767:p-0 p-[5px]'>
-                            <img className='rounded-[5px]' src={product?.image} alt={'enchanté_fashon'} />
+                            <img className='rounded-[5px]' src={sample} alt={'enchanté_fashon'} />
+                            {/* <img className='rounded-[5px]' src={product?.image} alt={'enchanté_fashon'} /> */}
                             {product?.new && <div className='absolute s-767:top-4 top-2 s-767:left-4 left-2 bg-orangeSkin text-white rounded-[5px] s-767:py-[1px] s-767:px-2 px-1 s-767:text-[16px] text-[12px]'>new</div>}
                             {product?.free_shipping && width > 767 && <img title='Free Shipping' className='absolute top-4 right-4 rounded-[30px] py-1 px-3 w-[74px]' src={free_shipping} alt="" />}
                         </div>
@@ -84,9 +88,12 @@ const ProductFrame = ({ product, key, isFlexDisplay, price_font_size, discount_f
                                 {product?.discount && <span className='s-1024:text-[16px] s-767:text-[12px] text-[10px] font-medium montserrat opacity-60 discount-strike'>${(product?.price * 0.3) + product?.price}</span>}
                             </div>
                         </div>
-                        <Link to={`/products/product/${product._id}`}> <div className='s-767:pl-0 pl-2 s-767:pb-0 pb-2 s-767:text-[16px] text-[12px] s-767:absolute s-767:bottom-4 s-767:left-4 underline flex space-x-3 items-center text-orangeSkin'> more details {<CaretRight />}
-                        </div></Link>
-                        <div className='s-767:absolute s-767:bottom-4 s-767:right-4'>
+                        <Link to={`/products/product/${product._id}`}>
+                            <div className='s-767:pl-0 pl-2 s-767:pb-0 pb-2 s-767:text-[16px] text-[12px] s-767:absolute s-767:bottom-4 s-767:left-4 underline flex space-x-3 items-center text-orangeSkin'> more details {<CaretRight />}</div>
+                        </Link>
+
+
+                        {showControls && <div className='s-767:absolute s-767:bottom-4 s-767:right-4'>
                             {existingCartItem ? (
                                 <div className='s-767:pl-0 pl-2 flex items-center space-x-4'>
                                     <QuantityControlsBtn
@@ -117,6 +124,7 @@ const ProductFrame = ({ product, key, isFlexDisplay, price_font_size, discount_f
                                 </>
                             )}
                         </div>
+                        }
                     </div>
                 </div>
             )
@@ -135,14 +143,15 @@ const ProductFrame = ({ product, key, isFlexDisplay, price_font_size, discount_f
                         </Link>
 
                         <div className='flex justify-between s-480:pt-[14px] pt-[5px]'>
-                            <div className="details s-480:mb-0 mb-[50px]">
-                                <h3 className='font-medium capitalize s-480:text-[16px] text-[14px] max-w-[250px]'>{width > 480 ? characterLimit(product?.name, 50) : characterLimit(product?.name, 30)}</h3>
+                            <div className={`details s-480:mb-0 ${details_adjust}`}>
+                                <h3 className='font-medium capitalize s-480:text-[16px] text-[14px] s-767:max-w-[100%] max-w-[250px]'>{width > 480 ? characterLimit(product?.name, 50) : characterLimit(product?.name, 30)}</h3>
                                 <div className='flex items-start space-x-3'>
                                     <span className={`font-medium montserrat ${price_font_size}`}>${product?.price}</span>
                                     {product?.discount && <span className={`font-medium montserrat opacity-80 discount-strike ${discount_font_size}`}>${(product?.price * 0.3) + product?.price}</span>}
                                 </div>
                                 {product?.free_shipping && width < 480 && <img title='Free Shipping' className='w-[44px]' src={free_shipping} alt="" />}
-
+                                {showSavedToggle && <div onClick={() => { dispatch(toggleSavedProducts({ productId: product?._id })); dispatch(getUser())}} className='text-orangeSkin underline cursor-pointer'> Remove </div>
+                                }
                             </div>
                             {showControls && (
                                 <div className='cartbtn-fix'>
