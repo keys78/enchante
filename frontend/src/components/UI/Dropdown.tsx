@@ -12,12 +12,12 @@ interface IProps {
 
 }
 
-const Dropdown = ({ label = "Status", item, setItem, placeholder }: IProps) => {
+const Dropdown = ({ label, item, setItem, placeholder }: IProps) => {
     const [showMenu, setShowMenu] = useState(false);
 
     return (
         <>
-            <h3 className="mt-6 body-md sm:text-[16px] text-[14px]">{label}</h3>
+            <h3 className="mt-6 body-md sm:text-[16px] text-[14px] capitalize">{label}</h3>
             <div className="relative">
                 <button
                     onClick={() => setShowMenu(!showMenu)}
@@ -27,7 +27,7 @@ const Dropdown = ({ label = "Status", item, setItem, placeholder }: IProps) => {
                     aria-expanded="true"
                     aria-haspopup="true"
                 >
-                    <TextInput name={'status'} disabled={status?.length > 4} type="text" placeholder={placeholder}
+                    <TextInput name={label} type="text" placeholder={placeholder}
                     />
                     <svg className="-mr-1 ml-2 h-5 w-5 fill-mainPurple" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                         <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
@@ -46,7 +46,7 @@ const Dropdown = ({ label = "Status", item, setItem, placeholder }: IProps) => {
                                 {item.map((column: any, i: number) => (
                                     <a
                                         onClick={() => {
-                                            setItem('status', column)
+                                            setItem(label, column)
                                             setShowMenu(false)
                                         }}
                                         key={i}

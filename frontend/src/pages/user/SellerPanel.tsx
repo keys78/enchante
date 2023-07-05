@@ -1,4 +1,4 @@
-import { Formik, FieldArray, Form } from 'formik'
+import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import TextInput from '../../components/UI/TextInput'
 import TextArea from '../../components/UI/TextArea'
@@ -7,6 +7,9 @@ import { useAppDispatch, useAppSelector } from '../../network/hooks'
 import { useEffect } from 'react'
 import { getAllProducts } from '../../reducers/products/productsSlice'
 import { Product } from '../../types'
+import Tooltip from '../../components/atoms/Tooltip'
+import Checkbox from '../../components/atoms/Checkbox'
+import UploadPhoto from '../../components/atoms/UploadPhoto'
 
 const SellerPanel = () => {
     const { products } = useAppSelector(state => state.products)
@@ -14,8 +17,10 @@ const SellerPanel = () => {
     const validate = Yup.object({
         title: Yup.string().required("required"),
         description: Yup.string().required("required"),
-        status: Yup.string().required("required"),
-        subTasks: Yup.array().of(
+        category: Yup.string().required("required"),
+        color: Yup.string().required("required"),
+        brand: Yup.string().required("required"),
+        sizes: Yup.array().of(
             Yup.object().shape({
                 description: Yup.string().required("Subtask description is required"),
             })
@@ -29,9 +34,7 @@ const SellerPanel = () => {
     const brands = [...new Set(products?.map((val: Product) => val.brand))];
     const category = [...new Set(products?.map((val: Product) => val.category))];
     const color = [...new Set(products?.map((val: Product) => val.color))];
-
-
-
+    const sizeArr = ['S', 'M', 'L', 'XL', 'XXL']
 
 
 
@@ -42,10 +45,15 @@ const SellerPanel = () => {
                 initialValues={{
                     title: '',
                     description: '',
+                    category: '',
+                    color: '',
                     brand: '',
-                    free_shipping:false,
+                    free_shipping: false,
+                    new: false,
+                    discount: false,
                     priority: '',
-                    subTasks: [],
+                    sizes: [],
+                    star_ratings: Math.floor(Math.random() * 4) + 1,
                 }}
 
                 validationSchema={validate}
@@ -53,16 +61,8 @@ const SellerPanel = () => {
                     setSubmitting(true)
 
                     console.log('submit:', values);
-                    // dispatch(addTask({ boardId: board?._id, taskData: values }))
-                    // dispatch(getBoard({ id: board?._id }))
-                    // resetForm()
-                    // dispatch(getBoard({ id: board?._id }))
-                    // dispatch(getBoard({ id: board?._id }))
-                    // setShowModal(false)
-                    // dispatch(getBoard({ id: board?._id }))
                 }}
             >
-                {/* {({ values,  isSubmitting, handleSubmit }) => ( */}
                 {(props) => (
                     <Form onSubmit={props.handleSubmit}>
                         <TextInput label='Title' name={'title'} type="input" placeholder='eg: Moccassino pants' />
@@ -71,69 +71,78 @@ const SellerPanel = () => {
                             item={category}
                             setItem={props?.setFieldValue}
                             placeholder='Enter category name or select from the list'
-                            label={'Category'}
+                            label={'category'}
                         />
                         <Dropdown
                             item={brands}
                             setItem={props?.setFieldValue}
                             placeholder='Enter brand name or select from the list'
-                            label={'Brand'}
+                            label={'brand'}
                         />
                         <Dropdown
                             item={color}
                             setItem={props?.setFieldValue}
                             placeholder='Enter product color or select from the list'
-                            label={'Color'}
+                            label={'color'}
                         />
-                        <TextInput label='Price' name={'price'} type="number" placeholder='eg: $10' />
 
-                        <div className='flex items-center space-x-2'>
-                            <p>Is free shipping</p>
-                        {/* <input name={free_shipping} type="checkbox" /> */}
+                        <div>
+                            <h3>Select Available Size</h3>
+                            <div className='flex items-center space-x-3'>
+                                {sizeArr.map((val: any) => {
+                                    const isSelected = props.values.sizes.includes(val as never);
+
+                                    const handleClick = () => {
+                                        const { sizes } = props.values;
+                                        const positionMap = { S: 0, M: 1, L: 2, XL: 3, XXL: 4 };
+                                        const clickedIndex = sizes.indexOf(val as never);
+                                        const currentSize = sizes[clickedIndex];
+
+                                        if (clickedIndex !== -1) {
+                                            // Size already exists in the array, will remove it
+                                            const updatedSizes = sizes.filter((_, index) => index !== clickedIndex);
+                                            props.setFieldValue('sizes', updatedSizes);
+                                        } else {
+                                            // Size doesn't exist in the array, lets add it at the appropriate position
+                                            const position = positionMap[val];
+                                            const updatedSizes = [...sizes];
+                                            if (position < sizes.length && sizes[position] !== undefined) {
+                                                updatedSizes.splice(position, 0, val as never);
+                                            } else {
+                                                updatedSizes.push(val as never);
+                                            }
+                                            if (currentSize !== undefined) {
+                                                const currentSizeIndex = updatedSizes.indexOf(currentSize);
+                                                updatedSizes.splice(currentSizeIndex, 1);
+                                            }
+                                            props.setFieldValue('sizes', updatedSizes);
+                                        }
+                                    };
+                                    return (
+                                        <div
+                                            key={val}
+                                            onClick={handleClick}
+                                            className={`border border-black text-center flex items-center justify-center cursor-pointer rounded-[5px] h-[32px] w-[32px] ${isSelected && 'bg-black text-white'} `}
+                                        >
+                                            {val}
+                                        </div>
+                                    );
+                                })}
+                            </div>
                         </div>
 
+                        <TextInput label='Price' name={'price'} type="number" placeholder='eg: $10' />
 
 
-                        <label className="body-md text-sm font-bold capitalize text-mediumGrey dark:text-white mt-6 block">
-                            subtasks
-                        </label>
+                        <Checkbox question={'Is free shipping available?'} props={props} checkbox_name={'free_shipping'} />
+                        <Checkbox question={'Is it a new product?'} props={props} checkbox_name={'new'} />
+                        <div className='flex items-center justify-between'>
+                            <Checkbox question={'Is discount available?'} props={props} checkbox_name={'discount'} />
+                            <Tooltip message={'Note that products are 30% off when discount is available'} />
+                        </div>
 
-                        <FieldArray name="subTasks"
-                            render={arrayHelpers => (
-                                <div>
-                                    {props.values?.subTasks?.map((_, i) => (
-                                        <div key={i} className="flex">
-                                            <TextInput label='' name={`subTasks.${i}.description`} type="text" placeholder="e.g. Archived" />
+                        <UploadPhoto />
 
-                                            <button onClick={() => arrayHelpers.remove(i)}
-                                                className="text-mediumGrey hover:text-mainRed ml-4"
-                                            >
-                                                <svg width="15" height="15" xmlns="http://www.w3.org/2000/svg">
-                                                    <g fill="currentColor" fillRule="evenodd">
-                                                        <path d="m12.728 0 2.122 2.122L2.122 14.85 0 12.728z" />
-                                                        <path d="M0 2.122 2.122 0 14.85 12.728l-2.122 2.122z" />
-                                                    </g>
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    ))}
-                                    <br />
-
-                                    {props.values?.subTasks?.length <= 4 &&
-                                        <button
-                                            type='button'
-                                            onClick={() => arrayHelpers.push({ category:''})}
-                                            className={'bg-[#635FC71A] rounded-full w-full py-[7px] mb-3 text-mainPurple transition duration-200 text-base hover:bg-mainPurpleHover font-sans'}
-                                        >
-                                            {'+ Add New Subtask'}
-                                        </button>
-                                    }
-                                </div>
-                            )}
-                        />
-
-                        {/* <StatusDropdown status={status && status} setStatus={props?.setFieldValue} label={'Status'} /> */}
-                        {/* <PriorityDropdown setStatus={props?.setFieldValue} label={'Priority'} /> <br /> */}
 
                         <button className="p-2 bg-black text-white rounded-[5px] w-full">
                             SUBMIT
@@ -147,4 +156,18 @@ const SellerPanel = () => {
     )
 }
 
-export default SellerPanel
+export default SellerPanel;
+
+
+{/* <div onClick={() => props.setFieldValue('sizes', [...props.values.sizes, val])} className={`border border-black text-center flex items-center justify-center cursor-pointer rounded-[5px] h-[32px] w-[32px] `}>{val}</div> */ }
+// const handleClick = () => {
+//     const { sizes } = props.values;
+
+//     if (sizes.includes(val)) {
+//         const updatedSizes = sizes.filter((size) => size !== val);
+//         props.setFieldValue('sizes', updatedSizes);
+//     } else {
+//         const updatedSizes = [val, ...sizes];
+//         props.setFieldValue('sizes', updatedSizes);
+//     }
+// };

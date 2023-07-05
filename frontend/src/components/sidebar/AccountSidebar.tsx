@@ -32,7 +32,7 @@ const AccountSidebar = () => {
                     {pagesList.map(val =>
                         <li
                             onClick={() => { navigate(val?.link) }}
-                            className={`py-3 px-4 hover:bg-[#e4e4e4] cursor-pointer mb-1  ${location.pathname === val.link && 'bg-[#e4e4e4] text-orangeSkin'}`}
+                            className={`py-3 px-4 hover:bg-frenchGray cursor-pointer mb-1  ${location.pathname === val.link && 'bg-frenchGray text-orangeSkin'}`}
                         >
                             <span className="flex items-center">{val.icon} &nbsp;&nbsp;&nbsp;  {val.title}</span>
                         </li>
