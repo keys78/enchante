@@ -28,7 +28,7 @@ interface RouteConfig {
 function App() {
   const routes: RouteConfig[] = [
     { path: "account", title: 'My Account', element: <Accounts /> },
-    { path: "seller", title: 'Sell On enchante', element: <SellerPanel /> },
+    { path: "seller", title: 'Sell On enchanté', element: <SellerPanel /> },
     { path: "my-orders", title: 'My Orders', element: <Orders /> },
     { path: "inbox", title: 'Inbox', element: <Inbox /> },
     { path: "saved-items", title: 'Saved Items', element: <SavedItems /> },

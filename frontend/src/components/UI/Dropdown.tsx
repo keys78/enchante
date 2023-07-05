@@ -22,7 +22,7 @@ const Dropdown = ({ label, item, setItem, placeholder }: IProps) => {
                 <button
                     onClick={() => setShowMenu(!showMenu)}
                     type="button"
-                    className="inline-flex justify-between items-center w-full bg-white text-sm font-medium text-black focus:outline-orangeSkin placeholder:opacity-50"
+                    className="inline-flex justify-between items-center w-full bg-white text-sm text-black focus:outline-orangeSkin placeholder:opacity-50"
                     id="menu-button"
                     aria-expanded="true"
                     aria-haspopup="true"
@@ -42,21 +42,20 @@ const Dropdown = ({ label, item, setItem, placeholder }: IProps) => {
                             animate={showMenu ? "open" : "closed"}
                             exit="closed"
                         >
-                            <div className="py-1 zedder bg-white dark:bg-veryDarkGrey" >
+                            <ul className="py-1 zedder bg-white dark:bg-veryDarkGrey" >
                                 {item.map((column: any, i: number) => (
-                                    <a
+                                    <li
                                         onClick={() => {
                                             setItem(label, column)
                                             setShowMenu(false)
                                         }}
                                         key={i}
-                                        href="#"
                                         className="text-mediumGrey block px-4 py-2 text-sm hover:text-mainPurple hover:bg-[#C7CEDB]"
                                     >
                                         {column}
-                                    </a>
+                                    </li>
                                 ))}
-                            </div>
+                            </ul>
                         </motion.div>
                     }
                 </AnimatePresence>

@@ -110,7 +110,7 @@ const UploadPhoto = ({ props }) => {
                         <div className='flex items-center justify-end space-x-2 mb-2'>
                             <motion.button whileTap={{ scale: 1.05 }} type='button' className="outline-0 w-[80px] whitespace-nowrap rounded-[5px] bg-black text-white text-[12px] px-2 py-1 flex items-center justify-center border-2 border-black"><Swap size={14} color="#fff" />&nbsp;Change</motion.button>
                             <motion.button whileTap={{ scale: 1.05 }} type='button' className="outline-0 w-[80px] font-medium whitespace-nowrap rounded-[5px] bg-white text-black text-[12px] px-2 py-1 flex items-center justify-center border-2 border-black" onClick={handleRemoveImage}>
-                                <FileX size={14} color="#000" />&nbsp;
+                                <FileX size={16} color="#000" />&nbsp;
                                 Remove
                             </motion.button>
                         </div>
@@ -131,7 +131,6 @@ const UploadPhoto = ({ props }) => {
             </div>
 
             {fileError && <div className="text-red-500 text-[12px] pt-2 text-center">error: {fileError}</div>}
-
 
             <input
                 type="file"

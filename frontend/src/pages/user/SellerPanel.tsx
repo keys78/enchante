@@ -10,6 +10,7 @@ import { Product } from '../../types'
 import Tooltip from '../../components/atoms/Tooltip'
 import Checkbox from '../../components/atoms/Checkbox'
 import UploadPhoto from '../../components/atoms/UploadPhoto'
+import SizesSelect from '../../components/atoms/SizesSelect'
 
 const SellerPanel = () => {
     const { products } = useAppSelector(state => state.products)
@@ -39,14 +40,14 @@ const SellerPanel = () => {
 
 
     return (
-        <div className='s-480:border border-gray-200 s-480:p-4 rounded-[5px] mx-auto max-w-[500px] w-full'>
+        <div className='s-480:border border-gray-200 s-480:p-4 rounded-[5px] mx-auto max-w-[600px] w-full'>
             <h1 className='font-medium mb-[20px]'>Create Product</h1>
             <Formik
                 initialValues={{
                     name: '',
                     desc: '',
                     category: '',
-                    image:'',
+                    image: '',
                     color: '',
                     brand: '',
                     free_shipping: false,
@@ -59,7 +60,7 @@ const SellerPanel = () => {
                 // validationSchema={validate}
                 onSubmit={(values, { setSubmitting, resetForm }) => {
                     setSubmitting(true)
-                    dispatch(createProduct({productData: values}))
+                    dispatch(createProduct({ productData: values }))
                     // resetForm()
                     console.log('submit:', values);
                     // setSubmitting(false)
@@ -87,71 +88,24 @@ const SellerPanel = () => {
                             placeholder='Enter product color or select from the list'
                             label={'color'}
                         />
+                        <TextInput label='Price' name={'price'} type="number" placeholder='eg: $10' free_style='pt-6'/>
 
-                        <div>
-                            <h3>Select Available Size</h3>
-                            <div className='flex items-center space-x-3'>
-                                {sizeArr.map((val: any) => {
-                                    const isSelected = props.values.sizes.includes(val as never);
-
-                                    const handleClick = () => {
-                                        const { sizes } = props.values;
-                                        const positionMap = { S: 0, M: 1, L: 2, XL: 3, XXL: 4 };
-                                        const clickedIndex = sizes.indexOf(val as never);
-                                        const currentSize = sizes[clickedIndex];
-
-                                        if (clickedIndex !== -1) {
-                                            // Size already exists in the array, will remove it
-                                            const updatedSizes = sizes.filter((_, index) => index !== clickedIndex);
-                                            props.setFieldValue('sizes', updatedSizes);
-                                        } else {
-                                            // Size doesn't exist in the array, lets add it at the appropriate position
-                                            const position = positionMap[val];
-                                            const updatedSizes = [...sizes];
-                                            if (position < sizes.length && sizes[position] !== undefined) {
-                                                updatedSizes.splice(position, 0, val as never);
-                                            } else {
-                                                updatedSizes.push(val as never);
-                                            }
-                                            if (currentSize !== undefined) {
-                                                const currentSizeIndex = updatedSizes.indexOf(currentSize);
-                                                updatedSizes.splice(currentSizeIndex, 1);
-                                            }
-                                            props.setFieldValue('sizes', updatedSizes);
-                                        }
-                                    };
-                                    return (
-                                        <div
-                                            key={val}
-                                            onClick={handleClick}
-                                            className={`border border-black text-center flex items-center justify-center cursor-pointer rounded-[5px] h-[32px] w-[32px] ${isSelected && 'bg-black text-white'} `}
-                                        >
-                                            {val}
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        </div>
-
-                        <TextInput label='Price' name={'price'} type="number" placeholder='eg: $10' />
-
+                        <SizesSelect sizeArr={sizeArr} props={props} />
 
                         <Checkbox question={'Is free shipping available?'} props={props} checkbox_name={'free_shipping'} />
-                        <Checkbox question={'Is it a new product?'} props={props} checkbox_name={'new'} />
+                        <Checkbox question={'Is it a new product?'} props={props} checkbox_name={'new'} free_style='py-6'/>
                         <div className='flex items-center justify-between'>
                             <Checkbox question={'Is discount available?'} props={props} checkbox_name={'discount'} />
                             <Tooltip message={'Note that products are 30% off when discount is available'} />
                         </div>
 
-                        <UploadPhoto props={props}/>
-
+                        <UploadPhoto props={props} />
 
                         <button type='submit' className="p-2 bg-black text-white rounded-[5px] w-full">
                             SUBMIT
                         </button>
-                    
-                        <pre>{JSON.stringify(props.values, null, 2)}</pre>
 
+                        {/* <pre>{JSON.stringify(props.values, null, 2)}</pre> */}
                     </Form>
                 )}
             </Formik>

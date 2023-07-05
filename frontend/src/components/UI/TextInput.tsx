@@ -1,13 +1,13 @@
 import { useField, FieldAttributes, Field, ErrorMessage } from 'formik';
 import React from 'react'
 
-type myInputProps = { label?: string } & FieldAttributes<object>;
+type myInputProps = { label?: string, free_style?:string } & FieldAttributes<object>;
 
-const TextInput: React.FC<myInputProps> = ({ label, ...props }) => {
+const TextInput: React.FC<myInputProps> = ({ label, free_style, ...props }) => {
     const [field, meta] = useField(props);
 
     return (
-        <div className="flex-grow">
+        <div className={`flex-grow ${free_style}`}>
             {label && (
                 <label
                     className="body-md sm:text-[16px] text-[14px] block"
@@ -19,7 +19,7 @@ const TextInput: React.FC<myInputProps> = ({ label, ...props }) => {
             <div className="relative">
 
                 <Field
-                    className={`flex-1 bg-white body-lg w-full px-4 py-2 block rounded sm:text-[16px] text-[14px] border text-black border-mediumGrey border-opacity-25 placeholder:opacity-50 focus:outline-none focus:border-orangeSkin  ${meta.touched &&
+                    className={`flex-1 bg-white body-lg w-full px-2 py-2 block rounded sm:text-[16px] text-[14px] border text-black border-mediumGrey border-opacity-25 placeholder:opacity-50 focus:outline-none focus:border-orangeSkin  ${meta.touched &&
                         meta.error &&
                         'border-opacity-100 border-mainRed'
                         }`}
