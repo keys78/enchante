@@ -103,6 +103,8 @@ export const searchProducts = createAsyncThunk<GetAllProductsPayload, { queryPar
   }
 );
 
+
+// Auth Required
 export const toggleSavedProducts = createAsyncThunk<any, any>(
   'products/toggleSavedProduct',
   async ({ productId }, thunkAPI) => {
@@ -115,6 +117,22 @@ export const toggleSavedProducts = createAsyncThunk<any, any>(
     }
   }
 )
+
+
+export const createProduct = createAsyncThunk<Product, any>(
+  'products/create-product',
+  async ({ productData }, thunkAPI) => {
+    const token: IToken = token2 || (thunkAPI.getState() as { auth: Auth }).auth.token;
+
+    try {
+      return await productService.createProduct(token, productData)
+    } catch (error: any) {
+      errorHandler(error, thunkAPI)
+    }
+  }
+)
+
+
 
 
 
@@ -377,6 +395,17 @@ const productsSlice = createSlice({
         state.isLoading = false
       })
       .addCase(toggleSavedProducts.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload as string
+      })
+      .addCase(createProduct.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(createProduct.fulfilled, (state) => {
+        state.isLoading = false
+      })
+      .addCase(createProduct.rejected, (state, action) => {
         state.isLoading = false
         state.isError = true
         state.message = action.payload as string

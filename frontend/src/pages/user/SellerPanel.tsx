@@ -5,7 +5,7 @@ import TextArea from '../../components/UI/TextArea'
 import Dropdown from '../../components/UI/Dropdown'
 import { useAppDispatch, useAppSelector } from '../../network/hooks'
 import { useEffect } from 'react'
-import { getAllProducts } from '../../reducers/products/productsSlice'
+import { createProduct, getAllProducts } from '../../reducers/products/productsSlice'
 import { Product } from '../../types'
 import Tooltip from '../../components/atoms/Tooltip'
 import Checkbox from '../../components/atoms/Checkbox'
@@ -15,16 +15,16 @@ const SellerPanel = () => {
     const { products } = useAppSelector(state => state.products)
     const dispatch = useAppDispatch();
     const validate = Yup.object({
-        title: Yup.string().required("required"),
-        description: Yup.string().required("required"),
+        name: Yup.string().required("required"),
+        desc: Yup.string().required("describe your product"),
         category: Yup.string().required("required"),
         color: Yup.string().required("required"),
         brand: Yup.string().required("required"),
-        sizes: Yup.array().of(
-            Yup.object().shape({
-                description: Yup.string().required("Subtask description is required"),
-            })
-        ),
+        // sizes: Yup.array().of(
+        //     Yup.object().shape({
+        //         desc: Yup.string().required("Subtask desc is required"),
+        //     })
+        // ),
     })
 
     useEffect(() => {
@@ -39,34 +39,36 @@ const SellerPanel = () => {
 
 
     return (
-        <div className='border border-gray-200 p-4 rounded-[5px] mx-auto max-w-[500px] w-full'>
+        <div className='s-480:border border-gray-200 s-480:p-4 rounded-[5px] mx-auto max-w-[500px] w-full'>
             <h1 className='font-medium mb-[20px]'>Create Product</h1>
             <Formik
                 initialValues={{
-                    title: '',
-                    description: '',
+                    name: '',
+                    desc: '',
                     category: '',
+                    image:'',
                     color: '',
                     brand: '',
                     free_shipping: false,
                     new: false,
                     discount: false,
-                    priority: '',
                     sizes: [],
                     star_ratings: Math.floor(Math.random() * 4) + 1,
                 }}
 
-                validationSchema={validate}
+                // validationSchema={validate}
                 onSubmit={(values, { setSubmitting, resetForm }) => {
                     setSubmitting(true)
-
+                    dispatch(createProduct({productData: values}))
+                    // resetForm()
                     console.log('submit:', values);
+                    // setSubmitting(false)
                 }}
             >
                 {(props) => (
                     <Form onSubmit={props.handleSubmit}>
-                        <TextInput label='Title' name={'title'} type="input" placeholder='eg: Moccassino pants' />
-                        <TextArea label="Description" name={'description'} type="text" placeholder="e.g. For rush hours, work and school, you can always count on..." />
+                        <TextInput label='Title' name={'name'} type="input" placeholder='eg: Moccassino pants' />
+                        <TextArea label="Description" name={'desc'} type="text" placeholder="e.g. For rush hours, work and school, you can always count on..." />
                         <Dropdown
                             item={category}
                             setItem={props?.setFieldValue}
@@ -141,12 +143,13 @@ const SellerPanel = () => {
                             <Tooltip message={'Note that products are 30% off when discount is available'} />
                         </div>
 
-                        <UploadPhoto />
+                        <UploadPhoto props={props}/>
 
 
-                        <button className="p-2 bg-black text-white rounded-[5px] w-full">
+                        <button type='submit' className="p-2 bg-black text-white rounded-[5px] w-full">
                             SUBMIT
                         </button>
+                    
                         <pre>{JSON.stringify(props.values, null, 2)}</pre>
 
                     </Form>

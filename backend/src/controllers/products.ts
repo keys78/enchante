@@ -10,25 +10,35 @@ import { AuthRequest } from "./user";
 
 export const getAllProducts: RequestHandler = async (req, res, next) => {
   try {
-    const limit = Number(req.query.limit)
-    const cacheKey = `allProducts:${limit}`;
-
-    const cachedData = await getFromCache(cacheKey);
-    if (cachedData) {
-      res.status(200).json(cachedData);
-      return;
-    }
 
     const paginatedResults = await paginateResults(ProductModel, {}, req);
-
-    // Store the fetched data in the cache
-    await setInCache(cacheKey, paginatedResults);
 
     res.status(200).json(paginatedResults);
   } catch (error) {
     next(error);
   }
 };
+// export const getAllProducts: RequestHandler = async (req, res, next) => {
+//   try {
+//     const limit = Number(req.query.limit)
+//     const cacheKey = `allProducts:${limit}`;
+
+//     const cachedData = await getFromCache(cacheKey);
+//     if (cachedData) {
+//       res.status(200).json(cachedData);
+//       return;
+//     }
+
+//     const paginatedResults = await paginateResults(ProductModel, {}, req);
+
+//     // Store the fetched data in the cache
+//     await setInCache(cacheKey, paginatedResults);
+
+//     res.status(200).json(paginatedResults);
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 
 
 // export const getAllProducts: RequestHandler = async (req, res, next) => {

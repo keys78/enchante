@@ -1,5 +1,5 @@
 import axios from "axios"
-import { IToken } from "../../types"
+import { IToken, Product } from "../../types"
 import { toast } from "react-toastify"
 
 
@@ -10,7 +10,7 @@ const config = {
 }
 
 const getAllProducts = async (page: number) => {
-    const { data } = await axios.get(import.meta.env.VITE_APP_BASE_API + `products/?page=${page}&limit=9`, config)
+    const { data } = await axios.get(import.meta.env.VITE_APP_BASE_API + `products/?page=${page}&limit=7`, config)
     return data
 }
 
@@ -25,13 +25,25 @@ const searchProducts = async (queryParam: any, page: number) => {
 }
 
 const toggleSavedProduct = async (token: IToken, productId: string) => {
-    const authAonfig = {
+    const authConfig = {
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
         },
     }
-    const { data } = await axios.put(import.meta.env.VITE_APP_BASE_API + `products/${productId}/like`, {}, authAonfig)
+    const { data } = await axios.put(import.meta.env.VITE_APP_BASE_API + `products/${productId}/like`, {}, authConfig)
+    toast.success(data.message as string, { autoClose: 1000 });
+    return data?.message
+}
+
+const createProduct = async (token: IToken, productData: Product) => {
+    const authConfig = {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const { data } = await axios.post(import.meta.env.VITE_APP_BASE_API + `products/create-product`, productData, authConfig)
     toast.success(data.message as string, { autoClose: 1000 });
     return data?.message
 }
@@ -40,7 +52,9 @@ const productService = {
     getAllProducts,
     getSingleProduct,
     searchProducts,
-    toggleSavedProduct
+
+    toggleSavedProduct,
+    createProduct,
 }
 
 export default productService;

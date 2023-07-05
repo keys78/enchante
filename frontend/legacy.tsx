@@ -104,6 +104,115 @@ const CardCarousel: React.FC = () => {
 export default CardCarousel;
 
 
+// import React, { useState, useRef } from 'react';
+
+// const UploadPhoto = () => {
+//     const [selectedFile, setSelectedFile] = useState<File | null>(null);
+//     const [fileError, setFileError] = useState<string>('');
+
+//     const fileInputRef = useRef<HTMLInputElement>(null);
+
+//     const handleOpenFileInput = () => {
+//         if (fileInputRef.current) {
+//             fileInputRef.current.click();
+//         }
+//     };
+
+//     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+//         const file = event.target.files && event.target.files[0];
+        
+//         if (file) {
+//           if (file.size > 500 * 1024) {
+//             setFileError('File size exceeds 500 KB, please rescale or select another.');
+//             return;
+//           }
+      
+//           const reader = new FileReader();
+//           reader.onload = () => {
+//             if (typeof reader.result === 'string') {
+//               const img = new Image();
+//               img.onload = () => {
+//                 const canvas = document.createElement('canvas');
+//                 const context = canvas.getContext('2d');
+//                 if (!context) {
+//                   return;
+//                 }
+      
+//                 const aspectRatio = 1.6 / 1;
+//                 let newWidth = img.width;
+//                 let newHeight = img.height;
+      
+//                 if (img.width / img.height > aspectRatio) {
+//                   newWidth = img.height * aspectRatio;
+//                 } else {
+//                   newHeight = img.width / aspectRatio;
+//                 }
+      
+//                 canvas.width = newWidth;
+//                 canvas.height = newHeight;
+//                 context.drawImage(img, 0, 0, newWidth, newHeight);
+      
+//                 const scaledImageDataURL = canvas.toDataURL('image/jpeg');
+//                 setSelectedFile(new File([dataURLtoBlob(scaledImageDataURL)], file.name));
+//                 setFileError('');
+//               };
+      
+//               img.src = reader.result;
+//             }
+//           };
+//           reader.readAsDataURL(file);
+//         }
+//       };
+      
+
+//     const dataURLtoBlob = (dataURL: string) => {
+//         const byteString = atob(dataURL.split(',')[1]);
+//         const mimeString = dataURL.split(',')[0].split(':')[1].split(';')[0];
+//         const ab = new ArrayBuffer(byteString.length);
+//         const ia = new Uint8Array(ab);
+//         for (let i = 0; i < byteString.length; i++) {
+//             ia[i] = byteString.charCodeAt(i);
+//         }
+//         return new Blob([ab], { type: mimeString });
+//     };
+
+//     const handleRemoveImage = () => {
+//         setSelectedFile(null);
+//         setFileError('');
+//     };
+
+//     return (
+//         <section>
+//             <button className="upload-button" onClick={handleOpenFileInput}>
+//                 {selectedFile ? 'Change Image' : 'Upload Photo'}
+//             </button>
+//             {selectedFile && (
+//                 <>
+//                     <button className="remove-button" onClick={handleRemoveImage}>
+//                         Remove
+//                     </button>
+//                     <img
+//                         src={URL.createObjectURL(selectedFile)}
+//                         alt="Uploaded"
+//                         className="uploaded-image"
+//                     />
+//                 </>
+//             )}
+
+//             {fileError && <div>{fileError}</div>}
+
+//             <input
+//                 type="file"
+//                 accept="image/*"
+//                 ref={fileInputRef}
+//                 onChange={handleFileChange}
+//                 style={{ display: 'none' }}
+//             />
+//         </section>
+//     );
+// };
+
+// export default UploadPhoto;
 
 
 

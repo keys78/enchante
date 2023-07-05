@@ -22,7 +22,7 @@ const Dropdown = ({ label, item, setItem, placeholder }: IProps) => {
                 <button
                     onClick={() => setShowMenu(!showMenu)}
                     type="button"
-                    className="inline-flex justify-between items-center w-full bg-white text-sm font-medium text-black focus:outline-orangeSkin"
+                    className="inline-flex justify-between items-center w-full bg-white text-sm font-medium text-black focus:outline-orangeSkin placeholder:opacity-50"
                     id="menu-button"
                     aria-expanded="true"
                     aria-haspopup="true"

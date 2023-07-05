@@ -8,11 +8,10 @@ const productsRouter = express.Router();
 productsRouter.get("/", ProductsController.getAllProducts);
 productsRouter.get("/product/:productId", ProductsController.getProduct);
 productsRouter.get("/search/:queryParam", ProductsController.searchProducts);
+
 productsRouter.put('/:productId/like', protect, ProductsController.toggleSavedProduct);
-
-
-productsRouter.post('/products', ProductsController.createProduct);
-productsRouter.put('/products/:productId', ProductsController.updateProduct);
-productsRouter.delete('/products/:productId', ProductsController.deleteProduct);
+productsRouter.post('/create-product', protect, ProductsController.createProduct);
+productsRouter.put('/products/:productId', protect, ProductsController.updateProduct);
+productsRouter.delete('/products/:productId', protect, ProductsController.deleteProduct);
 
 export default productsRouter;
