@@ -75,7 +75,7 @@ const ProductDetails = () => {
                 <div className='pt-[30px] pb-[18px] flex items-center space-x-2'>
                     <span className='flex items-center space-x-2' style={{ color: '#a6a4a4' }}><Link to={'/'}>Home</Link> <CaretRight size={14} /> </span>
                     <span className='flex items-center space-x-2' style={{ color: '#a6a4a4' }}><Link to={'/products'}>Products</Link> <CaretRight size={14} /> </span>
-                    <span className='font-bold'>{characterLimit(product?.name, 16)}</span>
+                    <span className='font-bold capitalize'>{characterLimit(product?.name, 16)}</span>
                 </div>
 
                 <div className="s-767:flex w-full s-767:space-x-5 s-767:pb-[50px]">
@@ -84,7 +84,7 @@ const ProductDetails = () => {
                     </div>
                     <div className="w-full s-767:pl-[30px]">
                         <div className="flex items-start justify-between">
-                            <h1 className="s-767:text-[24px] text-[16px]">{product?.name} <span className="italic text-[12px]">{product?.brand}</span></h1>
+                            <h1 className="s-767:text-[24px] text-[16px] capitalize">{product?.name} <span className="italic text-[12px]">{product?.brand}</span></h1>
                             <motion.div
                                 whileTap={{ scale: 1.05 }}
                                 whileHover={{ scale: 0.85 }}

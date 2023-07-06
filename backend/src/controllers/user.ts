@@ -6,10 +6,13 @@ import mongoose from "mongoose";
 
 
 export interface AuthRequest extends Request {
+  file: Express.Multer.File; 
   user?: {
     id: string;
   };
 }
+
+
 
 
 export const getUser: RequestHandler = async (req: AuthRequest, res, next) => {

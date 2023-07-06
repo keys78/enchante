@@ -105,7 +105,7 @@ const SellerPanel = () => {
                             SUBMIT
                         </button>
 
-                        {/* <pre>{JSON.stringify(props.values, null, 2)}</pre> */}
+                        <pre>{JSON.stringify(props.values, null, 2)}</pre>
                     </Form>
                 )}
             </Formik>

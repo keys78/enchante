@@ -103,6 +103,32 @@ const CardCarousel: React.FC = () => {
 
 export default CardCarousel;
 
+// OTHER VALIDATION METHODS
+// const validateFields = (fields) => {
+//   const requiredFields = {
+//     name: 'Name',
+//     category: 'Category',
+//     desc: 'Description',
+//     sizes: 'Sizes',
+//     color: 'Color',
+//     free_shipping: 'Free shipping',
+//     brand: 'Brand',
+//     price: 'Price',
+//     new_product: 'New product',
+//     discount: 'Discount',
+//     star_ratings: 'Star ratings',
+//   };
+
+//   for (const field in requiredFields) {
+//     if (!fields[field]) {
+//       return { isValid: false, message: `${requiredFields[field]} is a required field` };
+//     }
+//   }
+
+//   return { isValid: true };
+// };
+
+
 
 // import React, { useState, useRef } from 'react';
 

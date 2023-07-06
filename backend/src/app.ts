@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
 import morgan from "morgan";
 import cors from "cors"
+import bodyParser from "body-parser";
 import createHttpError, { isHttpError } from "http-errors";
 import authRoutes from "./routes/auth";
 import userRoutes from "./routes/user";
@@ -11,7 +12,12 @@ app.use(cors());
 
 app.use(morgan("dev"));
 app.use(express.json());
+app.use(bodyParser.json());
 
+app.use(
+    express.urlencoded({ extended: true })
+);
+    
 
 // authentication 
 app.use('/auth', authRoutes);
