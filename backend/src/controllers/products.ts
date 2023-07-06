@@ -186,7 +186,7 @@ export const createProduct: RequestHandler = async (req: AuthRequest, res, next)
     upload.single('image')(req, res, async (err) => {
       if (err) {
         if (err.code === 'LIMIT_FILE_SIZE') {
-          return next(new Error('File size exceeds the limit. Maximum file size allowed is 600KB.'));
+          return res.status(400).json({ message: 'File size exceeds the limit. Maximum file size allowed is <600KB.' });
         }
         return next(err);
       }
@@ -293,23 +293,37 @@ export const updateProduct: RequestHandler = async (req, res, next) => {
 };
 
 // Delete a product
-export const deleteProduct: RequestHandler = async (req, res, next) => {
+export const deleteProduct: RequestHandler = async (req: AuthRequest, res, next) => {
   try {
     const productId = req.params.productId;
+    const userId = req.user.id; 
 
     if (!mongoose.isValidObjectId(productId)) {
       throw createHttpError(400, 'Invalid product ID');
     }
 
-    const deletedProduct = await ProductModel.findByIdAndDelete(productId).exec();
+    const product = await ProductModel.findById(productId).exec();
 
-    if (!deletedProduct) {
+    if (!product) {
       throw createHttpError(404, 'Product not found');
     }
+
+    // Check if the user is the admin or the seller of the product
+    if (req.user.role !== 'admin' && product.sellerId !== userId) {
+      throw createHttpError(403, 'Unauthorized');
+    }
+
+    // Delete the image from Cloudinary
+    const imagePublicId = extractPublicIdFromImageUrl(product.image);
+    await cloudinary.uploader.destroy(imagePublicId);
+
+    // Delete the product from the database
+    const deletedProduct = await ProductModel.findByIdAndDelete(productId).exec();
 
     res.sendStatus(204);
   } catch (error) {
     next(error);
   }
 };
+
 

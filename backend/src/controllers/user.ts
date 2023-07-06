@@ -8,6 +8,7 @@ import mongoose from "mongoose";
 export interface AuthRequest extends Request {
   file: Express.Multer.File; 
   user?: {
+    role: string;
     id: string;
   };
 }
