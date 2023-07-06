@@ -292,7 +292,9 @@ export const updateProduct: RequestHandler = async (req, res, next) => {
   }
 };
 
-// Delete a product
+
+
+
 export const deleteProduct: RequestHandler = async (req: AuthRequest, res, next) => {
   try {
     const productId = req.params.productId;
@@ -308,17 +310,15 @@ export const deleteProduct: RequestHandler = async (req: AuthRequest, res, next)
       throw createHttpError(404, 'Product not found');
     }
 
-    // Check if the user is the admin or the seller of the product
-    if (req.user.role !== 'admin' && product.sellerId !== userId) {
+    if (req.user.role !== 'admin' && product.sellerId.toString() !== userId) {
       throw createHttpError(403, 'Unauthorized');
     }
 
-    // Delete the image from Cloudinary
     const imagePublicId = extractPublicIdFromImageUrl(product.image);
     await cloudinary.uploader.destroy(imagePublicId);
 
     // Delete the product from the database
-    const deletedProduct = await ProductModel.findByIdAndDelete(productId).exec();
+    await ProductModel.findByIdAndDelete(productId).exec();
 
     res.sendStatus(204);
   } catch (error) {
@@ -327,3 +327,8 @@ export const deleteProduct: RequestHandler = async (req: AuthRequest, res, next)
 };
 
 
+// Function to extract the public ID from the Cloudinary URL
+const extractPublicIdFromImageUrl = (imageUrl: string) => {
+  const publicId = imageUrl.split('/').pop().split('.')[0];
+  return publicId;
+};
