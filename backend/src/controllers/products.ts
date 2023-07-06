@@ -327,6 +327,7 @@ export const deleteProduct: RequestHandler = async (req: AuthRequest, res, next)
 };
 
 
+
 // Function to extract the public ID from the Cloudinary URL
 const extractPublicIdFromImageUrl = (imageUrl: string) => {
   const publicId = imageUrl.split('/').pop().split('.')[0];
