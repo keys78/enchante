@@ -179,83 +179,15 @@ export const toggleSavedProduct: RequestHandler = async (req: AuthRequest, res, 
 
 
 
-
-
-
-
-// export const createProduct: RequestHandler = async (req: AuthRequest, res, next) => {
-//   const sellerId = req.user.id;
-//   console.log("seller_id", sellerId);
-
-//   try {
-//     upload.single('image')(req, res, async (err) => {
-//       if (err) {
-//         return next(err);
-//       }
-
-//       const file = req.file;
-//       console.log('file', file);
-//       if (!file) {
-//         return res.status(400).json({ message: 'No file uploaded' });
-//       }
-
-//       const { name, category, desc, sizes, color, free_shipping, brand, price, new_product, discount, star_ratings } = req.body;
-
-//       if (!name) {
-//         return res.status(400).json({ message: 'Name is a required field' });
-//       }
-//       if (!category) {
-//         return res.status(400).json({ message: 'Category is a required field' });
-//       }
-
-
-//       const user = await UserModel.findById(sellerId);
-//       if (!user) {
-//         return res.status(404).json({ message: 'User not found' });
-//       }
-
-//       const uploadResult = await cloudinary.uploader.upload(file.path, {
-//         folder: 'enchante',
-//         public_id: `${user.username}_${file.originalname}`,
-//       });
-
-//       const imageUrl = uploadResult.secure_url;
-//       const sizesArray = sizes.split(',').map((sizeString: string) => sizeString.trim());
-
-
-//       const newProduct = new ProductModel({
-//         name: name,
-//         category: category,
-//         sellerId: sellerId,
-//         image: imageUrl,
-//         desc: desc,
-//         sizes: sizesArray,
-//         color: color,
-//         free_shipping: free_shipping,
-//         brand: brand,
-//         price: price,
-//         new_product: new_product,
-//         discount: discount,
-//         star_ratings: star_ratings
-//       });
-
-//       const createdProduct = await newProduct.save();
-//       return res.status(201).json({ message: `${createdProduct.name} was successfully created`, data: createdProduct });
-//     });
-//   } catch (error) {
-//     next(error);
-//   }
-// };
-
-
-
-
 export const createProduct: RequestHandler = async (req: AuthRequest, res, next) => {
   try {
     const sellerId = req.user.id;
 
     upload.single('image')(req, res, async (err) => {
       if (err) {
+        if (err.code === 'LIMIT_FILE_SIZE') {
+          return next(new Error('File size exceeds the limit. Maximum file size allowed is 600KB.'));
+        }
         return next(err);
       }
 
@@ -294,7 +226,7 @@ export const createProduct: RequestHandler = async (req: AuthRequest, res, next)
       if (!validation.isValid) {
         return res.status(400).json({ message: validation.message });
       }
-      
+
       const file = req.file;
       if (!file) return res.status(400).json({ message: 'No file uploaded' });
 
@@ -302,8 +234,9 @@ export const createProduct: RequestHandler = async (req: AuthRequest, res, next)
       const user = await UserModel.findById(sellerId);
       if (!user) return res.status(404).json({ message: 'User not found' });
 
-      const folderName = 'enchante';
-      const uploadResult = await cloudinary.uploader.upload(file.path, { folder: folderName, public_id: `${user.username}_${file.originalname}` });
+      const uploadResult = await cloudinary.uploader.upload(file.path,
+        { folder: 'enchante', public_id: `${user.username}_${file.originalname}` }
+      );
       const imageUrl = uploadResult.secure_url;
       const sizesArray = sizes.split(',').map((sizeString: string) => sizeString.trim());
 
