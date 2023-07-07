@@ -26,7 +26,7 @@ const AccountSidebar = () => {
 
     return (
         width > 767 &&
-        <section>
+        <aside>
             <ul className='w-[285px] flex flex-col justify-between h-[500px] border border-gray-200 rounded-[5px]'>
                 <div>
                     {pagesList.map(val =>
@@ -42,7 +42,7 @@ const AccountSidebar = () => {
                     <button className="bg-[#000] rounded-[5px] py-[10px] px-[auto] w-full text-[#fff] mb-[4px] font-medium">LOG OUT</button>
                 </li>
             </ul>
-        </section>
+        </aside>
     )
 }
 

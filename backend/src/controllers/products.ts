@@ -234,6 +234,9 @@ export const createProduct: RequestHandler = async (req: AuthRequest, res, next)
       const user = await UserModel.findById(sellerId);
       if (!user) return res.status(404).json({ message: 'User not found' });
 
+      // const uploadResult = await cloudinary.uploader.upload(file.path,
+      //   { folder: 'enchante' }
+      // );
       const uploadResult = await cloudinary.uploader.upload(file.path,
         { folder: 'enchante', public_id: `${user.username}_${file.originalname}` }
       );
@@ -294,11 +297,19 @@ export const updateProduct: RequestHandler = async (req, res, next) => {
 
 
 
+// Function to extract the public ID from the Cloudinary URL
+// const extractPublicIdFromImageUrl = (imageUrl: string) => imageUrl.split('/').slice(-2).join('/');
+const extractPublicIdFromImageUrl = (imageUrl: string) => {
+  const segments = imageUrl.split('/');
+  const fileName = segments.pop()?.split('.')[0];
+  return `${segments.pop()}/${fileName}`;
+};
+
 
 export const deleteProduct: RequestHandler = async (req: AuthRequest, res, next) => {
   try {
     const productId = req.params.productId;
-    const userId = req.user.id; 
+    const userId = req.user.id;
 
     if (!mongoose.isValidObjectId(productId)) {
       throw createHttpError(400, 'Invalid product ID');
@@ -310,26 +321,33 @@ export const deleteProduct: RequestHandler = async (req: AuthRequest, res, next)
       throw createHttpError(404, 'Product not found');
     }
 
-    if (req.user.role !== 'admin' && product.sellerId.toString() !== userId) {
-      throw createHttpError(403, 'Unauthorized');
+    if (req.user.role !== 'admin' && (!product.sellerId || product.sellerId.toString() !== userId)) {
+      throw createHttpError(403, 'Unauthorized to delete product');
     }
 
     const imagePublicId = extractPublicIdFromImageUrl(product.image);
-    await cloudinary.uploader.destroy(imagePublicId);
+    console.log('image_1', imagePublicId)
 
-    // Delete the product from the database
-    await ProductModel.findByIdAndDelete(productId).exec();
 
-    res.sendStatus(204);
+    // try {
+    //   const deletionResponse = await cloudinary.uploader.destroy(
+    //     imagePublicId,
+    //     // { invalidate: true, resource_type: "image" }
+    //   );
+    //   console.log(deletionResponse);
+    // } catch (error) {
+    //   console.log(error);
+    //   return res.status(400).json({
+    //     ok: false,
+    //     message: "Error deleting file",
+    //     errors: error
+    //   });
+    // }
+
+    // await ProductModel.findByIdAndDelete(productId).exec();
+
+    res.status(200).json({ message: 'Product erased!' });
   } catch (error) {
     next(error);
   }
-};
-
-
-
-// Function to extract the public ID from the Cloudinary URL
-const extractPublicIdFromImageUrl = (imageUrl: string) => {
-  const publicId = imageUrl.split('/').pop().split('.')[0];
-  return publicId;
 };
