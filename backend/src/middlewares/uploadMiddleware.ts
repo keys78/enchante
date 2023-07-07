@@ -2,10 +2,8 @@ import multer from 'multer';
 import path from 'path'
 
 const storage = multer.diskStorage({
-
-    // destination: 'uploads/' - if want to have a local duplicateta ,
     destination: (req, file, cb) => {
-        cb(null, ''); // Set the destination to an empty string
+        cb(null, '/uploads'); 
       },
     filename: (req, file, cb) => {
         const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
@@ -13,6 +11,9 @@ const storage = multer.diskStorage({
         cb(null, `${file.fieldname}-${uniqueSuffix}${fileExtension}`);
     },
 });
+
+// const storage = multer.memoryStorage();
+
 
 export const upload = multer({
     storage: storage,

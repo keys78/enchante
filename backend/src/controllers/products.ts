@@ -208,10 +208,10 @@ export const createProduct: RequestHandler = async (req: AuthRequest, res, next)
 
       const randomString = `${user.username}_${Math.random().toString(36).substring(2)}_${Date.now()}`;
       const uploadResult = await cloudinary.uploader.upload(file.path, { folder: 'enchante', public_id: randomString });
-      
+
       const imageUrl = uploadResult.secure_url;
       const sizesArray = req.body.sizes.split(',').map((sizeString: string) => sizeString.trim());
-      
+
       productData.image = imageUrl
       productData.sizes = sizesArray
       const createdProduct = await ProductModel.create(productData);
@@ -263,26 +263,30 @@ export const updateProduct: RequestHandler = async (req: AuthRequest, res, next)
       if (!req.file) {
         return res.status(400).json({ message: 'No file uploaded' });
       }
-      
+
       const user = await UserModel.findById(userId);
       if (!user) return res.status(404).json({ message: 'User not found' });
-      
+
       // Delete the old image from Cloudinary
       if (product.image) {
         const oldImagePublicId = extractPublicIdFromImageUrl(product.image);
-        await cloudinary.uploader.destroy(oldImagePublicId);
+        try {
+          await cloudinary.uploader.destroy(oldImagePublicId);
+        } catch (error) {
+          next(error);
+        }
       }
-      
+
       const randomString = `${user.username}_${Math.random().toString(36).substring(2)}_${Date.now()}`;
       const uploadResult = await cloudinary.uploader.upload(req.file.path, { folder: 'enchante', public_id: randomString });
       const imageUrl = uploadResult.secure_url;
-      
+
 
       const updateData = {
         name: name,
         category: category,
         desc: desc,
-        image:imageUrl,
+        image: imageUrl,
         sizes: sizes.split(',').map((sizeString) => sizeString.trim()),
         color: color,
         free_shipping: free_shipping,
