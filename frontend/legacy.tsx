@@ -129,6 +129,27 @@ export default CardCarousel;
 // };
 
 
+// ALTERNATE CREATE PATTERN
+
+      // const newProduct = new ProductModel({
+      //   name: name,
+      //   category: category,
+      //   sellerId: sellerId,
+      //   image: imageUrl,
+      //   desc: desc,
+      //   sizes: sizesArray,
+      //   color: color,
+      //   free_shipping: free_shipping,
+      //   brand: brand,
+      //   price: price,
+      //   new_product: new_product,
+      //   discount: discount,
+      //   star_ratings: star_ratings,
+      // });
+
+      // const createdProduct = await newProduct.save();
+
+
 
 // import React, { useState, useRef } from 'react';
 

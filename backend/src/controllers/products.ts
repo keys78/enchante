@@ -9,6 +9,7 @@ import { AuthRequest } from "./user";
 import { v2 as cloudinary } from 'cloudinary';
 import multer from 'multer';
 import { upload } from "../middlewares/uploadMiddleware";
+import { extractPublicIdFromImageUrl, validateFields } from "../utils/helpers";
 
 
 cloudinary.config({
@@ -191,38 +192,9 @@ export const createProduct: RequestHandler = async (req: AuthRequest, res, next)
         return next(err);
       }
 
-      const { name, category, desc, sizes, color, free_shipping, brand, price, new_product, discount, star_ratings } = req.body;
+      const productData = req.body as Product;
 
-      const validateFields = (fields) => {
-        switch (false) {
-          case Boolean(fields.name):
-            return { isValid: false, message: 'Name is a required field' };
-          case Boolean(fields.category):
-            return { isValid: false, message: 'Category is a required field' };
-          case Boolean(fields.desc):
-            return { isValid: false, message: 'Description is a required field' };
-          case Boolean(fields.sizes):
-            return { isValid: false, message: 'Sizes is a required field' };
-          case Boolean(fields.color):
-            return { isValid: false, message: 'Color is a required field' };
-          case Boolean(fields.free_shipping):
-            return { isValid: false, message: 'Free shipping is a required field' };
-          case Boolean(fields.brand):
-            return { isValid: false, message: 'Brand is a required field' };
-          case Boolean(fields.price):
-            return { isValid: false, message: 'Price is a required field' };
-          case Boolean(fields.new_product):
-            return { isValid: false, message: 'New product is a required field' };
-          case Boolean(fields.discount):
-            return { isValid: false, message: 'Discount is a required field' };
-          case Boolean(fields.star_ratings):
-            return { isValid: false, message: 'Star ratings is a required field' };
-          default:
-            return { isValid: true };
-        }
-      };
-
-      const validation = validateFields({ name, category, desc, sizes, color, free_shipping, brand, price, new_product, discount, star_ratings });
+      const validation = validateFields({ ...productData });
       if (!validation.isValid) {
         return res.status(400).json({ message: validation.message });
       }
@@ -234,22 +206,84 @@ export const createProduct: RequestHandler = async (req: AuthRequest, res, next)
       const user = await UserModel.findById(sellerId);
       if (!user) return res.status(404).json({ message: 'User not found' });
 
-      // const uploadResult = await cloudinary.uploader.upload(file.path,
-      //   { folder: 'enchante' }
-      // );
-      const uploadResult = await cloudinary.uploader.upload(file.path,
-        { folder: 'enchante', public_id: `${user.username}_${file.originalname}` }
-      );
+      const randomString = `${user.username}_${Math.random().toString(36).substring(2)}_${Date.now()}`;
+      const uploadResult = await cloudinary.uploader.upload(file.path, { folder: 'enchante', public_id: randomString });
+      
       const imageUrl = uploadResult.secure_url;
-      const sizesArray = sizes.split(',').map((sizeString: string) => sizeString.trim());
+      const sizesArray = req.body.sizes.split(',').map((sizeString: string) => sizeString.trim());
+      
+      productData.image = imageUrl
+      productData.sizes = sizesArray
+      const createdProduct = await ProductModel.create(productData);
 
-      const newProduct = new ProductModel({
+      return res.status(201).json({ message: `${createdProduct.name} was successfully created`, data: createdProduct });
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+
+export const updateProduct: RequestHandler = async (req: AuthRequest, res, next) => {
+  try {
+    const productId = req.params.productId;
+    const userId = req.user.id;
+
+    if (!mongoose.isValidObjectId(productId)) {
+      throw createHttpError(400, 'Invalid product ID');
+    }
+
+    const product = await ProductModel.findById(productId).exec();
+
+    if (!product) {
+      throw createHttpError(404, 'Product not found');
+    }
+
+    if (req.user.role !== 'admin' && product.sellerId.toString() !== userId) {
+      throw createHttpError(403, 'Unauthorized to update product');
+    }
+
+
+    upload.single('image')(req, res, async (err) => {
+      if (err) {
+        if (err.code === 'LIMIT_FILE_SIZE') {
+          return res.status(400).json({ message: 'File size exceeds the limit. Maximum file size allowed is <600KB.' });
+        }
+        return next(err);
+      }
+
+      const { name, category, desc, sizes, color, free_shipping, brand, price, new_product, discount, star_ratings } = req.body;
+
+      const validation = validateFields({ name, category, desc, sizes, color, free_shipping, brand, price, new_product, discount, star_ratings });
+      if (!validation.isValid) {
+        return res.status(400).json({ message: validation.message });
+      }
+
+      if (!req.file) {
+        return res.status(400).json({ message: 'No file uploaded' });
+      }
+      
+      const user = await UserModel.findById(userId);
+      if (!user) return res.status(404).json({ message: 'User not found' });
+      
+      // Delete the old image from Cloudinary
+      if (product.image) {
+        const oldImagePublicId = extractPublicIdFromImageUrl(product.image);
+        await cloudinary.uploader.destroy(oldImagePublicId);
+      }
+      
+      const randomString = `${user.username}_${Math.random().toString(36).substring(2)}_${Date.now()}`;
+      const uploadResult = await cloudinary.uploader.upload(req.file.path, { folder: 'enchante', public_id: randomString });
+      const imageUrl = uploadResult.secure_url;
+      
+
+      const updateData = {
         name: name,
         category: category,
-        sellerId: sellerId,
-        image: imageUrl,
         desc: desc,
-        sizes: sizesArray,
+        image:imageUrl,
+        sizes: sizes.split(',').map((sizeString) => sizeString.trim()),
         color: color,
         free_shipping: free_shipping,
         brand: brand,
@@ -257,10 +291,15 @@ export const createProduct: RequestHandler = async (req: AuthRequest, res, next)
         new_product: new_product,
         discount: discount,
         star_ratings: star_ratings,
-      });
+      };
 
-      const createdProduct = await newProduct.save();
-      return res.status(201).json({ message: `${createdProduct.name} was successfully created`, data: createdProduct });
+      const updatedProduct = await ProductModel.findByIdAndUpdate(productId, updateData, { new: true }).exec();
+
+      if (!updatedProduct) {
+        throw createHttpError(404, 'Product not found');
+      }
+
+      return res.status(200).json({ message: `${updatedProduct.name} was successfully updated`, data: updatedProduct });
     });
   } catch (error) {
     next(error);
@@ -271,39 +310,6 @@ export const createProduct: RequestHandler = async (req: AuthRequest, res, next)
 
 
 
-// Update a product
-export const updateProduct: RequestHandler = async (req, res, next) => {
-  try {
-    const productId = req.params.productId;
-    const updateData = req.body as Partial<Product>;
-
-    if (!mongoose.isValidObjectId(productId)) {
-      throw createHttpError(400, 'Invalid product ID');
-    }
-
-    const updatedProduct = await ProductModel.findByIdAndUpdate(productId, updateData, {
-      new: true,
-    }).exec();
-
-    if (!updatedProduct) {
-      throw createHttpError(404, 'Product not found');
-    }
-
-    res.json(updatedProduct);
-  } catch (error) {
-    next(error);
-  }
-};
-
-
-
-// Function to extract the public ID from the Cloudinary URL
-// const extractPublicIdFromImageUrl = (imageUrl: string) => imageUrl.split('/').slice(-2).join('/');
-const extractPublicIdFromImageUrl = (imageUrl: string) => {
-  const segments = imageUrl.split('/');
-  const fileName = segments.pop()?.split('.')[0];
-  return `${segments.pop()}/${fileName}`;
-};
 
 
 export const deleteProduct: RequestHandler = async (req: AuthRequest, res, next) => {
@@ -326,25 +332,23 @@ export const deleteProduct: RequestHandler = async (req: AuthRequest, res, next)
     }
 
     const imagePublicId = extractPublicIdFromImageUrl(product.image);
-    console.log('image_1', imagePublicId)
 
+    try {
+      const deletionResponse = await cloudinary.uploader.destroy(imagePublicId);
 
-    // try {
-    //   const deletionResponse = await cloudinary.uploader.destroy(
-    //     imagePublicId,
-    //     // { invalidate: true, resource_type: "image" }
-    //   );
-    //   console.log(deletionResponse);
-    // } catch (error) {
-    //   console.log(error);
-    //   return res.status(400).json({
-    //     ok: false,
-    //     message: "Error deleting file",
-    //     errors: error
-    //   });
-    // }
+      if (deletionResponse.result !== 'ok') {
+        throw createHttpError(400, 'Error deleting file from Cloudinary');
+      }
+    } catch (error) {
+      console.log(error);
+      return res.status(400).json({
+        ok: false,
+        message: 'Error deleting file',
+        errors: error,
+      });
+    }
 
-    // await ProductModel.findByIdAndDelete(productId).exec();
+    await ProductModel.findByIdAndDelete(productId).exec();
 
     res.status(200).json({ message: 'Product erased!' });
   } catch (error) {

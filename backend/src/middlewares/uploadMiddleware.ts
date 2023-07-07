@@ -3,7 +3,7 @@ import path from 'path'
 
 const storage = multer.diskStorage({
 
-    // destination: 'uploads/' - if want to have a local duplicaate ,
+    // destination: 'uploads/' - if want to have a local duplicateta ,
     destination: (req, file, cb) => {
         cb(null, ''); // Set the destination to an empty string
       },
