@@ -16,7 +16,7 @@ const TextArea: React.FC<textAreaProps> = ({ label, ...props }) => {
         {label}
       </label>
       <textarea
-        className={` body-lg w-full sm:h-28 h-20 sm:text-[16px] text-[14px] px-2 py-2 block rounded resize-none border border-mediumGrey border-opacity-25 placeholder:opacity-50
+        className={`w-full sm:h-28 h-20 sm:text-[16px] text-[14px] px-2 py-2 block rounded resize-none border border-mediumGrey border-opacity-25 placeholder:opacity-50
        focus:outline-none focus:border-orangeSkin
         ${
           meta.touched &&
@@ -29,7 +29,7 @@ const TextArea: React.FC<textAreaProps> = ({ label, ...props }) => {
         ref={props.innerRef}
         name={props.name}
       />
-      <ErrorMessage component="div" name={field.name} className="mt-2 text-sm text-red-500" />
+      <ErrorMessage component="div" name={field.name} className="mt-2 text-[12px] text-red-500" />
     </div>
   );
 };

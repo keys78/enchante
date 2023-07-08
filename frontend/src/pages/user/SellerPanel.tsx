@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Formik, Form } from 'formik';
+import * as Yup from 'yup'
 import { createProduct, getAllProductsTwo } from '../../reducers/products/productsSlice';
 import { useAppDispatch, useAppSelector } from '../../network/hooks';
 import TextInput from '../../components/UI/TextInput';
@@ -33,7 +34,8 @@ interface Product {
 
 const SellerPanel: React.FC<SellerPanelProps> = () => {
     const dispatch = useAppDispatch();
-    const { products, isLoading } = useAppSelector(state => state.products)
+    const { products, isLoading, isSuccess } = useAppSelector(state => state.products)
+    const [isColorGroupSelected] = useState(true)
     const randomRatings = Math.floor(Math.random() * 4) + 1
 
     useEffect(() => {
@@ -54,15 +56,30 @@ const SellerPanel: React.FC<SellerPanelProps> = () => {
         star_ratings: randomRatings,
     };
 
-    const handleSubmit = async (values: Product) => {
+    const productSchema = Yup.object().shape({
+        name: Yup.string().required('title/name is required'),
+        desc: Yup.string().required('description is required'),
+        category: Yup.string().required('category is required'),
+        image: Yup.string().required('image is required'),
+        sizes: Yup.array().required('size(s) are required'),
+        color: Yup.string().required('color is required'),
+        price: Yup.number().required('price is required'),
+        free_shipping: Yup.boolean().required('Free shipping is required'),
+        brand: Yup.string().required('Brand is required'),
+        new_product: Yup.boolean().required('New product is required'),
+        discount: Yup.boolean().required('Discount is required'),
+        star_ratings: Yup.number().required('Star ratings is required'),
+    });
+
+    const handleSubmit = async (values: Product, { resetForm }) => {
         try {
             const formData = new FormData();
             if (values.image) {
                 formData.append('image', values.image);
             }
-            formData.append('category', values.category);
             formData.append('name', values.name);
             formData.append('desc', values.desc);
+            formData.append('category', values.category);
             formData.append('color', values.color);
             formData.append('free_shipping', String(values.free_shipping));
             formData.append('brand', values.brand);
@@ -73,6 +90,10 @@ const SellerPanel: React.FC<SellerPanelProps> = () => {
             formData.append('sizes', values.sizes.join(','));
 
             dispatch(createProduct({ productData: formData }));
+
+            if (isSuccess) {
+                resetForm()
+            }
 
         } catch (error) {
             console.error('Upload error:', error);
@@ -88,7 +109,10 @@ const SellerPanel: React.FC<SellerPanelProps> = () => {
     return (
         <div className='s-480:border border-gray-200 s-480:p-4 rounded-[5px] mx-auto max-w-[600px] w-full'>
             <h1 className='font-medium mb-[20px]'>Create Product</h1>
-            <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+            <Formik
+                initialValues={initialValues}
+                validationSchema={productSchema}
+                onSubmit={handleSubmit}>
                 {(props) => (
                     <Form>
                         <TextInput label='Title' name={'name'} type="input" placeholder='eg: Moccassino pants' />
@@ -111,27 +135,30 @@ const SellerPanel: React.FC<SellerPanelProps> = () => {
                             setItem={props?.setFieldValue}
                             placeholder='Enter product color or select from the list'
                             label={'color'}
+                            isColorGroupSelected={isColorGroupSelected}
                         />
 
                         <TextInput label='Price' name={'price'} type="number" placeholder='eg: $10' free_style='pt-6' />
 
-                        <SizesSelect sizeArr={sizeArr} props={props} />
+                        <SizesSelect sizeArr={sizeArr} />
 
                         <Checkbox question={'Is free shipping available?'} props={props} checkbox_name={'free_shipping'} />
-                        <Checkbox question={'Is it a new product?'} props={props} checkbox_name={'new_product'} free_style='py-6' />
+                        <Checkbox question={'Is it a new product?'} props={props} checkbox_name={'new_product'} free_style='s-480:py-6 py-3' />
                         <div className='flex items-center justify-between'>
                             <Checkbox question={'Is discount available?'} props={props} checkbox_name={'discount'} />
                             <Tooltip message={'Note that products are 30% off when discount is available'} />
                         </div>
 
                         <UploadPhoto setFieldValue={props.setFieldValue} />
-                        <button className="p-2 bg-black text-white rounded-[5px] w-full" type="submit">
-                            {isLoading ? <Loader /> :
-                                <span className='flex items-center justify-center'>
-                                    <CloudArrowUp size={20} color="#fff" weight='bold' /> &nbsp;&nbsp; UPLOAD PRODUCT
-                                </span>
+
+                        <button className="gen-btn-class p-2 bg-black text-white rounded-[5px] w-full flex items-center justify-center font-medium" type="submit">
+                            {isLoading ?
+                                <span className='flex items-center justify-center'> <Loader /> UPLOADING PRODUCT</span>
+                                :
+                                <span className='flex items-center justify-center'> <CloudArrowUp size={20} color="#fff" weight='bold' /> &nbsp;&nbsp; UPLOAD PRODUCT  </span>
                             }
                         </button>
+                        {/* <pre>{JSON.stringify(props.values, null, 2)}</pre> */}
                     </Form>
                 )}
 

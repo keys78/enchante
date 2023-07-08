@@ -196,6 +196,7 @@ export const createProduct: RequestHandler = async (req: AuthRequest, res, next)
       productData.image = imageUrl
       productData.sizes = sizesArray
       const createdProduct = await ProductModel.create(productData);
+      
 
       return res.status(201).json({ message: `${createdProduct.name} was successfully created`, data: createdProduct });
     });

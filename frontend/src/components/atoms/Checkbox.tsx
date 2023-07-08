@@ -7,7 +7,7 @@ const Checkbox = ({question, checkbox_name, free_style = '', props}) => {
                 <label className="check-box" htmlFor={checkbox_name}>
                 </label>
             </div>
-            <p className="-mt-1">{question}</p>
+            <p className="-mt-1 s-480:text-[16px] text-[14px]">{question}</p>
         </div>
     )
 }

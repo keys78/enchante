@@ -1,10 +1,12 @@
 import { CloudArrowUp, FileX, Info, Swap } from '@phosphor-icons/react';
 import { motion } from 'framer-motion';
 import React, { useState, useRef } from 'react';
+import useWindowSize from '../hooks/useWindowSize';
 
 const UploadPhoto = ({ setFieldValue }) => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [fileError, setFileError] = useState<string>('');
+    const { width } = useWindowSize();
 
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -16,8 +18,6 @@ const UploadPhoto = ({ setFieldValue }) => {
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.currentTarget.files && event.currentTarget.files[0];
-        console.log('file to upload', file)
-
         if (file) {
             setFieldValue("image", file)
             handleFileUpload(file);
@@ -99,7 +99,7 @@ const UploadPhoto = ({ setFieldValue }) => {
     };
 
     return (
-        <section className='my-10'>
+        <section className='s-480:my-10 my-5'>
             <div className='text-[11px] italic flex items-center justify-start text-gray-500 pb-4 space-x-2'>
                 <Info style={{ cursor: 'pointer' }} size={12} color="#f75a2c" />
                 <h6>For best resutls ensure your image aspect ration between 1:1.4:1 and 1:1.6:1</h6>
@@ -128,9 +128,9 @@ const UploadPhoto = ({ setFieldValue }) => {
                 ) : (
                     <button
                         type='button'
-                        className="w-full flex flex-col items-center justify-center gap-4 cursor-pointer border-2 border-dashed border-gray-300 bg-white px-6 s-480:py-12 py-6 rounded-lg">
-                        <CloudArrowUp size={50} color="#C7CEDB" />
-                        Click here upload photo <br /> Or drag image here to upload
+                        className="w-full flex flex-col items-center justify-center gap-4 cursor-pointer border-2 border-dashed border-gray-300 bg-white px-6 s-480:py-12 py-6 rounded-lg s-480:text-[16px] text-[12px]">
+                        <CloudArrowUp size={width > 480 ? 50 : 35} color="#C7CEDB" />
+                        Click here upload product photo <br /> Or drag product image here to upload
                     </button>
                 )}
             </div>
@@ -143,7 +143,6 @@ const UploadPhoto = ({ setFieldValue }) => {
                 ref={fileInputRef}
                 onChange={handleFileChange}
                 style={{ display: 'none' }}
-
             />
         </section>
     );

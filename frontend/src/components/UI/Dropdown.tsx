@@ -8,11 +8,11 @@ interface IProps {
     setItem: any,
     label: string,
     placeholder: string
-
+    isColorGroupSelected?: boolean
 
 }
 
-const Dropdown = ({ label, item, setItem, placeholder }: IProps) => {
+const Dropdown = ({ label, item, setItem, placeholder, isColorGroupSelected }: IProps) => {
     const [showMenu, setShowMenu] = useState(false);
 
     return (
@@ -42,24 +42,40 @@ const Dropdown = ({ label, item, setItem, placeholder }: IProps) => {
                             animate={showMenu ? "open" : "closed"}
                             exit="closed"
                         >
-                            <ul className="py-1 zedder bg-white dark:bg-veryDarkGrey" >
-                                {item.map((column: any, i: number) => (
+                            <ul className="py-1 zedder bg-white dark:bg-veryDarkGrey border border-gray-200 rounded-[5px]">
+                                {item.slice().sort().map((column, i) => (
                                     <li
                                         onClick={() => {
-                                            setItem(label, column)
-                                            setShowMenu(false)
+                                            setItem(label, column);
+                                            setShowMenu(false);
                                         }}
                                         key={i}
-                                        className="text-mediumGrey block px-4 py-2 text-sm hover:text-mainPurple hover:bg-[#C7CEDB]"
+                                        className="text-mediumGrey block px-4 py-2 text-sm hover:text-mainPurple hover:bg-[#C7CEDB] capitalize"
                                     >
-                                        {column}
+                                        {isColorGroupSelected ? (
+                                            <div className="flex items-center space-x-2">
+                                                {isColorGroupSelected && column === "white" ? (
+                                                    <div style={{ border: "2px solid #000" }} className="h-[14px] w-[14px] rounded-[100%] flex items-center justify-center">
+                                                        <div style={{ background: "#fbfbfb" }} className="h-[12px] w-[12px] rounded-[100%]"></div>
+                                                    </div>
+                                                ) : (
+                                                    <div style={{ border: `2px solid ${column}` }} className="h-[14px] w-[14px] rounded-[100%] flex items-center justify-center">
+                                                        <div style={{ background: column }} className="h-[7px] w-[7px] p-2 rounded-[100%]"></div>
+                                                    </div>
+                                                )}
+                                                <span>{column}</span>
+                                            </div>
+                                        ) : (
+                                            column
+                                        )}
                                     </li>
                                 ))}
                             </ul>
+
                         </motion.div>
                     }
                 </AnimatePresence>
-            </div>
+            </div >
         </>
     )
 }
