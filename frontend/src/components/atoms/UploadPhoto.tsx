@@ -100,9 +100,9 @@ const UploadPhoto = ({ setFieldValue }) => {
 
     return (
         <section className='my-10'>
-            <div className='text-[12px] italic grid grid-cols-10 text-gray-500 pb-4'>
-                <Info className='col-span-1 w-[20px]' style={{ cursor: 'pointer' }} size={16} color="#f75a2c" />
-                <h6 className='col-span-9'>For best resutls ensure your image aspect ration between 1:1.4:1 and 1:1.6:1</h6>
+            <div className='text-[11px] italic flex items-center justify-start text-gray-500 pb-4 space-x-2'>
+                <Info style={{ cursor: 'pointer' }} size={12} color="#f75a2c" />
+                <h6>For best resutls ensure your image aspect ration between 1:1.4:1 and 1:1.6:1</h6>
             </div>
             <div
                 className="drop-zone w-full"
