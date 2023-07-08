@@ -17,6 +17,7 @@ import PrivateRoute from "./components/containers/PrivateRoute";
 import SellerPanel from "./pages/user/SellerPanel";
 import Orders from "./pages/user/Orders";
 import Inbox from "./pages/user/Inbox";
+import MyProducts from "./pages/user/MyProducts";
 
 
 interface RouteConfig {
@@ -27,9 +28,10 @@ interface RouteConfig {
 
 function App() {
   const routes: RouteConfig[] = [
-    { path: "account", title: 'My Account', element: <Accounts /> },
+    { path: "account", title: 'Account', element: <Accounts /> },
     { path: "seller", title: 'Sell On enchanté', element: <SellerPanel /> },
-    { path: "my-orders", title: 'My Orders', element: <Orders /> },
+    { path: "orders", title: 'Orders', element: <Orders /> },
+    { path: "my-products", title: 'My Products', element: <MyProducts /> },
     { path: "inbox", title: 'Inbox', element: <Inbox /> },
     { path: "saved-items", title: 'Saved Items', element: <SavedItems /> },
   ];

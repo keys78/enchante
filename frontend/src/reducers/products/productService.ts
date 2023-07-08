@@ -18,6 +18,17 @@ const getAllProductsTwo = async () => {
     return data
 }
 
+const getSellerProducts = async (token: IToken,) => {
+    const authConfig = {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const { data } = await axios.get(import.meta.env.VITE_APP_BASE_API + `products/seller-products`, authConfig)
+    return data
+}
+
 const getSingleProduct = async (productId: string) => {
     const { data } = await axios.get(import.meta.env.VITE_APP_BASE_API + `products/product/${productId}`, config)
     return data
@@ -55,6 +66,7 @@ const createProduct = async (token: IToken, productData: Product) => {
 const productService = {
     getAllProducts,
     getAllProductsTwo,
+    getSellerProducts,
     getSingleProduct,
     searchProducts,
 

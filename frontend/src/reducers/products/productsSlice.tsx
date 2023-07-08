@@ -30,6 +30,7 @@ const emptyProduct: Product = {
 interface ProductsState {
   products: Product[];
   filteredProducts: Product[];
+  sellerProducts: Product[];
   totalPages: number,
   totalResults: number,
   product: Product;
@@ -50,10 +51,10 @@ interface GetAllProductsPayload {
 
 
 
-
 const initialState: ProductsState = {
   products: [],
   filteredProducts: [],
+  sellerProducts:[],
   totalPages: 0,
   totalResults: 0,
   product: emptyProduct,
@@ -96,6 +97,20 @@ export const getSingleProduct = createAsyncThunk<Product, { productId: string; }
   async ({ productId }, thunkAPI) => {
     try {
       return await productService.getSingleProduct(productId)
+    } catch (error: any) {
+      errorHandler(error, thunkAPI)
+      throw error;
+    }
+  }
+);
+
+
+export const getSellerProducts = createAsyncThunk<any, any>(
+  'products/seller',
+  async (_, thunkAPI) => {
+    const token: IToken = token2 || (thunkAPI.getState() as { auth: Auth }).auth.token;
+    try {
+      return await productService.getSellerProducts(token)
     } catch (error: any) {
       errorHandler(error, thunkAPI)
       throw error;
@@ -372,6 +387,7 @@ const productsSlice = createSlice({
         state.isError = true
         state.message = action.payload as string
       })
+
       .addCase(getAllProductsTwo.pending, (state) => {
         state.isLoading = true
       })
@@ -385,6 +401,7 @@ const productsSlice = createSlice({
         state.isError = true
         state.message = action.payload as string
       })
+
       .addCase(searchProducts.pending, (state) => {
         state.isLoading = true
       })
@@ -401,6 +418,21 @@ const productsSlice = createSlice({
         state.isError = true
         state.message = action.payload || "Something went wrong";
       })
+
+      .addCase(getSellerProducts.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(getSellerProducts.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.sellerProducts = action.payload
+      })
+      .addCase(getSellerProducts.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload as string
+      })
+
       .addCase(getSingleProduct.pending, (state) => {
         state.isLoading = true
       })
@@ -414,6 +446,7 @@ const productsSlice = createSlice({
         state.isError = true
         state.message = action.payload as string
       })
+
       .addCase(toggleSavedProducts.pending, (state) => {
         state.isLoading = true
       })
@@ -425,11 +458,14 @@ const productsSlice = createSlice({
         state.isError = true
         state.message = action.payload as string
       })
+
       .addCase(createProduct.pending, (state) => {
         state.isLoading = true
       })
       .addCase(createProduct.fulfilled, (state) => {
         state.isLoading = false
+        state.isError = false
+        state.isSuccess = true
       })
       .addCase(createProduct.rejected, (state, action) => {
         state.isLoading = false

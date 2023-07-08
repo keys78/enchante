@@ -12,10 +12,8 @@ import SizesSelect from '../../components/atoms/SizesSelect';
 import UploadPhoto from '../../components/atoms/UploadPhoto';
 import Loader from '../../components/UI/Loader';
 import { CloudArrowUp } from '@phosphor-icons/react';
+import { useNavigate } from 'react-router-dom';
 
-interface SellerPanelProps {
-    onProductCreated: (productData: Product) => void;
-}
 
 interface Product {
     category: string;
@@ -32,9 +30,10 @@ interface Product {
     star_ratings: number;
 }
 
-const SellerPanel: React.FC<SellerPanelProps> = () => {
+const SellerPanel = () => {
     const dispatch = useAppDispatch();
-    const { products, isLoading, isSuccess } = useAppSelector(state => state.products)
+    const navigate = useNavigate();
+    const { products, isLoading, isSuccess, isError } = useAppSelector(state => state.products)
     const [isColorGroupSelected] = useState(true)
     const randomRatings = Math.floor(Math.random() * 4) + 1
 
@@ -91,8 +90,10 @@ const SellerPanel: React.FC<SellerPanelProps> = () => {
 
             dispatch(createProduct({ productData: formData }));
 
-            if (isSuccess) {
-                resetForm()
+            if (!isLoading && !isError && isSuccess) {
+                alert('Product Makowa')
+                // resetForm()
+                // setTimeout(() => { navigate('/user/my-products') }, 3000)
             }
 
         } catch (error) {
