@@ -7,7 +7,6 @@ import { paginateResults } from "../middlewares/pagination";
 import { getFromCache, setInCache } from "../redisCache";
 import { AuthRequest } from "./user";
 import { v2 as cloudinary } from 'cloudinary';
-import multer from 'multer';
 import { upload } from "../middlewares/uploadMiddleware";
 import { extractPublicIdFromImageUrl, validateFields } from "../utils/helpers";
 
@@ -159,24 +158,6 @@ export const toggleSavedProduct: RequestHandler = async (req: AuthRequest, res, 
     next(error);
   }
 };
-
-
-
-
-
-// Create a product
-// export const createProduct: RequestHandler = async (req: AuthRequest, res, next) => {
-//   const sellerId = req.user.id;
-
-//   try {
-//     const productData = req.body as Product;
-//     productData.sellerId = sellerId; // Add the sellerId to the product data
-//     const newProduct = await ProductModel.create(productData);
-//     res.status(201).json({ message: `${newProduct.name} was successfully created` });
-//   } catch (error) {
-//     next(error);
-//   }
-// };
 
 
 

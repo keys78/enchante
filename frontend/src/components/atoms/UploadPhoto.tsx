@@ -1,8 +1,8 @@
-import { CloudArrowUp, FileX, Swap } from '@phosphor-icons/react';
+import { CloudArrowUp, FileX, Info, Swap } from '@phosphor-icons/react';
 import { motion } from 'framer-motion';
 import React, { useState, useRef } from 'react';
 
-const UploadPhoto = ({ props }) => {
+const UploadPhoto = ({ setFieldValue }) => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [fileError, setFileError] = useState<string>('');
 
@@ -15,10 +15,11 @@ const UploadPhoto = ({ props }) => {
     };
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files && event.target.files[0];
-        console.log('file to', file)
+        const file = event.currentTarget.files && event.currentTarget.files[0];
+        console.log('file to upload', file)
 
         if (file) {
+            setFieldValue("image", file)
             handleFileUpload(file);
         }
     };
@@ -39,8 +40,8 @@ const UploadPhoto = ({ props }) => {
     };
 
     const handleFileUpload = (file: File) => {
-        if (file.size > 500 * 1024) {
-            setFileError('File size exceeds 500 KB, please rescale or select another.');
+        if (file.size > 600 * 1024) {
+            setFileError('File size exceeds 600 KB, please rescale or select another.');
             return;
         }
 
@@ -72,7 +73,7 @@ const UploadPhoto = ({ props }) => {
                     const scaledImageDataURL = canvas.toDataURL('image/jpeg');
                     setSelectedFile(new File([dataURLtoBlob(scaledImageDataURL)], file.name));
                     setFileError('');
-                    props.setFieldValue('image', file.name)
+
                 };
 
                 img.src = reader.result;
@@ -99,6 +100,10 @@ const UploadPhoto = ({ props }) => {
 
     return (
         <section className='my-10'>
+            <div className='text-[12px] italic grid grid-cols-10 text-gray-500 pb-4'>
+                <Info className='col-span-1 w-[20px]' style={{ cursor: 'pointer' }} size={16} color="#f75a2c" />
+                <h6 className='col-span-9'>For best resutls ensure your image aspect ration between 1:1.4:1 and 1:1.6:1</h6>
+            </div>
             <div
                 className="drop-zone w-full"
                 onDrop={handleDrop}
@@ -138,6 +143,7 @@ const UploadPhoto = ({ props }) => {
                 ref={fileInputRef}
                 onChange={handleFileChange}
                 style={{ display: 'none' }}
+
             />
         </section>
     );

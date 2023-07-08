@@ -14,7 +14,7 @@ const Tooltip = ({message}: IProps) => {
 
   return (
     <div className='relative'>
-        <Info onClick={handleInfoClick} style={{ cursor: 'pointer' }} size={20} color="#141414" />
+        <Info onClick={handleInfoClick} style={{ cursor: 'pointer' }} size={17} color="#f75a2c" />
       {showTooltip && (
         <div className='p-4 rounded-[5px] bg-white shadow absolute w-[300px] -top-20 right-0'>
           { message }

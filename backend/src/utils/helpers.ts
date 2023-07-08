@@ -14,7 +14,7 @@ export const validateFields = (fields: any) => {
       case Boolean(fields.desc):
         return { isValid: false, message: 'Description is a required field' };
       case Boolean(fields.sizes):
-        return { isValid: false, message: 'Sizes is a required field' };
+        return { isValid: false, message: 'Sizes are required' };
       case Boolean(fields.color):
         return { isValid: false, message: 'Color is a required field' };
       case Boolean(fields.free_shipping):
@@ -24,9 +24,9 @@ export const validateFields = (fields: any) => {
       case Boolean(fields.price):
         return { isValid: false, message: 'Price is a required field' };
       case Boolean(fields.new_product):
-        return { isValid: false, message: 'New product is a required field' };
+        return { isValid: false, message: 'Is It a New product, is a required field' };
       case Boolean(fields.discount):
-        return { isValid: false, message: 'Discount is a required field' };
+        return { isValid: false, message: 'Is Discount Available is a required field' };
       case Boolean(fields.star_ratings):
         return { isValid: false, message: 'Star ratings is a required field' };
       default:

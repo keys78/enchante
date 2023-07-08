@@ -1,36 +1,83 @@
-import { Formik, Form } from 'formik'
-import * as Yup from 'yup'
-import TextInput from '../../components/UI/TextInput'
-import TextArea from '../../components/UI/TextArea'
-import Dropdown from '../../components/UI/Dropdown'
-import { useAppDispatch, useAppSelector } from '../../network/hooks'
-import { useEffect } from 'react'
-import { createProduct, getAllProducts } from '../../reducers/products/productsSlice'
-import { Product } from '../../types'
-import Tooltip from '../../components/atoms/Tooltip'
-import Checkbox from '../../components/atoms/Checkbox'
-import UploadPhoto from '../../components/atoms/UploadPhoto'
-import SizesSelect from '../../components/atoms/SizesSelect'
+import React, { useEffect } from 'react';
+import { Formik, Form } from 'formik';
+import { createProduct, getAllProductsTwo } from '../../reducers/products/productsSlice';
+import { useAppDispatch, useAppSelector } from '../../network/hooks';
+import TextInput from '../../components/UI/TextInput';
+import TextArea from '../../components/UI/TextArea';
+import Dropdown from '../../components/UI/Dropdown';
+import Checkbox from '../../components/atoms/Checkbox';
+import Tooltip from '../../components/atoms/Tooltip';
+import SizesSelect from '../../components/atoms/SizesSelect';
+import UploadPhoto from '../../components/atoms/UploadPhoto';
+import Loader from '../../components/UI/Loader';
+import { CloudArrowUp } from '@phosphor-icons/react';
 
-const SellerPanel = () => {
-    const { products } = useAppSelector(state => state.products)
+interface SellerPanelProps {
+    onProductCreated: (productData: Product) => void;
+}
+
+interface Product {
+    category: string;
+    name: string;
+    image: string;
+    desc: string;
+    sizes: string[];
+    color: string;
+    free_shipping: boolean;
+    brand: string;
+    price?: number;
+    new_product: boolean;
+    discount: boolean;
+    star_ratings: number;
+}
+
+const SellerPanel: React.FC<SellerPanelProps> = () => {
     const dispatch = useAppDispatch();
-    const validate = Yup.object({
-        name: Yup.string().required("required"),
-        desc: Yup.string().required("describe your product"),
-        category: Yup.string().required("required"),
-        color: Yup.string().required("required"),
-        brand: Yup.string().required("required"),
-        // sizes: Yup.array().of(
-        //     Yup.object().shape({
-        //         desc: Yup.string().required("Subtask desc is required"),
-        //     })
-        // ),
-    })
+    const { products, isLoading } = useAppSelector(state => state.products)
+    const randomRatings = Math.floor(Math.random() * 4) + 1
 
     useEffect(() => {
-        dispatch(getAllProducts(1))
+        dispatch(getAllProductsTwo({}));
     }, [dispatch])
+
+    const initialValues: Product = {
+        category: '',
+        name: '',
+        image: '',
+        desc: '',
+        sizes: [],
+        color: '',
+        free_shipping: false,
+        brand: '',
+        new_product: false,
+        discount: false,
+        star_ratings: randomRatings,
+    };
+
+    const handleSubmit = async (values: Product) => {
+        try {
+            const formData = new FormData();
+            if (values.image) {
+                formData.append('image', values.image);
+            }
+            formData.append('category', values.category);
+            formData.append('name', values.name);
+            formData.append('desc', values.desc);
+            formData.append('color', values.color);
+            formData.append('free_shipping', String(values.free_shipping));
+            formData.append('brand', values.brand);
+            formData.append('price', String(values.price));
+            formData.append('new_product', String(values.new_product));
+            formData.append('discount', String(values.discount));
+            formData.append('star_ratings', String(values.star_ratings));
+            formData.append('sizes', values.sizes.join(','));
+
+            dispatch(createProduct({ productData: formData }));
+
+        } catch (error) {
+            console.error('Upload error:', error);
+        }
+    };
 
     const brands = [...new Set(products?.map((val: Product) => val.brand))];
     const category = [...new Set(products?.map((val: Product) => val.category))];
@@ -38,38 +85,15 @@ const SellerPanel = () => {
     const sizeArr = ['S', 'M', 'L', 'XL', 'XXL']
 
 
-
     return (
         <div className='s-480:border border-gray-200 s-480:p-4 rounded-[5px] mx-auto max-w-[600px] w-full'>
             <h1 className='font-medium mb-[20px]'>Create Product</h1>
-            <Formik
-                initialValues={{
-                    name: '',
-                    desc: '',
-                    category: '',
-                    image: '',
-                    color: '',
-                    brand: '',
-                    free_shipping: false,
-                    new: false,
-                    discount: false,
-                    sizes: [],
-                    star_ratings: Math.floor(Math.random() * 4) + 1,
-                }}
-
-                // validationSchema={validate}
-                onSubmit={(values, { setSubmitting, resetForm }) => {
-                    setSubmitting(true)
-                    dispatch(createProduct({ productData: values }))
-                    // resetForm()
-                    console.log('submit:', values);
-                    // setSubmitting(false)
-                }}
-            >
+            <Formik initialValues={initialValues} onSubmit={handleSubmit}>
                 {(props) => (
-                    <Form onSubmit={props.handleSubmit}>
+                    <Form>
                         <TextInput label='Title' name={'name'} type="input" placeholder='eg: Moccassino pants' />
                         <TextArea label="Description" name={'desc'} type="text" placeholder="e.g. For rush hours, work and school, you can always count on..." />
+
                         <Dropdown
                             item={category}
                             setItem={props?.setFieldValue}
@@ -88,30 +112,34 @@ const SellerPanel = () => {
                             placeholder='Enter product color or select from the list'
                             label={'color'}
                         />
-                        <TextInput label='Price' name={'price'} type="number" placeholder='eg: $10' free_style='pt-6'/>
+
+                        <TextInput label='Price' name={'price'} type="number" placeholder='eg: $10' free_style='pt-6' />
 
                         <SizesSelect sizeArr={sizeArr} props={props} />
 
                         <Checkbox question={'Is free shipping available?'} props={props} checkbox_name={'free_shipping'} />
-                        <Checkbox question={'Is it a new product?'} props={props} checkbox_name={'new'} free_style='py-6'/>
+                        <Checkbox question={'Is it a new product?'} props={props} checkbox_name={'new_product'} free_style='py-6' />
                         <div className='flex items-center justify-between'>
                             <Checkbox question={'Is discount available?'} props={props} checkbox_name={'discount'} />
                             <Tooltip message={'Note that products are 30% off when discount is available'} />
                         </div>
 
-                        <UploadPhoto props={props} />
-
-                        <button type='submit' className="p-2 bg-black text-white rounded-[5px] w-full">
-                            SUBMIT
+                        <UploadPhoto setFieldValue={props.setFieldValue} />
+                        <button className="p-2 bg-black text-white rounded-[5px] w-full" type="submit">
+                            {isLoading ? <Loader /> :
+                                <span className='flex items-center justify-center'>
+                                    <CloudArrowUp size={20} color="#fff" weight='bold' /> &nbsp;&nbsp; UPLOAD PRODUCT
+                                </span>
+                            }
                         </button>
-
-                        <pre>{JSON.stringify(props.values, null, 2)}</pre>
                     </Form>
                 )}
+
             </Formik>
         </div>
-    )
-}
+
+    );
+};
 
 export default SellerPanel;
 

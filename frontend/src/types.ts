@@ -17,9 +17,9 @@ export interface Product {
     color: string;
     brand: string;
     free_shipping: boolean;
-    new: boolean;
+    new_product: boolean;
     star_ratings: number;
-    discount?: boolean;
+    discount: boolean;
     cartQuantity?: number;
 }
 

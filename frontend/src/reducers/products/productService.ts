@@ -13,6 +13,10 @@ const getAllProducts = async (page: number) => {
     const { data } = await axios.get(import.meta.env.VITE_APP_BASE_API + `products/?page=${page}&limit=7`, config)
     return data
 }
+const getAllProductsTwo = async () => {
+    const { data } = await axios.get(import.meta.env.VITE_APP_BASE_API + `products/?limit=1000`, config)
+    return data
+}
 
 const getSingleProduct = async (productId: string) => {
     const { data } = await axios.get(import.meta.env.VITE_APP_BASE_API + `products/product/${productId}`, config)
@@ -39,7 +43,7 @@ const toggleSavedProduct = async (token: IToken, productId: string) => {
 const createProduct = async (token: IToken, productData: Product) => {
     const authConfig = {
         headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${token}`,
         },
     }
@@ -50,6 +54,7 @@ const createProduct = async (token: IToken, productData: Product) => {
 
 const productService = {
     getAllProducts,
+    getAllProductsTwo,
     getSingleProduct,
     searchProducts,
 
