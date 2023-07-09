@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../network/hooks";
 import { CaretRight, Heart, Minus, Plus, ShoppingCartSimple, Star } from "@phosphor-icons/react";
 import ThumbnailsGallery from "../components/products/ThumbnailsGallery";
@@ -18,14 +18,12 @@ import { getSingleProduct, toggleSavedProducts } from "../reducers/products/prod
 
 const ProductDetails = () => {
     const { id } = useParams();
+    const location = useLocation();
+    const source = location.state?.source;
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const { width } = useWindowSize();
     const { product } = useAppSelector(state => state.products)
-
-    useEffect(() => {
-        dispatch(getSingleProduct({ productId: id as string }))
-    }, [dispatch, id])
-
     const cart = useAppSelector((state: RootState) => state.cart);
     const addToCart = useAddToCart();
     const addQuantity = useAddQuantity();
@@ -34,9 +32,14 @@ const ProductDetails = () => {
     const [activeSize, setActiveSize] = useState<number>(0);
     const existingCartItem = cart.cartItems.find((item: CartItem) => item._id === id);
     const [activeTab, setActiveTab] = useState("Product Description");
-
     const { user } = useAppSelector(state => state.user)
     const isSaved = user?.savedItems.find(val => val._id === product?._id)
+
+    useEffect(() => {
+        dispatch(getSingleProduct({ productId: id as string }))
+    }, [dispatch, id])
+
+
 
     const toggleSavedButton = () => {
         dispatch(toggleSavedProducts({ productId: product?._id }))
@@ -74,7 +77,7 @@ const ProductDetails = () => {
             <div>
                 <div className='pt-[30px] pb-[18px] flex items-center space-x-2'>
                     <span className='flex items-center space-x-2' style={{ color: '#a6a4a4' }}><Link to={'/'}>Home</Link> <CaretRight size={14} /> </span>
-                    <span className='flex items-center space-x-2' style={{ color: '#a6a4a4' }}><Link to={'/products'}>Products</Link> <CaretRight size={14} /> </span>
+                    <span className='flex items-center space-x-2' style={{ color: '#a6a4a4' }}><div onClick={() => navigate(-1)}>{source ?? 'Products'}</div> <CaretRight size={14} /> </span>
                     <span className='font-bold capitalize'>{characterLimit(product?.name, 16)}</span>
                 </div>
 

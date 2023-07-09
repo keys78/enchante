@@ -30,6 +30,6 @@ const productSchema = new Schema<Product>({
   discount: { type: Boolean, required: true },
   star_ratings: { type: Number, required: true },
   sellerId: { type: Schema.Types.ObjectId }
-});
+}, { timestamps: true });
 
 export default model<Product>('Product', productSchema);
