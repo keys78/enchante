@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup'
-import { createProduct, getAllProductsTwo } from '../../reducers/products/productsSlice';
+import { getAllProductsTwo, updateProduct } from '../../reducers/products/productsSlice';
 import { useAppDispatch, useAppSelector } from '../../network/hooks';
 import TextInput from '../../components/UI/TextInput';
 import TextArea from '../../components/UI/TextArea';
@@ -11,7 +11,7 @@ import Tooltip from '../../components/atoms/Tooltip';
 import SizesSelect from '../../components/atoms/SizesSelect';
 import UploadPhoto from '../../components/atoms/UploadPhoto';
 import Loader from '../../components/UI/Loader';
-import { CloudArrowUp } from '@phosphor-icons/react';
+import { Copy } from '@phosphor-icons/react';
 
 
 interface Product {
@@ -29,7 +29,7 @@ interface Product {
     star_ratings: number;
 }
 
-const SellerPanel = () => {
+const EditProductModal = ({product}) => {
     const dispatch = useAppDispatch();
     const { products, isLoading, isSuccess, isError } = useAppSelector(state => state.products)
     const [isColorGroupSelected] = useState(true)
@@ -42,16 +42,17 @@ const SellerPanel = () => {
     }, [dispatch])
 
     const initialValues: Product = {
-        category: '',
-        name: '',
-        image: '',
-        desc: '',
-        sizes: [],
-        color: '',
-        free_shipping: false,
-        brand: '',
-        new_product: false,
-        discount: false,
+        category: product?.category,
+        name: product?.name,
+        image: product?.image,
+        desc: product?.desc,
+        sizes: product?.sizes,
+        color: product?.color,
+        price: product?.price,
+        free_shipping: true,
+        brand: product?.brand,
+        new_product: product?.new_product,
+        discount: product?.discount,
         star_ratings: randomRatings,
     };
 
@@ -88,13 +89,8 @@ const SellerPanel = () => {
             formData.append('star_ratings', String(values.star_ratings));
             formData.append('sizes', values.sizes.join(','));
 
-            dispatch(createProduct({ productData: formData }));
+            dispatch(updateProduct({ productId:product?._id, productData: formData }));
 
-            if (!isLoading && !isError && isSuccess) {
-                alert('Product Makowa')
-                // resetForm()
-                // setTimeout(() => { navigate('/user/my-products') }, 3000)
-            }
 
         } catch (error) {
             console.error('Upload error:', error);
@@ -109,7 +105,7 @@ const SellerPanel = () => {
 
     return (
         <div className='s-480:border border-gray-200 s-480:p-4 rounded-[5px] mx-auto max-w-[600px] w-full'>
-            <h1 className='font-medium mb-[20px]'>Create Product</h1>
+            <h1 className='font-medium mb-[20px]'>Edit Product</h1>
             <Formik
                 initialValues={initialValues}
                 validationSchema={productSchema}
@@ -143,23 +139,23 @@ const SellerPanel = () => {
 
                         <SizesSelect sizeArr={sizeArr} />
 
-                        <Checkbox question={'Is free shipping available?'} props={props} checkbox_name={'free_shipping'} />
-                        <Checkbox question={'Is it a new product?'} props={props} checkbox_name={'new_product'} free_style='s-480:py-6 py-3' />
+                        <Checkbox checked={props.values.free_shipping} question={'Is free shipping available?'} props={props} checkbox_name={'free_shipping'} />
+                        <Checkbox checked={props.values.new_product} question={'Is it a new product?'} props={props} checkbox_name={'new_product'} free_style='s-480:py-6 py-3' />
                         <div className='flex items-center justify-between'>
-                            <Checkbox question={'Is discount available?'} props={props} checkbox_name={'discount'} />
+                            <Checkbox checked={props.values.discount} question={'Is discount available?'} props={props} checkbox_name={'discount'} />
                             <Tooltip message={'Note that products are 30% off when discount is available'} />
                         </div>
 
-                        <UploadPhoto setFieldValue={props.setFieldValue} uploadSrc={null} />
+                        <UploadPhoto uploadSrc={props.values.image} setFieldValue={props.setFieldValue} />
 
                         <button className="gen-btn-class p-2 bg-black text-white rounded-[5px] w-full flex items-center justify-center font-medium" type="submit">
                             {isLoading ?
-                                <span className='flex items-center justify-center'> <Loader /> UPLOADING PRODUCT</span>
+                                <span className='flex items-center justify-center'> <Loader /> UPDATING PRODUCT</span>
                                 :
-                                <span className='flex items-center justify-center'> <CloudArrowUp size={20} color="#fff" weight='bold' /> &nbsp;&nbsp; UPLOAD PRODUCT  </span>
+                                <span className='flex items-center justify-center'> <Copy size={20} color="#fff" weight='bold' /> &nbsp;&nbsp; UPDATE PRODUCT  </span>
                             }
                         </button>
-                        {/* <pre>{JSON.stringify(props.values, null, 2)}</pre> */}
+                        <pre>{JSON.stringify(props.values, null, 2)}</pre>
                     </Form>
                 )}
 
@@ -169,18 +165,4 @@ const SellerPanel = () => {
     );
 };
 
-export default SellerPanel;
-
-
-{/* <div onClick={() => props.setFieldValue('sizes', [...props.values.sizes, val])} className={`border border-black text-center flex items-center justify-center cursor-pointer rounded-[5px] h-[32px] w-[32px] `}>{val}</div> */ }
-// const handleClick = () => {
-//     const { sizes } = props.values;
-
-//     if (sizes.includes(val)) {
-//         const updatedSizes = sizes.filter((size) => size !== val);
-//         props.setFieldValue('sizes', updatedSizes);
-//     } else {
-//         const updatedSizes = [val, ...sizes];
-//         props.setFieldValue('sizes', updatedSizes);
-//     }
-// };
+export default EditProductModal;

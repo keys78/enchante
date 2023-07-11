@@ -3,10 +3,12 @@ import { motion } from 'framer-motion';
 import React, { useState, useRef } from 'react';
 import useWindowSize from '../hooks/useWindowSize';
 
-const UploadPhoto = ({ setFieldValue }) => {
+const UploadPhoto = ({ setFieldValue, uploadSrc }) => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [fileError, setFileError] = useState<string>('');
     const { width } = useWindowSize();
+
+    console.log('selectedFile', selectedFile)
 
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -102,7 +104,7 @@ const UploadPhoto = ({ setFieldValue }) => {
         <section className='s-480:my-10 my-5'>
             <div className='text-[11px] italic flex items-center justify-start text-gray-500 pb-4 space-x-2'>
                 <Info style={{ cursor: 'pointer' }} size={12} color="#f75a2c" />
-                <h6>For best resutls ensure your image aspect ration between 1:1.4:1 and 1:1.6:1</h6>
+                <h6>For best results ensure your image aspect ration between 1:1.4:1 and 1:1.6:1</h6>
             </div>
             <div
                 className="drop-zone w-full"
@@ -120,7 +122,8 @@ const UploadPhoto = ({ setFieldValue }) => {
                             </motion.button>
                         </div>
                         <img
-                            src={URL.createObjectURL(selectedFile)}
+                            src={uploadSrc}
+                            // src={uploadSrc === null ? uploadSrc : URL.createObjectURL(selectedFile)}
                             alt="Uploaded"
                             className="uploaded-image"
                         />
@@ -133,6 +136,7 @@ const UploadPhoto = ({ setFieldValue }) => {
                         Click here upload product photo <br /> Or drag product image here to upload
                     </button>
                 )}
+
             </div>
 
             {fileError && <div className="text-red-500 text-[12px] pt-2 text-center">error: {fileError}</div>}

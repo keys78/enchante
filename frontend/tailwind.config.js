@@ -32,6 +32,7 @@ export default {
         btnGray: "#444757",
         mainRed: "#EA5555",
         orangeSkin:"#f75a2c",
+        modalBackgroundLayer: 'rgba(0, 0, 16, 0.2)',
       },
       letterSpacing: {
         widest: "0.15rem",

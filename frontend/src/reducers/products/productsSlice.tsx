@@ -25,6 +25,7 @@ const emptyProduct: Product = {
   free_shipping: false,
   new_product: false,
   star_ratings: 0,
+  createdAt:''
 };
 
 interface ProductsState {
@@ -154,6 +155,20 @@ export const createProduct = createAsyncThunk<Product, any>(
 
     try {
       return await productService.createProduct(token, productData)
+    } catch (error: any) {
+      errorHandler(error, thunkAPI)
+    }
+  }
+)
+
+
+export const updateProduct = createAsyncThunk<any, any>(
+  'products/update-product',
+  async ({ productId, productData }, thunkAPI) => {
+    const token: IToken = token2 || (thunkAPI.getState() as { auth: Auth }).auth.token;
+
+    try {
+      return await productService.updateProduct(token, productId, productData)
     } catch (error: any) {
       errorHandler(error, thunkAPI)
     }
@@ -419,6 +434,18 @@ const productsSlice = createSlice({
         state.message = action.payload || "Something went wrong";
       })
 
+      .addCase(updateProduct.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(updateProduct.fulfilled, (state) => {
+        state.isLoading = false
+        state.isSuccess = true
+      })
+      .addCase(updateProduct.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload as string
+      })
       .addCase(getSellerProducts.pending, (state) => {
         state.isLoading = true
       })

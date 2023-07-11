@@ -15,6 +15,37 @@ export const modalVariants = {
     }
   };
 
+  export const backdropVariant2 = {
+    hidden: {
+      opacity: 0,
+    },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: 0.3,
+      },
+    },
+    exit: {
+      opacity: 0,
+      transition: {
+        duration: 0.3,
+      },
+    },
+  };
+  
+
+export const modalVariant = {
+    hidden: {
+        y: "-200px",
+    },
+    visible: {
+        y: 0,
+        transition: {
+            duration: 0.25,
+        },
+    },
+};
+
 export const modalVariantsShort = {
     initial: {
       opactity: 0,

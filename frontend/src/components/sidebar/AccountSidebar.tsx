@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { logout } from "../../reducers/auth/authSlice";
 import { resetUser } from "../../reducers/private/user/userSlice";
 import { useAppDispatch } from "../../network/hooks";
-import { AppWindow, ArchiveBox, EnvelopeOpen, Money, Stack } from "@phosphor-icons/react";
+import { AppWindow, ArchiveBox, EnvelopeOpen, Money, Package, Stack } from "@phosphor-icons/react";
 import useWindowSize from "../hooks/useWindowSize";
 
 const AccountSidebar = () => {
@@ -20,7 +20,7 @@ const AccountSidebar = () => {
         { title: 'Account', icon: <AppWindow size={22} color={` ${location.pathname === '/user/account' ? '#f75a2c' : '#141414'}`} />, link: '/user/account' },
         { title: 'Sell On enchanté', icon: <Money size={22} color={` ${location.pathname === '/user/seller' ? '#f75a2c' : '#141414'}`} />, link: '/user/seller' },
         { title: 'My Products', icon: <Stack size={22} color={` ${location.pathname === '/user/my-products' ? '#f75a2c' : '#141414'}`} />, link: '/user/my-products' },
-        { title: 'Orders', icon: <Stack size={22} color={` ${location.pathname === '/user/orders' ? '#f75a2c' : '#141414'}`} />, link: '/user/orders' },
+        { title: 'Orders', icon: <Package  size={22} color={` ${location.pathname === '/user/orders' ? '#f75a2c' : '#141414'}`} />, link: '/user/orders' },
         { title: 'Inbox', icon: <EnvelopeOpen size={22} color={` ${location.pathname === '/user/inbox' ? '#f75a2c' : '#141414'}`} />, link: '/user/inbox' },
         { title: 'Saved Items', icon: <ArchiveBox size={22} color={` ${location.pathname === '/user/saved-items' ? '#f75a2c' : '#141414'}`} />, link: '/user/saved-items' },
     ]

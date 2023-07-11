@@ -62,6 +62,17 @@ const createProduct = async (token: IToken, productData: Product) => {
     toast.success(data.message as string, { autoClose: 1000 });
     return data?.message
 }
+const updateProduct = async (token: IToken, productId: string, productData: Product) => {
+    const authConfig = {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const { data } = await axios.put(import.meta.env.VITE_APP_BASE_API + `products/update-product/${productId}`, productData, authConfig)
+    toast.success(data.message as string, { autoClose: 1000 });
+    return data?.message
+}
 
 const productService = {
     getAllProducts,
@@ -72,6 +83,7 @@ const productService = {
 
     toggleSavedProduct,
     createProduct,
+    updateProduct
 }
 
 export default productService;
