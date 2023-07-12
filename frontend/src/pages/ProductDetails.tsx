@@ -77,7 +77,7 @@ const ProductDetails = () => {
             <div>
                 <div className='pt-[30px] pb-[18px] flex items-center space-x-2'>
                     <span className='flex items-center space-x-2' style={{ color: '#a6a4a4' }}><Link to={'/'}>Home</Link> <CaretRight size={14} /> </span>
-                    <span className='flex items-center space-x-2' style={{ color: '#a6a4a4' }}><div onClick={() => navigate(-1)}>{source ?? 'Products'}</div> <CaretRight size={14} /> </span>
+                    <span className='flex items-center space-x-2' style={{ color: '#a6a4a4' }}><div className="cursor-pointer" onClick={() => navigate(-1)}>{source ?? 'Products'}</div> <CaretRight size={14} /> </span>
                     <span className='font-bold capitalize'>{characterLimit(product?.name, 16)}</span>
                 </div>
 

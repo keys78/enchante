@@ -265,12 +265,12 @@ table {width: 100%;border-collapse: collapse;border-radius: 5px;}
 th, td { padding: 6px; text-align: left;}
 th { background-color: #c7cedb7b; font-weight: normal !important;}
 
-.action__group { position: relative; cursor: pointer; }
+/* .action__group { position: relative; cursor: pointer; }
 .action__prompt {width: 200px; position: absolute; z-index: 9; background: #fff; top: 38px; right: 0; border: 1px solid #545F7D26; padding: 16px 0 16px 0; box-shadow: 3px 5px 20px rgba(0, 0, 0, 0.04); border-radius: 4px;}
 .action__prompt > a > div { display: flex; align-items: center; padding: 7px 20px 7px 12px; margin-bottom: 4px; cursor: pointer; transition: 0.3s; &:hover{ background: #545f7d26; transition: 0.3s;}}
 .action__prompt > a { text-decoration: none; color:#545F7D}
 .action__prompt > div { display: flex; align-items: center; padding: 7px 20px 7px 12px; margin-bottom: 4px; cursor: pointer; transition: 0.3s; &:hover{ background: #545F7D26; transition: 0.3s;}}
-.action__prompt > div > svg { margin-right: 10px;}
+.action__prompt > div > svg { margin-right: 10px;} */
 
 
 

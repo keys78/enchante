@@ -62,6 +62,7 @@ const createProduct = async (token: IToken, productData: Product) => {
     toast.success(data.message as string, { autoClose: 1000 });
     return data?.message
 }
+
 const updateProduct = async (token: IToken, productId: string, productData: Product) => {
     const authConfig = {
         headers: {
@@ -70,6 +71,18 @@ const updateProduct = async (token: IToken, productId: string, productData: Prod
         },
     }
     const { data } = await axios.put(import.meta.env.VITE_APP_BASE_API + `products/update-product/${productId}`, productData, authConfig)
+    toast.success(data.message as string, { autoClose: 1000 });
+    return data?.message
+}
+
+const deleteProduct = async (token: IToken, productId: string) => {
+    const authConfig = {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const { data } = await axios.delete(import.meta.env.VITE_APP_BASE_API + `products/delete-product/${productId}`, authConfig)
     toast.success(data.message as string, { autoClose: 1000 });
     return data?.message
 }
@@ -83,7 +96,8 @@ const productService = {
 
     toggleSavedProduct,
     createProduct,
-    updateProduct
+    updateProduct,
+    deleteProduct
 }
 
 export default productService;

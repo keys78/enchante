@@ -175,6 +175,19 @@ export const updateProduct = createAsyncThunk<any, any>(
   }
 )
 
+export const deleteProduct = createAsyncThunk<any, any>(
+  'products/delete-product',
+  async ({ productId }, thunkAPI) => {
+    const token: IToken = token2 || (thunkAPI.getState() as { auth: Auth }).auth.token;
+
+    try {
+      return await productService.deleteProduct(token, productId)
+    } catch (error: any) {
+      errorHandler(error, thunkAPI)
+    }
+  }
+)
+
 
 
 
@@ -499,6 +512,24 @@ const productsSlice = createSlice({
         state.isError = true
         state.message = action.payload as string
       })
+
+      .addCase(deleteProduct.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteProduct.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+
+        state.sellerProducts = state.sellerProducts.filter(
+          (product) => product._id !== action.payload
+        );
+      })
+      .addCase(deleteProduct.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload as string;
+      });
   }
 });
 
