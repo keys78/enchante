@@ -1,11 +1,7 @@
-import { AnimatePresence } from 'framer-motion';
 import { useAppDispatch, useAppSelector } from '../../network/hooks'
-import ProductFrame from '../../components/products/ProductFrame';
 import Pagination from '../../components/pagination/Pagination';
-import { Product } from '../../types';
 import { useEffect, useState } from 'react';
-import { ListDashes, MagnifyingGlass, SquaresFour } from '@phosphor-icons/react';
-import useWindowSize from '../../components/hooks/useWindowSize';
+import { MagnifyingGlass } from '@phosphor-icons/react';
 import { getUser } from '../../reducers/private/user/userSlice';
 import { characterLimit } from '../../utils/general';
 import { toggleSavedProducts } from '../../reducers/products/productsSlice';
@@ -14,9 +10,7 @@ import { toggleSavedProducts } from '../../reducers/products/productsSlice';
 const SavedItems = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector(state => state.user)
-  const { width } = useWindowSize();
   const [filteredSearch, setFilteredSearch] = useState(user?.savedItems)
-  const [isFlexDisplay, setIsFlexDisplay] = useState<boolean>(false)
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [productPerPage] = useState<number>(9)
   const [searchTerm, setSearchTerm] = useState<string>("");
