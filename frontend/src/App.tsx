@@ -18,6 +18,7 @@ import SellerPanel from "./pages/user/SellerPanel";
 import Orders from "./pages/user/Orders";
 import Inbox from "./pages/user/Inbox";
 import MyProducts from "./pages/user/MyProducts";
+import ManageProducts from "./pages/admin/ManageProducts";
 
 
 interface RouteConfig {
@@ -29,6 +30,7 @@ interface RouteConfig {
 function App() {
   const routes: RouteConfig[] = [
     { path: "account", title: 'Account', element: <Accounts /> },
+    { path: "manange-products", title: 'Mananage Produts', element: <ManageProducts /> },
     { path: "seller", title: 'Sell On enchanté', element: <SellerPanel /> },
     { path: "orders", title: 'Orders', element: <Orders /> },
     { path: "my-products", title: 'My Products', element: <MyProducts /> },
