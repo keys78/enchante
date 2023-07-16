@@ -92,9 +92,9 @@ export const getSellerProducts: RequestHandler = async (req: AuthRequest, res, n
 
     const sellerProducts = await ProductModel.find({ sellerId: sellerId }).exec();
 
-    if (!sellerProducts || sellerProducts.length === 0) {
-      throw createHttpError(404, "No products found");
-    }
+    // if (!sellerProducts || sellerProducts.length === 0) {
+    //   throw createHttpError(404, "No products found");
+    // }
 
     res.status(200).json(sellerProducts);
   } catch (error) {

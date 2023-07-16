@@ -1,21 +1,26 @@
-import { deleteProduct } from "../../reducers/products/productsSlice"
+import { TrashSimple } from "@phosphor-icons/react"
+import { useAppDispatch, useAppSelector } from "../../network/hooks"
+import { deleteProduct, getSellerProducts } from "../../reducers/products/productsSlice"
 import { Product } from "../../types"
+import Loader from "../UI/Loader"
 
-interface deleteWarningProps {
+interface DeleteWarningProps {
     product: Product
     setIsDeleteModal: React.Dispatch<React.SetStateAction<boolean>>
-    // setShowDetails: React.Dispatch<React.SetStateAction<boolean>>
-    // setShowDeleteBoardModal: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 
 
-const DeleteWarningModal = ({ product, setIsDeleteModal }: deleteWarningProps) => {
+const DeleteWarningModal = ({ product, setIsDeleteModal }: DeleteWarningProps) => {
+    const dispatch = useAppDispatch();
+    const { isLoading } = useAppSelector(state => state.products)
+
 
     const deleteProductAction = () => {
-        deleteProduct({ productId: product?._id })
-        setIsDeleteModal(false)
-        console.log('Hello Worodld')
+        dispatch(deleteProduct({ productId: product?._id }))
+        isLoading && setIsDeleteModal(false)
+    isLoading && dispatch(getSellerProducts({}));
+
     }
 
     return (
@@ -23,13 +28,16 @@ const DeleteWarningModal = ({ product, setIsDeleteModal }: deleteWarningProps) =
             <h1 className="text-mainRed font-bold text-[16px]">Delete this Product?</h1>
             <p className="text-[13px] text-black">Are you sure you want to delete the &apos;{product?.name}&apos;? This action cannot be reversed.</p>
             <div className="flex gap-4">
-
-                <button className="flex-1 bg-mainRed text-white text-[13px] rounded-[5px] p-2 transition duration-200 hover:bg-mainRedHover"
+                <button
                     onClick={deleteProductAction}
-                >
-                    Delete
+                    className="bg-red-500 text-white text-[13px] w-[200px] rounded-[5px]" type="submit">
+                    {isLoading ?
+                        <span className='flex items-center justify-center'> <Loader /> Deleting... </span>
+                        :
+                        <span className='flex items-center justify-center'> <TrashSimple size={16} color="#fff" weight='bold' /> &nbsp;&nbsp; Delete   </span>
+                    }
                 </button>
-                <button onClick={() => setIsDeleteModal(false)} className="flex-1 bg-black text-white text-[13px] rounded-[5px] p-2 transition duration-200 hover:bg-opacity-25"  >
+                <button onClick={() => setIsDeleteModal(false)} className="gen-btn-class w-[200px] bg-black text-white text-[13px] rounded-[5px] p-2 transition duration-200 gen-btn-class"  >
                     Cancel
                 </button>
             </div>

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { deleteProduct, getSellerProducts } from '../../reducers/products/productsSlice'
 import { useAppDispatch, useAppSelector } from '../../network/hooks';
-import { DotsThreeVertical, Eye, Pen, TrashSimple } from '@phosphor-icons/react';
+import { CloudArrowUp, DotsThreeVertical, Eye, Pen, TrashSimple } from '@phosphor-icons/react';
 import { characterLimit } from '../../utils/general';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -22,13 +22,15 @@ const MyProducts = () => {
   const clickOutsidehandler = () => { setActiveIndex('') };
   useOnClickOutside(promptModalRef, clickOutsidehandler);
 
+
+
   useEffect(() => {
     dispatch(getSellerProducts({}));
   }, [dispatch])
 
   return (
     <section className='overflow-x-auto'>
-      <table>
+      <table className='pb-[200px]'>
         <thead>
           <tr>
             <th>Image</th>
@@ -47,15 +49,14 @@ const MyProducts = () => {
                 <td className='min-w-[150px]'>{characterLimit(val?.name, 20)}</td>
                 <td className='min-w-[150px]'>{characterLimit(val?.category, 30)}</td>
                 <td className='min-w-[100px]'>${val?.price}</td>
-                {/* <td className='min-w-[150px]'>{new Date(val?.createdAt).toLocaleDateString() ?? 'Date'}</td> */}
-                <td className='min-w-[150px]' onClick={() => deleteProduct({ productId: val?._id })}>Delete Product</td>
+                <td className='min-w-[150px]'>{new Date(val?.createdAt).toLocaleDateString() ?? 'Date'}</td>
                 <td onClick={() => setActiveIndex(i)} className='relative cursor-pointer'><DotsThreeVertical size={28} weight='bold' />
                   {activeIndex === i &&
                     <motion.div ref={promptModalRef}
                       initial={{ opacity: 0, translateX: -50, zIndex: 99 }}
                       animate={{ opacity: 1, translateX: 0, zIndex: 99 }}
                       transition={{ duration: 0.4, ease: [0.43, 0.13, 0.23, 0.96], delay: i * 0.1 }}
-                      className='w-48 absolute z-9 bg-white top-10 right-0 border border-gray-300 px-4 py-4 shadow-md rounded-md'>
+                      className='action__prompt'>
                       <div onClick={() => navigate(`/products/product-details/${val?._id}`, { state: { source: 'My Products' } })}><Eye /> View details</div>
                       <div onClick={() => { setIsEditModal(true) }}><Pen />Edit
                         <Modal showModal={isEditModal} setShowModal={setIsEditModal}>
@@ -63,9 +64,9 @@ const MyProducts = () => {
                         </Modal>
                       </div>
                       <div onClick={() => setIsDeleteModal(true)} className='text-mainRed'><TrashSimple color='#EA5555' /> Delete
-                      <Modal showModal={isDeleteModal} setShowModal={setIsDeleteModal} general='!h-[200px] !w-[400px]'>
-                        <DeleteWarningModal product={val} setIsDeleteModal={setIsDeleteModal}/>
-                      </Modal>
+                        <Modal showModal={isDeleteModal} setShowModal={setIsDeleteModal} general='!h-[200px] !w-[400px]'>
+                          {isDeleteModal && <DeleteWarningModal product={val} setIsDeleteModal={setIsEditModal} />}
+                        </Modal>
                       </div>
                     </motion.div>
                   }

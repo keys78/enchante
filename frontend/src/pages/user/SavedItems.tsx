@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react';
 import { ListDashes, MagnifyingGlass, SquaresFour } from '@phosphor-icons/react';
 import useWindowSize from '../../components/hooks/useWindowSize';
 import { getUser } from '../../reducers/private/user/userSlice';
+import { characterLimit } from '../../utils/general';
+import { toggleSavedProducts } from '../../reducers/products/productsSlice';
 
 
 const SavedItems = () => {
@@ -39,50 +41,61 @@ const SavedItems = () => {
     setFilteredSearch(value === '' ? user?.savedItems : user?.savedItems?.filter(val => Object.values(val).join("").toLocaleLowerCase().includes(value)));
   };
 
+  const toggleSavedItems = (val) => {
+    dispatch(toggleSavedProducts({ productId: val?._id }));
+    setTimeout(() => {
+      dispatch(getUser())
+    }, 3000)
+  }
 
 
 
   return (
     <>
-      <div className='flex s-480:flex-row flex-col-reverse s-480:items-center s-480:space-x-10 w-full s-480:mb-3 mb-5'>
-        <div className='whitespace-nowrap flex items-center s-480:space-x-4 space-x-3'>
-          <SquaresFour className='cursor-pointer' onClick={() => setIsFlexDisplay(false)} size={width < 767 ? 22 : 30} color={`${isFlexDisplay ? "" : '#f75a2c'}`} weight="fill" />
-          <ListDashes className='cursor-pointer' onClick={() => setIsFlexDisplay(true)} size={width < 767 ? 22 : 30} color={`${!isFlexDisplay ? "" : '#f75a2c'}`} weight="fill" />
-          <div><span className='font-medium s-480:text-[20px] text-[16px]'>{filteredSearch.length}
-          </span> result{filteredSearch.length === 1 ? '' : 's'}</div>
-        </div>
+      <div className='mb-2'>
 
-        <div className='s-767:w-8/12 w-full mx-auto s-480:mb-0 mb-3'>
+        <div className='s-767:w-3/12 w-full ml-auto s-480:mb-0 mb-3'>
           <div className='flex space-x-2 border items-center rounded-[5px] px-2 w-full'>
             <MagnifyingGlass size={20} color="#9e9e9e" />
             <input
               value={searchTerm}
               onChange={handleInputChange}
-              className='w-full rounded-[5px] py-2 border-0 outline-none' type="search" placeholder='filter search products' />
+              className='w-full rounded-[5px] py-1 border-0 outline-none' type="search" placeholder='filter search products' />
           </div>
         </div>
       </div>
 
       {filteredSearch.length > 0 ? (
         <>
-          <div className={`${!isFlexDisplay && 'grid s-1024:grid-cols-3 grid-cols-2 s-480:gap-x-[16px] gap-x-[8px] s-480:gap-y-[34px] gap-y-[16px]'} `}>
-            {filteredSearch.map((product: Product, i: number) =>
-              <div className={`relative w-full p-1 rounded-[5px] ${!isFlexDisplay && 's-480:bg-white bg-gray-50'}`}>
-                <AnimatePresence>
-                  <ProductFrame
-                    product={product}
-                    showControls={false}
-                    showSavedToggle={true}
-                    key={i}
-                    isFlexDisplay={isFlexDisplay}
-                    price_font_size='s-480:text-[18px] text-[16px] font-bold'
-                    discount_font_size={'text-[12px]'}
-                    shop_button={'p-[4px]'}
-                    icon_size={18}
-                  />
-                </AnimatePresence>
-              </div>
-            )}
+          <div className='overflow-x-auto'>
+            <table className='pb-[200px]'>
+              <thead>
+                <tr>
+                  <th>Image</th>
+                  <th>Name</th>
+                  <th>Category</th>
+                  <th>Price</th>
+                  <th>Created At</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredSearch?.map((val) =>
+                  <>
+                    <tr>
+                      <td className='min-w-[100px]'><img className='w-[100px] rounded' src={val?.image} alt="" /></td>
+                      <td className='min-w-[150px]'>{characterLimit(val?.name, 20)}</td>
+                      <td className='min-w-[150px]'>{characterLimit(val?.category, 30)}</td>
+                      <td className='min-w-[100px]'>${val?.price}</td>
+                      <td className='min-w-[150px]'>{new Date(val?.createdAt).toLocaleDateString() ?? 'Date'}</td>
+                      <td className='relative cursor-pointer' onClick={() => toggleSavedItems(val)}>
+                        {<div className='text-orangeSkin underline cursor-pointer s-767:text-[16px] text-[12px] s-767:pl-0 pl-2 py-2'> Remove </div>}
+                      </td>
+                    </tr>
+                  </>
+                )}
+              </tbody>
+            </table>
           </div>
           <div className='s-480:pt-[100px] pt-[50px] s-480:pb-0 pb-[50px] '>
             <Pagination

@@ -8,6 +8,7 @@ const storedToken = typeof window !== 'undefined' ? localStorage.getItem('ent-to
 export const token2 = storedToken ? JSON.parse(storedToken) : '';
 
 type User = {
+    createdAt: string | number | Date;
     savedItems: Product[];
     _id: string;
     username: string;
