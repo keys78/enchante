@@ -49,13 +49,13 @@ const SavedItems = () => {
       <div className='mb-2'>
 
         <div className='s-767:w-3/12 w-full ml-auto s-480:mb-0 mb-3'>
-          <div className='flex space-x-2 border items-center rounded-[5px] px-2 w-full'>
+          {/* <div className='flex space-x-2 border items-center rounded-[5px] px-2 w-full'>
             <MagnifyingGlass size={20} color="#9e9e9e" />
             <input
               value={searchTerm}
               onChange={handleInputChange}
               className='w-full rounded-[5px] py-1 border-0 outline-none' type="search" placeholder='filter search products' />
-          </div>
+          </div> */}
         </div>
       </div>
 
@@ -77,7 +77,7 @@ const SavedItems = () => {
                 {filteredSearch?.map((val) =>
                   <>
                     <tr>
-                      <td className='min-w-[100px]'><img className='w-[100px] rounded' src={val?.image} alt="" /></td>
+                      <td className='min-w-[100px]'><img className='w-[100px] !h-[50px] rounded border border-gray-200' src={val?.image} alt="" /></td>
                       <td className='min-w-[150px]'>{characterLimit(val?.name, 20)}</td>
                       <td className='min-w-[150px]'>{characterLimit(val?.category, 30)}</td>
                       <td className='min-w-[100px]'>${val?.price}</td>
@@ -92,11 +92,11 @@ const SavedItems = () => {
             </table>
           </div>
           <div className='s-480:pt-[100px] pt-[50px] s-480:pb-0 pb-[50px] '>
-            <Pagination
+            {/* <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
               setCurrentPage={setCurrentPage}
-            />
+            /> */}
           </div>
         </>
       ) : (

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { deleteProduct, getAllProducts, getSellerProducts } from '../../reducers/products/productsSlice'
+import { deleteProduct, getAllProducts, getAllProductsTwo, getSellerProducts } from '../../reducers/products/productsSlice'
 import { useAppDispatch, useAppSelector } from '../../network/hooks';
 import { CloudArrowUp, DotsThreeVertical, Eye, Pen, TrashSimple } from '@phosphor-icons/react';
 import { characterLimit } from '../../utils/general';
@@ -25,9 +25,9 @@ const ManageProducts = () => {
 
 
 
-  // useEffect(() => {
-  //   dispatch(getAllProducts(1))
-  // }, [dispatch])
+  useEffect(() => {
+    dispatch(getAllProductsTwo({}))
+  }, [dispatch])
 
   // const sellerId = products.map(val => val?._id)
   // console.log('All sellerId', sellerId)
@@ -40,7 +40,6 @@ const ManageProducts = () => {
             <th>Seller</th>
             <th>Image</th>
             <th>Name</th>
-            <th>Category</th>
             <th>Price</th>
             <th>Created At</th>
             <th>Action</th>
@@ -50,10 +49,9 @@ const ManageProducts = () => {
           {products.map((val, i: number) =>
             <>
               <tr>
-                <td className='min-w-[100px]'> {val?.seller.id}</td>
-                <td className='min-w-[100px]'><img className='w-[100px] rounded' src={val?.image} alt="" /></td>
+                <td className='min-w-[100px]'> <span className='font-medium'>{val?.seller?.username}</span></td>
+                <td className='min-w-[100px]'><img className='w-[100px] !h-[50px] rounded border border-gray-200' src={val?.image} alt="" /></td>
                 <td className='min-w-[150px]'>{characterLimit(val?.name, 20)}</td>
-                <td className='min-w-[150px]'>{characterLimit(val?.category, 30)}</td>
                 <td className='min-w-[100px]'>${val?.price}</td>
                 <td className='min-w-[150px]'>{new Date(val?.createdAt).toLocaleDateString() ?? 'Date'}</td>
                 <td onClick={() => setActiveIndex(i)} className='relative cursor-pointer'><DotsThreeVertical size={28} weight='bold' />
