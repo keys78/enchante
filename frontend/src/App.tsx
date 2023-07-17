@@ -30,12 +30,15 @@ interface RouteConfig {
 function App() {
   const routes: RouteConfig[] = [
     { path: "account", title: 'Account', element: <Accounts /> },
-    { path: "manange-products", title: 'Mananage Produts', element: <ManageProducts /> },
+    // { path: "manange-products", title: 'Mananage Produts', element: <ManageProducts /> },
     { path: "seller", title: 'Sell On enchanté', element: <SellerPanel /> },
     { path: "orders", title: 'Orders', element: <Orders /> },
     { path: "my-products", title: 'My Products', element: <MyProducts /> },
     { path: "inbox", title: 'Inbox', element: <Inbox /> },
     { path: "saved-items", title: 'Saved Items', element: <SavedItems /> },
+  ];
+  const adminRoutes: RouteConfig[] = [
+    { path: "manage-products", title: 'Mananage Produts', element: <ManageProducts /> }
   ];
 
 
@@ -58,6 +61,20 @@ function App() {
                 Component={() => (
                   <Routes>
                     {routes.map((val) =>
+                      <Route path={val.path} element={<Layout><AccountLayout title={val.title}>{val.element}</AccountLayout></Layout>} />
+                    )}
+                  </Routes>
+                )}
+              />
+            }
+          />
+          <Route
+            path="/admin/*"
+            element={
+              <PrivateRoute
+                Component={() => (
+                  <Routes>
+                    {adminRoutes.map((val) =>
                       <Route path={val.path} element={<Layout><AccountLayout title={val.title}>{val.element}</AccountLayout></Layout>} />
                     )}
                   </Routes>

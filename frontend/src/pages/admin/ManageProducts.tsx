@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { deleteProduct, getSellerProducts } from '../../reducers/products/productsSlice'
+import { deleteProduct, getAllProducts, getSellerProducts } from '../../reducers/products/productsSlice'
 import { useAppDispatch, useAppSelector } from '../../network/hooks';
 import { CloudArrowUp, DotsThreeVertical, Eye, Pen, TrashSimple } from '@phosphor-icons/react';
 import { characterLimit } from '../../utils/general';
@@ -9,13 +9,14 @@ import useOnClickOutside from '../../components/hooks/useOnClickOutside';
 import EditProductModal from '../../components/Modals/EditProductModal';
 import Modal from '../../components/Modals/Modal';
 import DeleteWarningModal from '../../components/Modals/DeleteWarningModal';
+import { products } from '../../utils/data';
 
 const ManageProducts = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState<any>('')
   const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false)
-  const { sellerProducts } = useAppSelector(state => state.products)
+  const { products } = useAppSelector(state => state.products)
   const [isEditModal, setIsEditModal] = useState<boolean>(false)
 
   const promptModalRef = useRef<HTMLDivElement>(null);
@@ -24,15 +25,19 @@ const ManageProducts = () => {
 
 
 
-  useEffect(() => {
-    dispatch(getSellerProducts({}));
-  }, [dispatch])
+  // useEffect(() => {
+  //   dispatch(getAllProducts(1))
+  // }, [dispatch])
+
+  // const sellerId = products.map(val => val?._id)
+  // console.log('All sellerId', sellerId)
 
   return (
     <section className='overflow-x-auto'>
       <table className='pb-[200px]'>
         <thead>
           <tr>
+            <th>Seller</th>
             <th>Image</th>
             <th>Name</th>
             <th>Category</th>
@@ -42,9 +47,10 @@ const ManageProducts = () => {
           </tr>
         </thead>
         <tbody>
-          {sellerProducts?.map((val, i: number) =>
+          {products.map((val, i: number) =>
             <>
               <tr>
+                <td className='min-w-[100px]'> {val?.seller.id}</td>
                 <td className='min-w-[100px]'><img className='w-[100px] rounded' src={val?.image} alt="" /></td>
                 <td className='min-w-[150px]'>{characterLimit(val?.name, 20)}</td>
                 <td className='min-w-[150px]'>{characterLimit(val?.category, 30)}</td>
@@ -81,3 +87,15 @@ const ManageProducts = () => {
 }
 
 export default ManageProducts;
+
+
+
+
+
+// const ManageProducts = () => {
+//   return (
+//     <div>ManageProducts</div>
+//   )
+// }
+
+// export default ManageProducts

@@ -82,6 +82,24 @@ export const getAllProducts: RequestHandler = async (req, res, next) => {
 
 
 
+// export const getSellerProducts: RequestHandler = async (req: AuthRequest, res, next) => {
+//   const sellerId = req.user?.id;
+
+//   try {
+//     if (!mongoose.isValidObjectId(sellerId)) {
+//       throw createHttpError(400, "Invalid user");
+//     }
+//     console.log('sellerId', sellerId)
+
+//     const sellerProducts = await ProductModel.find({ sellerId: sellerId }).exec();
+
+//     res.status(200).json(sellerProducts);
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+
+
 export const getSellerProducts: RequestHandler = async (req: AuthRequest, res, next) => {
   const sellerId = req.user?.id;
 
@@ -90,11 +108,7 @@ export const getSellerProducts: RequestHandler = async (req: AuthRequest, res, n
       throw createHttpError(400, "Invalid user");
     }
 
-    const sellerProducts = await ProductModel.find({ sellerId: sellerId }).exec();
-
-    // if (!sellerProducts || sellerProducts.length === 0) {
-    //   throw createHttpError(404, "No products found");
-    // }
+    const sellerProducts = await ProductModel.find({ 'seller.id': new Types.ObjectId(sellerId) }).exec();
 
     res.status(200).json(sellerProducts);
   } catch (error) {
@@ -259,11 +273,12 @@ export const createProduct: RequestHandler = async (req: AuthRequest, res, next)
         const uploadResult = await cloudinary.uploader.upload(file.path, { folder: 'enchante', public_id: randomString });
         const imageUrl = uploadResult.secure_url;
         const sizesArray = req.body.sizes.split(',').map((sizeString: string) => sizeString.trim());
+        const seller = { id: sellerId as any, username: user.username };
 
-        productData.sellerId = sellerId as any;
+        productData.seller = seller;
         productData.image = imageUrl;
         productData.sizes = sizesArray;
-        const createdProduct = await ProductModel.create(productData);
+        const createdProduct = await ProductModel.create(productData);       
 
         return res.status(201).json({ message: `${createdProduct.name} was successfully created`, data: createdProduct });
       } catch (uploadError) {
@@ -293,7 +308,7 @@ export const updateProduct: RequestHandler = async (req: AuthRequest, res, next)
       throw createHttpError(404, 'Product not found');
     }
 
-    if (req.user.role !== 'admin' && product.sellerId.toString() !== userId) {
+    if (req.user.role !== 'admin' && product.seller.id.toString() !== userId) {
       throw createHttpError(403, 'Unauthorized to update product');
     }
 
@@ -367,8 +382,6 @@ export const updateProduct: RequestHandler = async (req: AuthRequest, res, next)
 
 
 
-
-
 export const deleteProduct: RequestHandler = async (req: AuthRequest, res, next) => {
   try {
     const productId = req.params.productId;
@@ -384,7 +397,7 @@ export const deleteProduct: RequestHandler = async (req: AuthRequest, res, next)
       throw createHttpError(404, 'Product not found');
     }
 
-    if (req.user.role !== 'admin' && (!product.sellerId || product.sellerId.toString() !== userId)) {
+    if (req.user.role !== 'admin' && (!product.seller.id || product.seller.id.toString() !== userId)) {
       throw createHttpError(403, 'Unauthorized to delete product');
     }
 

@@ -7,6 +7,7 @@ export interface IUser {
 }
 
 export interface Product {
+    seller: any;
     createdAt: string;
     _id: string;
     category: string;

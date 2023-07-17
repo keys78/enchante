@@ -45,7 +45,7 @@ const MyProducts = () => {
           {sellerProducts?.map((val, i: number) =>
             <>
               <tr>
-                <td className='min-w-[100px]'><img className='w-[100px] rounded' src={val?.image} alt="" /></td>
+                <td className='min-w-[100px]'><img className='w-[100px] !h-[50px] rounded border border-gray-200' src={val?.image} alt="" /></td>
                 <td className='min-w-[150px]'>{characterLimit(val?.name, 20)}</td>
                 <td className='min-w-[150px]'>{characterLimit(val?.category, 30)}</td>
                 <td className='min-w-[100px]'>${val?.price}</td>

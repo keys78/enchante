@@ -1,7 +1,12 @@
 import { Document, Schema, Types, model } from 'mongoose';
 
+interface Seller {
+  id: Types.ObjectId;
+  username: string;
+}
+
 export interface Product extends Document {
-  sellerId: Types.ObjectId['_id'];
+  seller: Seller;
   category: string;
   name: string;
   image: string;
@@ -17,6 +22,10 @@ export interface Product extends Document {
 }
 
 const productSchema = new Schema<Product>({
+  seller: {
+    id: { type: Types.ObjectId, required: true },
+    username: { type: String, required: true }
+  },
   category: { type: String, required: true },
   name: { type: String, required: true },
   image: { type: String, required: true },
@@ -29,7 +38,6 @@ const productSchema = new Schema<Product>({
   new_product: { type: Boolean, required: true },
   discount: { type: Boolean, required: true },
   star_ratings: { type: Number, required: true },
-  sellerId: { type: Schema.Types.ObjectId }
 }, { timestamps: true });
 
 export default model<Product>('Product', productSchema);
