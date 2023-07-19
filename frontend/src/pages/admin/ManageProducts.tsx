@@ -17,6 +17,7 @@ const ManageProducts = () => {
   const [activeIndex, setActiveIndex] = useState<any>('')
   const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false)
   const { products } = useAppSelector(state => state.products)
+  const { user } = useAppSelector(state => state.user)
   const [isEditModal, setIsEditModal] = useState<boolean>(false)
 
   const promptModalRef = useRef<HTMLDivElement>(null);
@@ -29,10 +30,10 @@ const ManageProducts = () => {
     dispatch(getAllProductsTwo({}))
   }, [dispatch])
 
-  // const sellerId = products.map(val => val?._id)
-  // console.log('All sellerId', sellerId)
+
 
   return (
+    user.role === 'admin' &&
     <section className='overflow-x-auto'>
       <table className='pb-[200px]'>
         <thead>
