@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Formik, FormikHelpers } from "formik";
 import * as yup from "yup";
 import { useAppDispatch, useAppSelector } from "../../network/hooks";
-import { loginUser, reset } from "../../reducers/auth/authSlice";
+import { loginUser } from "../../reducers/auth/authSlice";
 import { Link, useNavigate } from 'react-router-dom';
 import LogoMain from '../../assets/svg/LogoMain';
 import GoogleIcon from '../../assets/svg/GoogleIcon';
@@ -16,56 +16,33 @@ export type LoginData = {
 
 const Login = () => {
     const [isVisible, setIsVisible] = useState<boolean>(false);
-    const [inputType, setInputType] = useState<string>("password");
+    const [inputType, setInputType] = useState<string>('password');
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const { user } = useAppSelector(state => state.user);
-
-
-    const { isSuccess, isLoading, isError, message, token } = useAppSelector((state) => state.auth);
-    // const { user } = useAppSelector((state) => state.user);
-    // const user = {}
-
+    const { isLoading } = useAppSelector((state) => state.auth);
+  
     const storedToken = typeof window !== 'undefined' ? localStorage.getItem('ent-token') : null;
-    const token2 = storedToken ? JSON.parse(storedToken) : '';
-
-
-    // useEffect(() => {
-    //     if (token2 || token) {
-    //         navigate('/')
-    //     }
-    //     dispatch(reset())
-    // }, [isError, isSuccess, message, navigate, dispatch, token, token2])
-
+    const token = storedToken ? JSON.parse(storedToken) : null;
+  
     useEffect(() => {
-        // if (user.username) {
-        //     navigate('/')
-        // }
-             if (token2 || token) {
-            navigate('/')
-        }
-    }, [navigate, token, token2, user.username])
-
-
+      if (token) {
+        navigate('/');
+      }
+    }, [token, navigate]);
+  
     const LoginValidation = yup.object().shape({
-        email: yup
-            .string()
-            .email("Please provide a valid email address")
-            .required("email is required"),
-        password: yup
-            .string()
-            .min(6, "password must be at least at 6 characters")
-            .required("password is required"),
+      email: yup.string().email('Please provide a valid email address').required('Email is required'),
+      password: yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
     });
-
+  
     const handleToggle = () => {
-        if (inputType === "password") {
-            setInputType("text");
-            setIsVisible(!isVisible);
-        } else {
-            setInputType("password");
-            setIsVisible(!isVisible);
-        }
+      if (inputType === 'password') {
+        setInputType('text');
+        setIsVisible(!isVisible);
+      } else {
+        setInputType('password');
+        setIsVisible(!isVisible);
+      }
     };
 
     return (
@@ -187,8 +164,6 @@ const Login = () => {
                 </div>
             </div>
 
-            {/* <div className='stripe_btm absolute bottom-[-300px] right-[-300px] h-[500px] border-[50px] border-orange-500 opacity-[0.7]'></div>
-            <div className='stripe_btm absolute bottom-[-335px] right-[-335px] h-[500px] border-[50px] border-[#000]'></div> */}
         </div>
     );
 };

@@ -81,34 +81,17 @@ export const getAllProducts: RequestHandler = async (req, res, next) => {
 
 
 
-
-// export const getSellerProducts: RequestHandler = async (req: AuthRequest, res, next) => {
-//   const sellerId = req.user?.id;
-
-//   try {
-//     if (!mongoose.isValidObjectId(sellerId)) {
-//       throw createHttpError(400, "Invalid user");
-//     }
-//     console.log('sellerId', sellerId)
-
-//     const sellerProducts = await ProductModel.find({ sellerId: sellerId }).exec();
-
-//     res.status(200).json(sellerProducts);
-//   } catch (error) {
-//     next(error);
-//   }
-// };
-
-
 export const getSellerProducts: RequestHandler = async (req: AuthRequest, res, next) => {
   const sellerId = req.user?.id;
 
   try {
-    if (!mongoose.isValidObjectId(sellerId)) {
+    if (!Types.ObjectId.isValid(sellerId)) {
       throw createHttpError(400, "Invalid user");
     }
 
-    const sellerProducts = await ProductModel.find({ 'seller.id': new Types.ObjectId(sellerId) }).exec();
+    const sellerProducts = await ProductModel.find({ 'seller.id': new Types.ObjectId(sellerId) })
+      .sort({ createdAt: -1 })
+      .exec();
 
     res.status(200).json(sellerProducts);
   } catch (error) {
@@ -197,51 +180,6 @@ export const toggleSavedProduct: RequestHandler = async (req: AuthRequest, res, 
 
 
 
-// export const createProduct: RequestHandler = async (req: AuthRequest, res, next) => {
-//   try {
-//     const sellerId = req.user.id;
-
-//     upload.single('image')(req, res, async (err) => {
-//       if (err) {
-//         if (err.code === 'LIMIT_FILE_SIZE') {
-//           return res.status(400).json({ message: 'File size exceeds the limit. Maximum file size allowed is <600KB.' });
-//         }
-//         return next(err);
-//       }
-
-//       const productData = req.body as Product;
-
-//       const validation = validateFields({ ...productData });
-//       if (!validation.isValid) {
-//         return res.status(400).json({ message: validation.message });
-//       }
-
-//       const file = req.file;
-//       if (!file) return res.status(400).json({ message: 'No file uploaded' });
-
-
-//       const user = await UserModel.findById(sellerId);
-//       if (!user) return res.status(404).json({ message: 'User not found' });
-
-//       const randomString = `${user.username}_${Math.random().toString(36).substring(2)}_${Date.now()}`;
-//       const uploadResult = await cloudinary.uploader.upload(file.path, { folder: 'enchante', public_id: randomString });
-
-//       const imageUrl = uploadResult.secure_url;
-//       const sizesArray = req.body.sizes.split(',').map((sizeString: string) => sizeString.trim());
-
-//       productData.sellerId = sellerId as any
-//       productData.image = imageUrl
-//       productData.sizes = sizesArray
-//       const createdProduct = await ProductModel.create(productData);
-      
-
-//       return res.status(201).json({ message: `${createdProduct.name} was successfully created`, data: createdProduct });
-//     });
-//   } catch (error) {
-//     next(error);
-//   }
-// };
-
 export const createProduct: RequestHandler = async (req: AuthRequest, res, next) => {
   try {
     const sellerId = req.user.id;
@@ -278,7 +216,7 @@ export const createProduct: RequestHandler = async (req: AuthRequest, res, next)
         productData.seller = seller;
         productData.image = imageUrl;
         productData.sizes = sizesArray;
-        const createdProduct = await ProductModel.create(productData);       
+        const createdProduct = await ProductModel.create(productData);
 
         return res.status(201).json({ message: `${createdProduct.name} was successfully created`, data: createdProduct });
       } catch (uploadError) {
@@ -312,6 +250,7 @@ export const updateProduct: RequestHandler = async (req: AuthRequest, res, next)
       throw createHttpError(403, 'Unauthorized to update product');
     }
 
+    // ... (previous code)
 
     upload.single('image')(req, res, async (err) => {
       if (err) {
@@ -328,27 +267,27 @@ export const updateProduct: RequestHandler = async (req: AuthRequest, res, next)
         return res.status(400).json({ message: validation.message });
       }
 
-      if (!req.file) {
-        return res.status(400).json({ message: 'No file uploaded' });
-      }
-
       const user = await UserModel.findById(userId);
       if (!user) return res.status(404).json({ message: 'User not found' });
 
-      // Delete the old image from Cloudinary
-      if (product.image) {
-        const oldImagePublicId = extractPublicIdFromImageUrl(product.image);
-        try {
-          await cloudinary.uploader.destroy(oldImagePublicId);
-        } catch (error) {
-          next(error);
+      let imageUrl = product.image;
+
+      if (req.file) {
+        // A new file was uploaded, update the image
+        const randomString = `${user.username}_${Math.random().toString(36).substring(2)}_${Date.now()}`;
+        const uploadResult = await cloudinary.uploader.upload(req.file.path, { folder: 'enchante', public_id: randomString });
+        imageUrl = uploadResult.secure_url;
+
+        // Delete the old image from Cloudinary
+        if (product.image) {
+          const oldImagePublicId = extractPublicIdFromImageUrl(product.image);
+          try {
+            await cloudinary.uploader.destroy(oldImagePublicId);
+          } catch (error) {
+            next(error);
+          }
         }
       }
-
-      const randomString = `${user.username}_${Math.random().toString(36).substring(2)}_${Date.now()}`;
-      const uploadResult = await cloudinary.uploader.upload(req.file.path, { folder: 'enchante', public_id: randomString });
-      const imageUrl = uploadResult.secure_url;
-
 
       const updateData = {
         name: name,
@@ -377,6 +316,75 @@ export const updateProduct: RequestHandler = async (req: AuthRequest, res, next)
     next(error);
   }
 };
+
+
+
+//     upload.single('image')(req, res, async (err) => {
+//       if (err) {
+//         if (err.code === 'LIMIT_FILE_SIZE') {
+//           return res.status(400).json({ message: 'File size exceeds the limit. Maximum file size allowed is <600KB.' });
+//         }
+//         return next(err);
+//       }
+
+//       const { name, category, desc, sizes, color, free_shipping, brand, price, new_product, discount, star_ratings } = req.body;
+
+//       const validation = validateFields({ name, category, desc, sizes, color, free_shipping, brand, price, new_product, discount, star_ratings });
+//       if (!validation.isValid) {
+//         return res.status(400).json({ message: validation.message });
+//       }
+
+//       if (!req.file) {
+//         return res.status(400).json({ message: 'No file uploaded' });
+//       }
+
+//       const user = await UserModel.findById(userId);
+//       if (!user) return res.status(404).json({ message: 'User not found' });
+
+//       // Delete the old image from Cloudinary
+//       if (product.image) {
+//         const oldImagePublicId = extractPublicIdFromImageUrl(product.image);
+//         try {
+//           await cloudinary.uploader.destroy(oldImagePublicId);
+//         } catch (error) {
+//           next(error);
+//         }
+//       }
+
+//       const randomString = `${user.username}_${Math.random().toString(36).substring(2)}_${Date.now()}`;
+//       const uploadResult = await cloudinary.uploader.upload(req.file.path, { folder: 'enchante', public_id: randomString });
+//       const imageUrl = uploadResult.secure_url;
+
+
+//       const updateData = {
+//         name: name,
+//         category: category,
+//         desc: desc,
+//         image: imageUrl,
+//         sizes: sizes.split(',').map((sizeString) => sizeString.trim()),
+//         color: color,
+//         free_shipping: free_shipping,
+//         brand: brand,
+//         price: price,
+//         new_product: new_product,
+//         discount: discount,
+//         star_ratings: star_ratings,
+//       };
+
+//       const updatedProduct = await ProductModel.findByIdAndUpdate(productId, updateData, { new: true }).exec();
+
+//       if (!updatedProduct) {
+//         throw createHttpError(404, 'Product not found');
+//       }
+
+//       return res.status(200).json({ message: `${updatedProduct.name} was successfully updated`, data: updatedProduct });
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+
+
 
 
 

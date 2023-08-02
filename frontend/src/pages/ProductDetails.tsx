@@ -41,11 +41,9 @@ const ProductDetails = () => {
 
 
 
-    const toggleSavedButton = () => {
-        dispatch(toggleSavedProducts({ productId: product?._id }))
-        setTimeout(() => {
-            dispatch(getSingleProduct({ productId: id as string }))
-        }, 2000)
+    const toggleSavedButton = async () => {
+        await dispatch(toggleSavedProducts({ productId: product?._id }))
+        dispatch(getSingleProduct({ productId: id as string }))
     }
 
 
@@ -71,7 +69,6 @@ const ProductDetails = () => {
 
 
 
-
     return (
         <section className="app-container mt-[12px] s-1025:px-[80px] s-767:px-[40px] px-[16px]">
             <div>
@@ -83,7 +80,7 @@ const ProductDetails = () => {
 
                 <div className="s-767:flex w-full s-767:space-x-5 s-767:pb-[50px]">
                     <div className="s-767:max-w-[50%] s-767:min-w-[50%] s-767:pb-0 pb-[30px]" >
-                        <ThumbnailsGallery imgArr={product} />
+                        <ThumbnailsGallery currentImage={product?.image} />
                     </div>
                     <div className="w-full s-767:pl-[30px]">
                         <div className="flex items-start justify-between">

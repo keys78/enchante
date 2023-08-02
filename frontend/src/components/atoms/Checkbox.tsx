@@ -1,5 +1,13 @@
+interface Props {
+    question: string
+    checkbox_name: string
+    checked?: boolean
+    free_style?: string
+    props: any
 
-const Checkbox = ({question, checkbox_name, checked=false, free_style = '', props}) => {
+}
+
+const Checkbox = ({question, checkbox_name, checked, free_style = '', props}: Props) => {
     return (
         <div className={`flex items-center space-x-2 ${free_style}`}>
             <div className="checkbox-wrapper-19">

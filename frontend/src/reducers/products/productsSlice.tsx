@@ -25,7 +25,8 @@ const emptyProduct: Product = {
   free_shipping: false,
   new_product: false,
   star_ratings: 0,
-  createdAt:''
+  createdAt:'',
+  seller:{ id:'', username:''}
 };
 
 interface ProductsState {
@@ -501,6 +502,7 @@ const productsSlice = createSlice({
 
       .addCase(createProduct.pending, (state) => {
         state.isLoading = true
+        state.isSuccess = false
       })
       .addCase(createProduct.fulfilled, (state) => {
         state.isLoading = false
@@ -510,6 +512,7 @@ const productsSlice = createSlice({
       .addCase(createProduct.rejected, (state, action) => {
         state.isLoading = false
         state.isError = true
+        state.isSuccess = false
         state.message = action.payload as string
       })
 

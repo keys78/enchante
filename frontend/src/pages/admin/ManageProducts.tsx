@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
-import { deleteProduct, getAllProducts, getAllProductsTwo, getSellerProducts } from '../../reducers/products/productsSlice'
+import { getAllProductsTwo } from '../../reducers/products/productsSlice'
 import { useAppDispatch, useAppSelector } from '../../network/hooks';
-import { CloudArrowUp, DotsThreeVertical, Eye, Pen, TrashSimple } from '@phosphor-icons/react';
+import { DotsThreeVertical, Eye, Pen, TrashSimple } from '@phosphor-icons/react';
 import { characterLimit } from '../../utils/general';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -9,7 +9,6 @@ import useOnClickOutside from '../../components/hooks/useOnClickOutside';
 import EditProductModal from '../../components/Modals/EditProductModal';
 import Modal from '../../components/Modals/Modal';
 import DeleteWarningModal from '../../components/Modals/DeleteWarningModal';
-import { products } from '../../utils/data';
 
 const ManageProducts = () => {
   const dispatch = useAppDispatch();
@@ -65,7 +64,7 @@ const ManageProducts = () => {
                       <div onClick={() => navigate(`/products/product-details/${val?._id}`, { state: { source: 'My Products' } })}><Eye /> View details</div>
                       <div onClick={() => { setIsEditModal(true) }}><Pen />Edit
                         <Modal showModal={isEditModal} setShowModal={setIsEditModal}>
-                          <EditProductModal product={val} />
+                          <EditProductModal product={val} setIsEditModal={setIsEditModal}/>
                         </Modal>
                       </div>
                       <div onClick={() => setIsDeleteModal(true)} className='text-mainRed'><TrashSimple color='#EA5555' /> Delete
@@ -86,15 +85,3 @@ const ManageProducts = () => {
 }
 
 export default ManageProducts;
-
-
-
-
-
-// const ManageProducts = () => {
-//   return (
-//     <div>ManageProducts</div>
-//   )
-// }
-
-// export default ManageProducts

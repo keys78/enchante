@@ -1,4 +1,4 @@
-import { Product, footerProps } from "../types"
+import { footerProps } from "../types"
 import image_one from '../assets/png/img_one.jpg'
 import image_two from '../assets/png/img_two.jpg'
 import image_3 from '../assets/png/img_l_3.jpg'
@@ -10,84 +10,6 @@ import image_s_xx from '../assets/png/img_s_xx.jpg'
 import image_s_x from '../assets/png/img_s_x.jpg'
 import image_ss_x from '../assets/png/img_ss_x.jpg'
 import image_ss_xx from '../assets/png/img_ss_xx.jpg'
-
-export const products: Product[] = [
-    {
-        _id: '32423',
-        category: 'men',
-        name: 'Iphone Pro MAX long-lasting lipstick, the perfect addition to your makeup collection. Our lipstick offers a wide range of',
-        image: image_s_x,
-        desc: 'Introducing our vibrant and long-lasting lipstick, the perfect addition to your makeup collection. Our lipstick offers a wide range of stunning shades to suit every mood and occasion. With its creamy texture and nourishing formula, it glides on effortlessly, providing intense color payoff and a velvety matte finish. Get ready to make a statement with our high-quality lipstick that enhances your natural beauty and boosts your confidence.',
-        sizes: ['S', 'M', 'L'],
-        color: 'red',
-        free_shipping: true,
-        brand: 'Apple',
-        price: 900,
-        new: true,
-        discount: true,
-        star_ratings: 3,
-    },
-    {
-        _id: '3242243',
-        category: 'women',
-        name: 'WOmen Red',
-        image: image_ss_x,
-        desc: 'Introducing our vibrant and long-lasting lipstick, the perfect addition to your makeup collection. Our lipstick offers a wide range of stunning shades to suit every mood and occasion. With its creamy texture and nourishing formula, it glides on effortlessly, providing intense color payoff and a velvety matte finish. Get ready to make a statement with our high-quality lipstick that enhances your natural beauty and boosts your confidence.',
-        sizes: ['S', 'M', 'L'],
-        color: 'red',
-        free_shipping: false,
-        brand: 'Apple',
-        price: 900,
-        new: true,
-        discount: true,
-        star_ratings: 1,
-    },
-    {
-        _id: '23522',
-        category: 'men',
-        name: 'Apple Vision Pro',
-        image: image_ss_xx,
-        desc: 'Introducing our vibrant and long-lasting lipstick, the perfect addition to your makeup collection. Our lipstick offers a wide range of stunning shades to suit every mood and occasion. With its creamy texture and nourishing formula, it glides on effortlessly, providing intense color payoff and a velvety matte finish. Get ready to make a statement with our high-quality lipstick that enhances your natural beauty and boosts your confidence.',
-        sizes: ['S', 'M', 'L'],
-        color: 'indigo',
-        free_shipping: false,
-        brand: 'Moi',
-        price: 400,
-        new: false,
-        discount: false,
-        star_ratings: 5,
-    },
-    {
-        _id: '2342',
-        category: 'women',
-        name: 'Mara Mo',
-        image: image_s_2,
-        desc: 'Introducing our vibrant and long-lasting lipstick, the perfect addition to your makeup collection. Our lipstick offers a wide range of stunning shades to suit every mood and occasion. With its creamy texture and nourishing formula, it glides on effortlessly, providing intense color payoff and a velvety matte finish. Get ready to make a statement with our high-quality lipstick that enhances your natural beauty and boosts your confidence.',
-        sizes: ['S', 'M', 'L'],
-        color: 'blue',
-        free_shipping: false,
-        brand: 'Hulu',
-        new: true,
-        discount: false,
-        price: 340,
-        star_ratings: 5,
-    },
-    {
-        _id: '99403',
-        category: 'pants',
-        name: 'Pie Chart',
-        image: image_ss_x,
-        desc: 'Lorem Ipsum dlee fhbsvuh h fshis sfh jhsfjlfj sfh hfs al',
-        sizes: ['S', 'M', 'L'],
-        color: 'green',
-        free_shipping: true,
-        brand: 'Netflix',
-        new: false,
-        discount: false,
-        price: 180,
-        star_ratings: 2,
-    },
-]
 
 
 export const footerLinks: footerProps[] = [

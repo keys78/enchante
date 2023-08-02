@@ -3,19 +3,23 @@ import sample_2 from '../../assets/png/img_two.jpg';
 import sample_3 from '../../assets/png/img_s_xx.jpg';
 import sample_4 from '../../assets/png/img_ss_x.jpg';
 import sample_5 from '../../assets/png/img_s_2.jpg';
-import { Product } from '../../types';
 import { CaretLeft, CaretRight } from '@phosphor-icons/react';
 
 interface Props {
-  imgArr: Product;
+  currentImage: string;
 }
 
-const ThumbnailsGallery = ({ imgArr }: Props) => {
-  const [currentView, setCurrentView] = useState(imgArr.image);
+const ThumbnailsGallery = ({ currentImage }: Props) => {
+  const [currentView, setCurrentView] = useState(currentImage);
   const [slideAnimation, setSlideAnimation] = useState('');
 
-  const thumbnails = [imgArr.image, sample_2, sample_3, sample_4, sample_5];
+  const thumbnails = [currentImage, sample_2, sample_3, sample_4, sample_5];
   const lastIndex = thumbnails.length - 1;
+
+  useEffect(() => {
+    // Update the currentView whenever the currentImage prop changes
+    setCurrentView(currentImage);
+  }, [currentImage]);
 
   useEffect(() => {
     setSlideAnimation('slide-in');
@@ -37,6 +41,8 @@ const ThumbnailsGallery = ({ imgArr }: Props) => {
     const newIndex = currentIndex === lastIndex ? 0 : currentIndex + 1;
     setCurrentView(thumbnails[newIndex]);
   };
+
+
 
   return (
     <div>

@@ -12,6 +12,7 @@ import SizesSelect from '../../components/atoms/SizesSelect';
 import UploadPhoto from '../../components/atoms/UploadPhoto';
 import Loader from '../../components/UI/Loader';
 import { CloudArrowUp } from '@phosphor-icons/react';
+import { useNavigate } from 'react-router-dom';
 
 
 interface Product {
@@ -31,7 +32,8 @@ interface Product {
 
 const SellerPanel = () => {
     const dispatch = useAppDispatch();
-    const { products, isLoading, isSuccess, isError } = useAppSelector(state => state.products)
+    const navigate = useNavigate();
+    const { products, isLoading } = useAppSelector(state => state.products)
     const [isColorGroupSelected] = useState(true)
     const randomRatings = Math.floor(Math.random() * 4) + 1;
 
@@ -72,7 +74,7 @@ const SellerPanel = () => {
 
     const handleSubmit = async (values: Product, { resetForm }) => {
         try {
-            const formData = new FormData();
+            const formData = await new FormData();
             if (values.image) {
                 formData.append('image', values.image);
             }
@@ -88,13 +90,9 @@ const SellerPanel = () => {
             formData.append('star_ratings', String(values.star_ratings));
             formData.append('sizes', values.sizes.join(','));
 
-            dispatch(createProduct({ productData: formData }));
-
-            if (!isLoading && !isError && isSuccess) {
-                alert('Product Makowa')
-                // resetForm()
-                // setTimeout(() => { navigate('/user/my-products') }, 3000)
-            }
+            await dispatch(createProduct({ productData: formData }));
+            resetForm()
+            navigate('/user/my-products')
 
         } catch (error) {
             console.error('Upload error:', error);
@@ -113,7 +111,8 @@ const SellerPanel = () => {
             <Formik
                 initialValues={initialValues}
                 validationSchema={productSchema}
-                onSubmit={handleSubmit}>
+                onSubmit={handleSubmit}
+            >
                 {(props) => (
                     <Form>
                         <TextInput label='Title' name={'name'} type="input" placeholder='eg: Moccassino pants' />

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup'
-import { getAllProductsTwo, updateProduct } from '../../reducers/products/productsSlice';
+import { getAllProductsTwo, getSellerProducts, updateProduct } from '../../reducers/products/productsSlice';
 import { useAppDispatch, useAppSelector } from '../../network/hooks';
 import TextInput from '../../components/UI/TextInput';
 import TextArea from '../../components/UI/TextArea';
@@ -29,12 +29,11 @@ interface Product {
     star_ratings: number;
 }
 
-const EditProductModal = ({product}) => {
+const EditProductModal = ({ product, setIsEditModal }) => {
     const dispatch = useAppDispatch();
-    const { products, isLoading, isSuccess, isError } = useAppSelector(state => state.products)
+    const { products, isLoading } = useAppSelector(state => state.products)
     const [isColorGroupSelected] = useState(true)
     const randomRatings = Math.floor(Math.random() * 4) + 1;
-
 
 
     useEffect(() => {
@@ -71,31 +70,34 @@ const EditProductModal = ({product}) => {
         star_ratings: Yup.number().required('Star ratings is required'),
     });
 
-    const handleSubmit = async (values: Product, { resetForm }) => {
+    const handleSubmit = async (values: Product) => {
         try {
-            const formData = new FormData();
-            if (values.image) {
-                formData.append('image', values.image);
-            }
-            formData.append('name', values.name);
-            formData.append('desc', values.desc);
-            formData.append('category', values.category);
-            formData.append('color', values.color);
-            formData.append('free_shipping', String(values.free_shipping));
-            formData.append('brand', values.brand);
-            formData.append('price', String(values.price));
-            formData.append('new_product', String(values.new_product));
-            formData.append('discount', String(values.discount));
-            formData.append('star_ratings', String(values.star_ratings));
-            formData.append('sizes', values.sizes.join(','));
-
-            dispatch(updateProduct({ productId:product?._id, productData: formData }));
-
+          const formData = new FormData();
+          if (values.image) {
+            formData.append('image', values.image);
+          }
+          formData.append('name', values.name);
+          formData.append('desc', values.desc);
+          formData.append('category', values.category);
+          formData.append('color', values.color);
+          formData.append('free_shipping', String(values.free_shipping));
+          formData.append('brand', values.brand);
+          formData.append('price', String(values.price));
+          formData.append('new_product', String(values.new_product));
+          formData.append('discount', String(values.discount));
+          formData.append('star_ratings', String(values.star_ratings));
+          formData.append('sizes', values.sizes.join(','));
+      
+          await dispatch(updateProduct({ productId: product?._id, productData: formData }));
+      
+          await dispatch(getSellerProducts({}));
+          setIsEditModal(false)
 
         } catch (error) {
-            console.error('Upload error:', error);
+          console.error('Upload error:', error);
         }
-    };
+      };
+      
 
     const brands = [...new Set(products?.map((val: Product) => val.brand))];
     const category = [...new Set(products?.map((val: Product) => val.category))];
@@ -155,7 +157,7 @@ const EditProductModal = ({product}) => {
                                 <span className='flex items-center justify-center'> <Copy size={20} color="#fff" weight='bold' /> &nbsp;&nbsp; UPDATE PRODUCT  </span>
                             }
                         </button>
-                        <pre>{JSON.stringify(props.values, null, 2)}</pre>
+                        {/* <pre>{JSON.stringify(props.values, null, 2)}</pre> */}
                     </Form>
                 )}
 

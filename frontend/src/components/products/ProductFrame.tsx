@@ -10,11 +10,10 @@ import QuantityControlsBtn from './QuantityControlsBtn';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import free_shipping from '../../assets/png/free_shipping.jpg'
-import { addToRecentlyViewed, toggleSavedProducts } from '../../reducers/products/productsSlice';
+import { addToRecentlyViewed } from '../../reducers/products/productsSlice';
 import { characterLimit } from '../../utils/general';
 import useWindowSize from '../hooks/useWindowSize';
 import sample from '../../assets/png/img_s_2.jpg'
-import { getUser } from '../../reducers/private/user/userSlice';
 
 
 interface Props {
@@ -30,7 +29,7 @@ interface Props {
     showSavedToggle?: boolean,
 }
 
-const ProductFrame = ({ product, key, isFlexDisplay, price_font_size, discount_font_size, shop_button, icon_size, details_adjust, showControls, showSavedToggle }: Props) => {
+const ProductFrame = ({ product, key, isFlexDisplay, price_font_size, discount_font_size, shop_button, icon_size, details_adjust, showControls }: Props) => {
     const cart = useAppSelector((state: RootState) => state.cart);
     const { width } = useWindowSize();
     const addToCart = useAddToCart();
@@ -53,14 +52,6 @@ const ProductFrame = ({ product, key, isFlexDisplay, price_font_size, discount_f
             dispatch(addToRecentlyViewed(recentlyViewedItem));
         }
     };
-
-
-    const toggleSavedItems = () => {
-        dispatch(toggleSavedProducts({ productId: product?._id }));
-        setTimeout(() => {
-            dispatch(getUser())
-        }, 3000)
-    }
 
 
     return (

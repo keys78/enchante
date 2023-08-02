@@ -30,7 +30,8 @@ const initialState: IUserState = {
         username: '',
         email: '',
         savedItems:[],
-        role: ''
+        role: '',
+        createdAt:''
     },
     isError: false,
     isSuccess: false,

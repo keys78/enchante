@@ -16,17 +16,17 @@ const DeleteWarningModal = ({ product, setIsDeleteModal }: DeleteWarningProps) =
     const { isLoading } = useAppSelector(state => state.products)
 
 
-    const deleteProductAction = () => {
-        dispatch(deleteProduct({ productId: product?._id }))
-        isLoading && setIsDeleteModal(false)
-    isLoading && dispatch(getSellerProducts({}));
+    const deleteProductAction = async () => {
+        await dispatch(deleteProduct({ productId: product?._id }))
+        await dispatch(getSellerProducts({}));
+        setIsDeleteModal(false)
 
     }
 
     return (
         <div className="space-y-6 w-full mx-auto rounded-md ">
             <h1 className="text-mainRed font-bold text-[16px]">Delete this Product?</h1>
-            <p className="text-[13px] text-black">Are you sure you want to delete the &apos;{product?.name}&apos;? This action cannot be reversed.</p>
+            <p className="text-[13px] text-black">Are you sure you want to delete &apos;{product?.name}&apos;? This action cannot be reversed.</p>
             <div className="flex gap-4">
                 <button
                     onClick={deleteProductAction}
