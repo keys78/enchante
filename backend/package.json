@@ -1,11 +1,10 @@
 {
-  "name": "enchanté",
+  "name": "enchante",
   "version": "1.0.0",
   "description": "",
   "main": "dist/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/server.ts",
     "lint": "eslint . --ext .ts",
     "build": "npm install && tsc",
     "start": "node ./dist/server.js"

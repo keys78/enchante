@@ -1,0 +1,30 @@
+version: '3.9'
+
+services:
+  # Node.js application service
+  app:
+    image: enchante-backend
+    container_name: enchante-backend
+    restart: always
+    ports:
+      - "4000:4000" # Map port 4000 of the host to port 4000 of the container
+    depends_on:
+      - db
+    environment:
+      - NODE_ENV=production
+      # Add any other environment variables your app needs here
+
+  # MongoDB service
+  db:
+    image: mongo:latest
+    container_name: mongo-db
+    restart: always
+    ports:
+      - "27017:27017" # Map port 27017 of the host to port 27017 of the container
+    volumes:
+      - mongo-data:/data/db # Persist MongoDB data
+    environment:
+      - MONGO_URI=${MONGO_URI}
+
+volumes:
+  mongo-data:

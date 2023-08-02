@@ -1,8 +1,7 @@
 # Ignore node_modules directory
-node_modules
-
-# Ignore any files or directories starting with a dot
-.*
+node_modules/
+npm-debug.log
+README.md
 
 # Ignore development and build-related files
 npm-debug.log

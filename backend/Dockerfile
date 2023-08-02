@@ -1,23 +1,23 @@
-# Use an official Node.js LTS (Long Term Support) image as the base image
-FROM node:lts
+# Build stage
+FROM node:16-alpine as build
 
-# Set the working directory in the container
-WORKDIR /app
+# set working directory
+WORKDIR /pickme/backend
 
-# Copy package.json and package-lock.json to the working directory
+# copy package.json and package-lock.json
 COPY package*.json ./
 
-# Install project dependencies
+# install dependencies
 RUN npm install
 
-# Copy the rest of the project files to the working directory
+# copy source code
 COPY . .
 
-# Build the TypeScript code
+# Run TypeScript build to generate dist/server.js
 RUN npm run build
 
-# Expose the port on which your Node.js application will listen
+# expose port 4000
 EXPOSE 4000
 
-# Specify the command to run your application
-CMD [ "node", "dist/server.js" ]
+# start app
+CMD ["npm", "start"]
