@@ -14,6 +14,7 @@ import { addToRecentlyViewed } from '../../reducers/products/productsSlice';
 import { characterLimit } from '../../utils/general';
 import useWindowSize from '../hooks/useWindowSize';
 import sample from '../../assets/png/img_s_2.jpg'
+import React from 'react';
 
 
 interface Props {
@@ -219,4 +220,5 @@ const ProductFrame = ({ product, key, isFlexDisplay, price_font_size, discount_f
     )
 }
 
-export default ProductFrame;
+// eslint-disable-next-line react-refresh/only-export-components
+export default React.memo(ProductFrame);
