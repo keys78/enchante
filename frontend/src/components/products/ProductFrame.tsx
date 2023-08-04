@@ -70,8 +70,8 @@ const ProductFrame = ({ product, key, isFlexDisplay, price_font_size, discount_f
                 <div className='flex mb-[16px] border s-767:p-3 rounded-[5px] '>
                     <Link to={`/products/product-details/${product._id}`}>
                         <div className='relative s-767:max-w-[400px] max-w-[300px] w-full s-767:p-0 p-[5px]'>
-                            <img className='rounded-[5px]' src={sample} alt={'enchanté_fashon'} />
-                            {/* <img className='rounded-[5px]' src={product?.image} alt={'enchanté_fashon'} /> */}
+                            {/* <img className='rounded-[5px]' src={sample} alt={'enchanté_fashon'} /> */}
+                            <img className='rounded-[5px]' src={product?.image} alt={'enchanté_fashon'} />
                             {product?.new_product && <div className='absolute s-767:top-4 top-2 s-767:left-4 left-2 bg-orangeSkin text-white rounded-[5px] s-767:py-[1px] s-767:px-2 px-1 s-767:text-[16px] text-[12px]'>new</div>}
                             {product?.free_shipping && width > 767 && <img title='Free Shipping' className='absolute top-4 right-4 rounded-[30px] py-1 px-3 w-[74px]' src={free_shipping} alt="" />}
                         </div>

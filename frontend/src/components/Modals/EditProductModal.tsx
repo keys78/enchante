@@ -32,6 +32,7 @@ interface Product {
 const EditProductModal = ({ product, setIsEditModal }) => {
     const dispatch = useAppDispatch();
     const { products, isLoading } = useAppSelector(state => state.products)
+    const { user } = useAppSelector(state => state.user)
     const [isColorGroupSelected] = useState(true)
     const randomRatings = Math.floor(Math.random() * 4) + 1;
 
@@ -91,6 +92,8 @@ const EditProductModal = ({ product, setIsEditModal }) => {
           await dispatch(updateProduct({ productId: product?._id, productData: formData }));
       
           await dispatch(getSellerProducts({}));
+          user?.role === "admin" &&  await dispatch(getAllProductsTwo({}))
+
           setIsEditModal(false)
 
         } catch (error) {

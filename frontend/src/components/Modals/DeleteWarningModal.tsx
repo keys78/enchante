@@ -1,6 +1,6 @@
 import { TrashSimple } from "@phosphor-icons/react"
 import { useAppDispatch, useAppSelector } from "../../network/hooks"
-import { deleteProduct, getSellerProducts } from "../../reducers/products/productsSlice"
+import { deleteProduct, getAllProductsTwo, getSellerProducts } from "../../reducers/products/productsSlice"
 import { Product } from "../../types"
 import Loader from "../UI/Loader"
 
@@ -14,11 +14,15 @@ interface DeleteWarningProps {
 const DeleteWarningModal = ({ product, setIsDeleteModal }: DeleteWarningProps) => {
     const dispatch = useAppDispatch();
     const { isLoading } = useAppSelector(state => state.products)
+    const { user } = useAppSelector(state => state.user)
 
 
     const deleteProductAction = async () => {
         await dispatch(deleteProduct({ productId: product?._id }))
         await dispatch(getSellerProducts({}));
+
+        user?.role === "admin" &&  await dispatch(getAllProductsTwo({}))
+
         setIsDeleteModal(false)
 
     }

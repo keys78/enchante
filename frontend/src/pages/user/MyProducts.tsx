@@ -29,7 +29,7 @@ const MyProducts = () => {
   }, [dispatch])
 
   return (
-    <section className='overflow-x-auto'>
+    <section className='overflow-x-auto'> 
       <table className='pb-[200px]'>
         <thead>
           <tr>
