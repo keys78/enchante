@@ -196,12 +196,8 @@ select:-webkit-autofill:focus {
 @keyframes gen-btn-class { 100% { transform: rotateZ(60deg) translate(1em, -9em); left: 100%; }}
 
 
-
 @keyframes shimmer { from { background-position: 100% 100%;} to { background-position: 0 0;}} 
-.product-image { 
-  width: 100%; height: 250px;background-image: linear-gradient(90deg, #d6d6d6 0%, #d6d6d6 40%, #f2f2f2 50%, #f2f2f2 55%, #d6d6d6 65%, #d6d6d6 100%);
- background-size: 400%; animation: shimmer 1000ms infinite
-}
+.product-image {  width: 100%; height: 230px; object-fit: cover; background-image: linear-gradient(90deg, #d6d6d6 0%, #d6d6d6 40%, #f2f2f2 50%, #f2f2f2 55%, #d6d6d6 65%, #d6d6d6 100%);background-size: 400%; animation: shimmer 1000ms infinite}
 
 .round-rainbow-button { background: linear-gradient(to right, red, orange,blue, yellow, green, indigo, violet, pink, cyan);}
 .round-rainbow-button:hover { animation: rainbow 4s linear infinite;}
@@ -287,6 +283,9 @@ th { background-color: #c7cedb7b; font-weight: normal !important;}
 .slide { display: inline-block; max-width: 450px;}
 }
 
+@media screen and (max-width: 1200px) {
+  .product-image {  max-height: 180px }
+}
 @media screen and (max-width: 767px) {
   .brand-logo { width: 75px;}
   .img-flexor { all: unset;}
@@ -304,4 +303,6 @@ th { background-color: #c7cedb7b; font-weight: normal !important;}
   .page-link { padding: 4px 10px; font-size: 14px; }
   .checkbox-wrapper-19{--checkbox-height:14px}
   .checkbox-wrapper-19 .check-box{border-radius:2px;}
+  .product-image {  max-height: 110px }
+
 }

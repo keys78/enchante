@@ -23,7 +23,7 @@ const UserActionsPanel = ({ setShowUserCTA }: Props) => {
     const pagesList = [
         { title: 'Account', link: '/user/account' },
         { title: 'Sell On enchanté', link: '/user/seller' },
-        { title: 'Saved Items', link: '/user/saved-items' },
+        { title: 'My Products', link: '/user/my-products' },
     ]
 
     return (

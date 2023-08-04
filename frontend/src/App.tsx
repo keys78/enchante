@@ -19,6 +19,7 @@ import Orders from "./pages/user/Orders";
 import Inbox from "./pages/user/Inbox";
 import MyProducts from "./pages/user/MyProducts";
 import ManageProducts from "./pages/admin/ManageProducts";
+import VerifyEmail from "./pages/user/VerifyEmail";
 
 
 interface RouteConfig {
@@ -30,13 +31,13 @@ interface RouteConfig {
 function App() {
   const routes: RouteConfig[] = [
     { path: "account", title: 'Account', element: <Accounts /> },
-    // { path: "manange-products", title: 'Mananage Produts', element: <ManageProducts /> },
     { path: "seller", title: 'Sell On enchanté', element: <SellerPanel /> },
     { path: "orders", title: 'Orders', element: <Orders /> },
     { path: "my-products", title: 'My Products', element: <MyProducts /> },
     { path: "inbox", title: 'Inbox', element: <Inbox /> },
     { path: "saved-items", title: 'Saved Items', element: <SavedItems /> },
   ];
+  
   const adminRoutes: RouteConfig[] = [
     { path: "manage-products", title: 'Mananage Produts', element: <ManageProducts /> }
   ];
@@ -48,6 +49,7 @@ function App() {
         <Routes>
           <Route path="/auth/login" element={<Login />} />
           <Route path="/auth/signup" element={<SignUp />} />
+          <Route path="/:id/verify/:token" element={<VerifyEmail />} />
           <Route path="/" element={<Layout><Home /></Layout>} />
           <Route path="/products" element={<Layout><Products /></Layout>} />
           <Route path="/catalog" element={<Layout><Catalog /></Layout>} />

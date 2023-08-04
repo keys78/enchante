@@ -28,9 +28,17 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children, title }) => {
                     <div className='w-full border border-gray-200 rounded-[5px] s-480:pt-[16px] pt-[8px] s-480:pb-[40px] pb-[0]'>
                         <h1 className='s-480:text-[18px] text-[16px] font-medium border-b border-gray-200 s-480:px-[14px] px-[10px] s-480:pb-[12px] pb-[6px] s-480:mb-[18px] mb-[9px]'>{title}</h1>
                         <div className='s-480:px-[14px] px-[10px]'>
-                            {isLoading && <div className='flex items-center justify-center my-[200px]'><Loader /></div>}
-                            {isError && <div className='flex items-center justify-center my-[200px] text-red-400'>An error has occured: {message as string}</div>}
-                            {children}
+                            {isLoading ? (
+                                <div className='flex items-center justify-center my-200'>
+                                    <Loader />
+                                </div>
+                            ) : isError ? (
+                                <div className='flex items-center justify-center my-200 text-red-400'>
+                                    An error has occurred: {message as string}
+                                </div>
+                            ) : (
+                                children
+                            )}
                         </div>
 
                     </div>

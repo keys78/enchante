@@ -320,6 +320,8 @@ const productsSlice = createSlice({
         delete state.filterTerms.starNumberOfRatings;
       }
     },
+    
+    
 
     filterByFreeShipment: (state, action: PayloadAction<{ freeShipping: Product["free_shipping"] }>) => {
       const { freeShipping } = action.payload;

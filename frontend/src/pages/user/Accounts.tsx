@@ -18,7 +18,7 @@ const Accounts = () => {
         <div className="bg-black text-white rounded-[5px] p-4 flex items-start justify-between w-full">
           <div>
             <h1 className="s-767:text-[36px] text-[20px] ">{sellerProducts?.length}</h1>
-            <p className="s-480:text-[16px] text-[14px] pb-2">My Product{sellerProducts?.length === 0 ? 's' : ''}</p>
+            <p className="s-480:text-[16px] text-[14px] pb-2">My Product{sellerProducts?.length === 1 ? '' : 's'}</p>
             <div>
               <div className="flex items-center space-x-3">
                 <div className="flex items-center text-[#24f64e] s-480:text-[14px] text-[12px]"><TrendUp size={14} color="#24f64e" />&nbsp; {sellerProducts?.length * 2.5}% </div>
@@ -31,7 +31,7 @@ const Accounts = () => {
         <div className="bg-black text-white rounded-[5px] p-4 flex items-start justify-between w-full">
           <div>
             <h1 className="s-767:text-[36px] text-[20px] ">{user?.savedItems?.length}</h1>
-            <p className="s-480:text-[16px] text-[14px] pb-2">Saved Items</p>
+            <p className="s-480:text-[16px] text-[14px] pb-2">Saved Item{user?.savedItems?.length === 1 ? '' : 's'}</p>
             <div>
               <div className="flex items-center space-x-3">
                 <div className="flex items-center text-[#24f64e] s-480:text-[14px] text-[12px]"><TrendUp size={14} color="#24f64e" />&nbsp; {user?.savedItems?.length * 2.8}% </div>

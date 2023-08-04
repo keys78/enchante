@@ -13,8 +13,7 @@ import free_shipping from '../../assets/png/free_shipping.jpg'
 import { addToRecentlyViewed } from '../../reducers/products/productsSlice';
 import { characterLimit } from '../../utils/general';
 import useWindowSize from '../hooks/useWindowSize';
-import sample from '../../assets/png/img_s_2.jpg'
-import React from 'react';
+
 
 
 interface Props {
@@ -138,9 +137,8 @@ const ProductFrame = ({ product, key, isFlexDisplay, price_font_size, discount_f
                     <div>
                         <Link onClick={() => addToRecentlyViewedAction(product)} to={`/products/product-details/${product._id}`}>
                             <div className='relative'>
-                                {/* <img className='rounded-[5px]' src={sample} alt={'enchanté_fashon'} /> */}
+                                {/* <div style={{ backgroundImage: `url(${product.image})` }} className='relative product-image'> */}
                                 <img className='rounded-[5px] product-image border border-gray-200' src={product?.image} alt={'enchanté_fashon'} />
-                                {/* <img className='' src="" alt="hello" /> */}
                                 {product?.new_product && <div className='absolute s-480:top-4 top-1 s-480:left-4 left-1 bg-orangeSkin text-white rounded-[5px] s-480:py-[1px] s-480:px-2 px-1 s-480:text-[16px] text-[12px]'>new</div>}
                                 {product?.free_shipping && width > 480 && <img title='Free Shipping' className='absolute top-4 right-4 rounded-[30px] py-1 px-3 s-767:w-[74px] w-[54px]' src={free_shipping} alt="" />}
                             </div>
@@ -221,4 +219,5 @@ const ProductFrame = ({ product, key, isFlexDisplay, price_font_size, discount_f
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
-export default React.memo(ProductFrame);
+export default ProductFrame
+// export default React.memo(ProductFrame);
