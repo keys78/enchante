@@ -37,9 +37,9 @@ function App() {
     { path: "inbox", title: 'Inbox', element: <Inbox /> },
     { path: "saved-items", title: 'Saved Items', element: <SavedItems /> },
   ];
-  
+
   const adminRoutes: RouteConfig[] = [
-    { path: "manage-products", title: 'Mananage Produts', element: <ManageProducts /> }
+    { path: "manage-products", title: 'Mananage Products', element: <ManageProducts /> }
   ];
 
 

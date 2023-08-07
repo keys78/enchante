@@ -21,7 +21,7 @@ const SavedItems = () => {
 
   useEffect(() => {
     setFilteredSearch(user?.savedItems ?? []);
-  }, [user]);
+  }, [user?.savedItems]);
 
   useEffect(() => {
     sessionStorage.setItem('savedItems', JSON.stringify(filteredSearch));
