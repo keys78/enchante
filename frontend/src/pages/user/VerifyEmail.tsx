@@ -26,13 +26,13 @@ const VerifyEmail = () => {
             {message === "Email Verified Successfully" && (
               <div className="text-center pt-4">
                 <Link to="/auth/login">
-                  <span className="text-[#fff]">Login</span>
+                  <span className="bg-black text-[#fff] px-8 py-2 rounded-[10px]">Login</span>
                 </Link>
               </div>
             )}
              <div className="text-center pt-4">
                 <Link to="/auth/login">
-                  <span className="text-[#fff]">Login</span>
+                  <span className="bg-black text-[#fff] px-8 py-2 rounded-[10px]">Login</span>
                 </Link>
               </div>
           </div>
