@@ -10,80 +10,54 @@ import image_s_xx from '../assets/png/img_s_xx.jpg'
 import image_s_x from '../assets/png/img_s_x.jpg'
 import image_ss_x from '../assets/png/img_ss_x.jpg'
 import image_ss_xx from '../assets/png/img_ss_xx.jpg'
-import { useAppSelector } from "../network/hooks"
 
 
-
-// const pagesList = [
-//     { title: 'Account', icon: <AppWindow size={22} color={` ${location.pathname === '/user/account' ? '#f75a2c' : '#141414'}`} />, link: '/user/account' },
-//     { title: 'Sell On enchanté', icon: <Money size={22} color={` ${location.pathname === '/user/seller' ? '#f75a2c' : '#141414'}`} />, link: '/user/seller' },
-//     { title: 'My Products', icon: <Stack size={22} color={` ${location.pathname === '/user/my-products' ? '#f75a2c' : '#141414'}`} />, link: '/user/my-products' },
-//     { title: 'Orders', icon: <Package size={22} color={` ${location.pathname === '/user/orders' ? '#f75a2c' : '#141414'}`} />, link: '/user/orders' },
-//     { title: 'Inbox', icon: <EnvelopeOpen size={22} color={` ${location.pathname === '/user/inbox' ? '#f75a2c' : '#141414'}`} />, link: '/user/inbox' },
-//     { title: 'Saved Items', icon: <ArchiveBox size={22} color={` ${location.pathname === '/user/saved-items' ? '#f75a2c' : '#141414'}`} />, link: '/user/saved-items' },
-// ]
-
-// if (user.role === 'admin') {
-//     pagesList.splice(1, 0, { title: 'Manage Products', icon: <Kanban size={22} color={` ${location.pathname === '/admin/manage-products' ? '#f75a2c' : '#141414'}`} />, link: '/admin/manage-products' });
-// }
-
-const pagesList = [
+export const pagesList = [
     {
-      title: 'Account',
-      icon: 'AppWindow',
-      size: 22,
-      color: `${location.pathname === '/user/account' ? '#f75a2c' : '#141414'}`,
-      link: '/user/account'
+        title: 'Account',
+        icon: 'AppWindow',
+        color: `${location.pathname === '/user/account' ? '#f75a2c' : '#141414'}`,
+        link: '/user/account'
     },
     {
-      title: 'Sell On enchanté',
-      icon: 'Money',
-      size: 22,
-      color: `${location.pathname === '/user/seller' ? '#f75a2c' : '#141414'}`,
-      link: '/user/seller'
+        title: 'Sell On enchanté',
+        icon: 'Money',
+        color: `${location.pathname === '/user/seller' ? '#f75a2c' : '#141414'}`,
+        link: '/user/seller'
     },
     {
-      title: 'My Products',
-      icon: 'Stack',
-      size: 22,
-      color: `${location.pathname === '/user/my-products' ? '#f75a2c' : '#141414'}`,
-      link: '/user/my-products'
+        title: 'My Products',
+        icon: 'Stack',
+        color: `${location.pathname === '/user/my-products' ? '#f75a2c' : '#141414'}`,
+        link: '/user/my-products'
     },
     {
-      title: 'Orders',
-      icon: 'Package',
-      size: 22,
-      color: `${location.pathname === '/user/orders' ? '#f75a2c' : '#141414'}`,
-      link: '/user/orders'
+        title: 'Orders',
+        icon: 'Package',
+        color: `${location.pathname === '/user/orders' ? '#f75a2c' : '#141414'}`,
+        link: '/user/orders'
     },
     {
-      title: 'Inbox',
-      icon: 'EnvelopeOpen',
-      size: 22,
-      color: `${location.pathname === '/user/inbox' ? '#f75a2c' : '#141414'}`,
-      link: '/user/inbox'
+        title: 'Inbox',
+        icon: 'EnvelopeOpen',
+        color: `${location.pathname === '/user/inbox' ? '#f75a2c' : '#141414'}`,
+        link: '/user/inbox'
     },
     {
-      title: 'Saved Items',
-      icon: 'ArchiveBox',
-      size: 22,
-      color: `${location.pathname === '/user/saved-items' ? '#f75a2c' : '#141414'}`,
-      link: '/user/saved-items'
+        title: 'Saved Items',
+        icon: 'ArchiveBox',
+        color: `${location.pathname === '/user/saved-items' ? '#f75a2c' : '#141414'}`,
+        link: '/user/saved-items'
+    },
+    {
+        title: 'Manage Products',
+        icon: 'Kanban',
+        color: `${location.pathname === '/admin/manage-products' ? '#f75a2c' : '#141414'}`,
+        link: '/admin/manage-products'
     }
-  ];
-//   const { user } = useAppSelector(state => state.user)
-//   if (user.role === 'admin') {
-//     pagesList.splice(1, 0, {
-//       title: 'Manage Products',
-//       icon: 'Kanban',
-//       size: 22,
-//       color: `${location.pathname === '/admin/manage-products' ? '#f75a2c' : '#141414'}`,
-//       link: '/admin/manage-products'
-//     });
-//   }
-  
-  export default pagesList;
-  
+];
+
+
 
 export const footerLinks: footerProps[] = [
     {
