@@ -19,7 +19,7 @@ const NavLinks = ({ isSideBar, setIsSideBar, list_style, link_text_size, icon_si
     const { user } = useAppSelector(state => state.user)
 
     const filteredPagesList = user?.role === "admin"
-    ? ( user?.username? pagesList : pagesList.slice(0, 3))
+    ? ( user?.username? pagesList?.splice(1, 0,) : pagesList?.slice(0, 3))
     : ( user?.username ? pagesList.filter((val) => val.title !== 'Manage Products') : pagesList.slice(0, 3));
   
 

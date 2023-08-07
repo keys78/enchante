@@ -1,22 +1,8 @@
-import { useNavigate } from "react-router-dom";
-import { logout } from "../../reducers/auth/authSlice";
-import { resetUser } from "../../reducers/private/user/userSlice";
-import { useAppDispatch, useAppSelector } from "../../network/hooks";
-import { AppWindow, ArchiveBox, EnvelopeOpen, Kanban, Money, Package, Stack } from "@phosphor-icons/react";
 import useWindowSize from "../hooks/useWindowSize";
 import NavLinks from "./NavLinks";
 
 const AccountSidebar = () => {
-    const navigate = useNavigate();
-    const dispatch = useAppDispatch();
     const { width } = useWindowSize();
-    const { user } = useAppSelector(state => state.user);
-
-    function logoutUser() {
-        dispatch(logout())
-        window.location.href = '/';
-        setTimeout(() => { dispatch(resetUser()); }, 3000)
-    }
 
     // const pagesList = [
     //     { title: 'Account', icon: <AppWindow size={22} color={` ${location.pathname === '/user/account' ? '#f75a2c' : '#141414'}`} />, link: '/user/account' },
@@ -34,27 +20,11 @@ const AccountSidebar = () => {
     return (
         width > 767 &&
         <aside>
-            {/* <ul className='w-[285px] flex flex-col justify-between h-[500px] border border-gray-200 rounded-[5px]'>
-                <div>
-                    {pagesList.map(val =>
-                        <li
-                            onClick={() => { navigate(val?.link) }}
-                            className={`py-3 px-4 hover:bg-frenchGray cursor-pointer mb-1  ${location.pathname === val.link && 'bg-frenchGray text-orangeSkin'}`}
-                        >
-                            <span className="flex items-center">{val.icon} &nbsp;&nbsp;&nbsp;  {val.title}</span>
-                        </li>
-                    )}
-                </div>
-                <li onClick={() => logoutUser()} className="pt-[8px] border-t mt-[8px] px-4">
-                    <button className="bg-[#000] rounded-[5px] py-[10px] px-[auto] w-full text-[#fff] mb-[4px] font-medium">LOG OUT</button>
-                </li>
-            </ul> */}
             <NavLinks
                 list_style={'w-[285px] flex flex-col justify-between h-[500px] border border-gray-200 rounded-[5px]'}
                 link_text_size={"text-[16px]"}
                 icon_size={22}
             />
-
         </aside>
     )
 }
