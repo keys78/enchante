@@ -1,41 +1,23 @@
 import { useAppDispatch, useAppSelector } from '../../network/hooks'
-import { useEffect, useState } from 'react';
 import { getUser } from '../../reducers/private/user/userSlice';
 import { characterLimit } from '../../utils/general';
 import { toggleSavedProducts } from '../../reducers/products/productsSlice';
+import { Product } from '../../types';
 
 
 const SavedItems = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector(state => state.user)
-  const [filteredSearch, setFilteredSearch] = useState(user?.savedItems)
-  // const [setCurrentPage] = useState<number>(1);
-  // const [productPerPage] = useState<number>(9)
-  // const [searchTerm, setSearchTerm] = useState<string>("");
-  // const totalPages = Math.ceil(filteredSearch.length / productPerPage);
+ 
 
-
-  useEffect(() => {
-    dispatch(getUser())
-  }, [dispatch])
-
-  useEffect(() => {
-    setFilteredSearch(user?.savedItems ?? []);
-  }, [user?.savedItems]);
-
-  useEffect(() => {
-    sessionStorage.setItem('savedItems', JSON.stringify(filteredSearch));
-  }, [filteredSearch]);
-
-
-  const RemoveSavedItems = async(val) => {
+  const RemoveSavedItems = async(val: Product) => {
     await dispatch(toggleSavedProducts({ productId: val?._id }));
     dispatch(getUser())
   }
 
   return (
     <>
-      {filteredSearch.length > 0 ? (
+      {user?.savedItems.length > 0 ? (
         <>
           <div className='overflow-x-auto'>
             <table className='pb-[200px]'>
@@ -50,7 +32,7 @@ const SavedItems = () => {
                 </tr>
               </thead>
               <tbody>
-                {filteredSearch?.map((val) =>
+                {user?.savedItems?.map((val) =>
                   <>
                     <tr>
                       <td className='min-w-[100px]'><img className='w-[100px] !h-[50px] rounded border border-gray-200' src={val?.image} alt="" /></td>

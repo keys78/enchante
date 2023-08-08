@@ -25,6 +25,15 @@ services:
       - mongo-data:/data/db # Persist MongoDB data
     environment:
       - MONGO_URI=${MONGO_URI}
+  
+  # Redis Service
+  redis:
+    image: "redis:latest"
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379" # Map port 6379 of the host to port 6379 of the container
+
 
 volumes:
   mongo-data:

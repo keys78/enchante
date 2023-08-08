@@ -42,7 +42,7 @@ const SelectedProducts = () => {
           {products.slice(0.4).map((product: Product, i: number) => {
             return (
               <SwiperSlide key={i}>
-                <ProductFrame product={product} price_font_size={'text-[24px]'} icon_size={22} showControls={false} />
+                <ProductFrame  product_image={'product-image-2'} product={product} price_font_size={'text-[24px]'} icon_size={22} showControls={false} />
               </SwiperSlide>
             );
           })}

@@ -4,11 +4,12 @@ import UserModel from "../models/user";
 import createHttpError from "http-errors";
 import mongoose, { Types } from "mongoose";
 import { paginateResults } from "../middlewares/pagination";
-import { getFromCache, setInCache } from "../redisCache";
+// import { getFromCache, setInCache } from "../redisCache";
 import { AuthRequest } from "./user";
 import { v2 as cloudinary } from 'cloudinary';
 import { upload } from "../middlewares/uploadMiddleware";
 import { extractPublicIdFromImageUrl, validateFields } from "../utils/helpers";
+import { getFromCache, setInCache } from "../server";
 
 
 cloudinary.config({
@@ -18,16 +19,16 @@ cloudinary.config({
 });
 
 
-export const getAllProducts: RequestHandler = async (req, res, next) => {
-  try {
+// export const getAllProducts: RequestHandler = async (req, res, next) => {
+//   try {
 
-    const paginatedResults = await paginateResults(ProductModel, {}, req)
+//     const paginatedResults = await paginateResults(ProductModel, {}, req)
 
-    res.status(200).json(paginatedResults);
-  } catch (error) {
-    next(error);
-  }
-};
+//     res.status(200).json(paginatedResults);
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 
 // export const getAllProducts: RequestHandler = async (req, res, next) => {
 //   try {
@@ -52,32 +53,28 @@ export const getAllProducts: RequestHandler = async (req, res, next) => {
 // };
 
 
-// export const getAllProducts: RequestHandler = async (req, res, next) => {
-//   try {
-//     const limit = Number(req.query.limit);
-//     const cacheKey = `allProducts:${limit}`;
+export const getAllProducts: RequestHandler = async (req, res, next) => {
+  try {
+    const limit = Number(req.query.limit);
+    const cacheKey = `allProducts:${limit}`;
 
-//     const cachedData = await getFromCache(cacheKey);
-//     if (cachedData) {
-//       res.status(200).json(cachedData);
-//       return;
-//     }
+    const cachedData = await getFromCache(cacheKey);
+    if (cachedData) {
+      res.status(200).json(cachedData);
+      return;
+    }
 
-//     const paginatedResults = await paginateResults(ProductModel, {}, req);
+    const paginatedResults = await paginateResults(ProductModel, {}, req);
 
-//     // const productIds = paginatedResults.results.map(product => product.savedItems);
+    await ProductModel.populate(paginatedResults.results, { path: 'savedItems' });
 
-//     // Populate the savedItems field with product data
-//     await ProductModel.populate(paginatedResults.results, { path: 'savedItems', select: 'name price' });
+    await setInCache(cacheKey, paginatedResults);
 
-//     // Store the fetched data in the cache
-//     await setInCache(cacheKey, paginatedResults);
-
-//     res.status(200).json(paginatedResults);
-//   } catch (error) {
-//     next(error);
-//   }
-// };
+    res.status(200).json(paginatedResults);
+  } catch (error) {
+    next(error);
+  }
+};
 
 
 
@@ -316,77 +313,6 @@ export const updateProduct: RequestHandler = async (req: AuthRequest, res, next)
     next(error);
   }
 };
-
-
-
-//     upload.single('image')(req, res, async (err) => {
-//       if (err) {
-//         if (err.code === 'LIMIT_FILE_SIZE') {
-//           return res.status(400).json({ message: 'File size exceeds the limit. Maximum file size allowed is <600KB.' });
-//         }
-//         return next(err);
-//       }
-
-//       const { name, category, desc, sizes, color, free_shipping, brand, price, new_product, discount, star_ratings } = req.body;
-
-//       const validation = validateFields({ name, category, desc, sizes, color, free_shipping, brand, price, new_product, discount, star_ratings });
-//       if (!validation.isValid) {
-//         return res.status(400).json({ message: validation.message });
-//       }
-
-//       if (!req.file) {
-//         return res.status(400).json({ message: 'No file uploaded' });
-//       }
-
-//       const user = await UserModel.findById(userId);
-//       if (!user) return res.status(404).json({ message: 'User not found' });
-
-//       // Delete the old image from Cloudinary
-//       if (product.image) {
-//         const oldImagePublicId = extractPublicIdFromImageUrl(product.image);
-//         try {
-//           await cloudinary.uploader.destroy(oldImagePublicId);
-//         } catch (error) {
-//           next(error);
-//         }
-//       }
-
-//       const randomString = `${user.username}_${Math.random().toString(36).substring(2)}_${Date.now()}`;
-//       const uploadResult = await cloudinary.uploader.upload(req.file.path, { folder: 'enchante', public_id: randomString });
-//       const imageUrl = uploadResult.secure_url;
-
-
-//       const updateData = {
-//         name: name,
-//         category: category,
-//         desc: desc,
-//         image: imageUrl,
-//         sizes: sizes.split(',').map((sizeString) => sizeString.trim()),
-//         color: color,
-//         free_shipping: free_shipping,
-//         brand: brand,
-//         price: price,
-//         new_product: new_product,
-//         discount: discount,
-//         star_ratings: star_ratings,
-//       };
-
-//       const updatedProduct = await ProductModel.findByIdAndUpdate(productId, updateData, { new: true }).exec();
-
-//       if (!updatedProduct) {
-//         throw createHttpError(404, 'Product not found');
-//       }
-
-//       return res.status(200).json({ message: `${updatedProduct.name} was successfully updated`, data: updatedProduct });
-//     });
-//   } catch (error) {
-//     next(error);
-//   }
-// };
-
-
-
-
 
 
 
