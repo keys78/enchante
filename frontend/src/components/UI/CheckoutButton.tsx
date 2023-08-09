@@ -11,16 +11,16 @@ const CheckoutButton = ({ cartItems }: CheckoutButtonProps) => {
     const cart = useAppSelector((state: RootState) => state.cart)
 
     const handleCheckout = () => {
-        axios.post(`http://localhost:4000/stripe/create-checkout-session`, {
+        axios.post(`${import.meta.env.VITE_APP_BASE_API}stripe/create-checkout-session`, {
             cartItems: cartItems,
             userId: '20201'
         })
-        .then((res) => {
-            if (res.data.url) {
-                window.location.href = res.data.url;
-            }
-        })
-        .catch((err) => console.log(err.message));
+            .then((res) => {
+                if (res.data.url) {
+                    window.location.href = res.data.url;
+                }
+            })
+            .catch((err) => console.log(err.message));
     };
 
     return (

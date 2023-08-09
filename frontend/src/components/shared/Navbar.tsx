@@ -156,7 +156,7 @@ const NavBar = () => {
           }
 
           <div className="w-[26px]">
-            {width < 787 &&
+            {width < 1024 &&
               <>
                 {
                   !isSideBar ?

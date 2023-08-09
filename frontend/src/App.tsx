@@ -55,7 +55,18 @@ function App() {
           <Route path="/catalog" element={<Layout><Catalog /></Layout>} />
           <Route path="/products/product-details/:id" element={<Layout><ProductDetails /></Layout>} />
           <Route path="/cart" element={<Layout><Cart /></Layout>} />
-          <Route path="/checkout-success" element={<Layout><CheckoutSuccess /></Layout>} />
+          <Route
+            path="/*"
+            element={
+              <PrivateRoute
+                Component={() => (
+                  <Routes>
+                      <Route path={'checkout-success'} element={<Layout><CheckoutSuccess /></Layout>} />
+                  </Routes>
+                )}
+              />
+            }
+          />
           <Route
             path="/user/*"
             element={

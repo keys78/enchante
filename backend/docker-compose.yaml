@@ -7,7 +7,7 @@ services:
     container_name: enchante-backend
     restart: always
     ports:
-      - "4000:4000" # Map port 4000 of the host to port 4000 of the container
+      - "4000:4000"
     depends_on:
       - db
     environment:
@@ -20,9 +20,9 @@ services:
     container_name: mongo-db
     restart: always
     ports:
-      - "27017:27017" # Map port 27017 of the host to port 27017 of the container
+      - "27017:27017"
     volumes:
-      - mongo-data:/data/db # Persist MongoDB data
+      - mongo-data:/data/db
     environment:
       - MONGO_URI=${MONGO_URI}
   
@@ -32,8 +32,8 @@ services:
     container_name: redis
     restart: always
     ports:
-      - "6379:6379" # Map port 6379 of the host to port 6379 of the container
-
+      - "6379:6379"
+    command: ["redis-server", "--bind", "redis", "--port", "6379"]
 
 volumes:
   mongo-data:
