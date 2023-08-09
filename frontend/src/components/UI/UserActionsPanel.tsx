@@ -2,6 +2,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { resetUser } from "../../reducers/private/user/userSlice";
 import { useAppDispatch, useAppSelector } from "../../network/hooks";
 import { logout } from "../../reducers/auth/authSlice";
+import { useCallback } from "react";
 
 interface Props {
     setShowUserCTA: (arg: boolean) => void
@@ -14,12 +15,17 @@ const UserActionsPanel = ({ setShowUserCTA }: Props) => {
     const dispatch = useAppDispatch();
 
 
-    function logoutUser() {
-        dispatch(logout())
-        window.location.href = '/';
-        setTimeout(() => {dispatch(resetUser());}, 3000)
-    }
+    const logoutUser = useCallback(async () => {
+        try {
+            dispatch(logout());
+            navigate('/');
+            dispatch(resetUser());
+        } catch (error) {
+            console.error("An error occurred during logout:", error);
+        }
+    }, [dispatch, navigate]);
 
+    
     const pagesList = [
         { title: 'Account', link: '/user/account' },
         { title: 'Sell On enchanté', link: '/user/seller' },

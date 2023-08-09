@@ -23,11 +23,13 @@ const NavLinks = ({ isSideBar, setIsSideBar, list_style, link_text_size, icon_si
     : ( user?.username ? pagesList.filter((val) => val.title !== 'Manage Products') : pagesList.slice(0, 3));
   
 
-    function logoutUser() {
-        dispatch(logout())
-        window.location.href = '/';
-        setTimeout(() => { dispatch(resetUser()); }, 3000)
+    async function logoutUser() {
+       await dispatch(logout())
+       navigate('/');
+       dispatch(resetUser());
+       localStorage.removeItem('remainingSeconds');
     }
+    
 
     return (
         <ul className={`${list_style}`}>

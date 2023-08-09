@@ -12,6 +12,7 @@ import { modalVariantsShort, searchBarVariants } from "../../utils/animations";
 import LogoMain from "../../assets/svg/LogoMain";
 import UserActionsPanel from "../UI/UserActionsPanel";
 import { getUser } from "../../reducers/private/user/userSlice";
+import AutoLogout from "../atoms/AutoLogout";
 
 
 const NavBar = () => {
@@ -67,6 +68,7 @@ const NavBar = () => {
             <LogoMain logo_width="s-480:w-[140px] w-[90px]" />
           </div>
         </Link>
+        <AutoLogout />
 
         {width > 1024 && <ul className="flex space-x-20 uppercase -mr-[200px]">
           <li>
