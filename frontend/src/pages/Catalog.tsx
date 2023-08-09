@@ -79,7 +79,7 @@ const Catalog = () => {
                                             onChange={handleSearchInputChange}
                                             className='w-full rounded-[5px] py-2 border-0 outline-none' type="search" placeholder='Search products, brands and categories' />
                                     </div>
-                                    <button className='px-4 bg-[#202122] text-white rounded-[5px] py-2'>Search</button>
+                                    <button disabled={!searchInput.trim()} className='cursor-pointer px-4 bg-[#202122] text-white rounded-[5px] py-2'>Search</button>
                                 </form>
                             }
                             <div className='flex items-center justify-between s-480:space-x-10 space-x-3 w-full s-480:mb-3 mb-5'>
@@ -98,7 +98,7 @@ const Catalog = () => {
                                                 onChange={handleSearchInputChange}
                                                 className='w-full rounded-[5px] py-2 border-0 outline-none' type="search" placeholder='Search products, brands and categories' />
                                         </div>
-                                        <button className='px-4 bg-[#202122] text-white rounded-[5px] py-2'>Search</button>
+                                        <button disabled={!searchInput.trim()} className='cursor-pointer px-4 bg-[#202122] text-white rounded-[5px] py-2'>Search</button>
                                     </form>
                                 }
                                 <SortComponent />
