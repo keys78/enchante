@@ -31,8 +31,8 @@ export const checkout = router.post('/create-checkout-session', async (req, res)
       payment_method_types: ['card'],
       line_items,
       mode: 'payment',
-      success_url: 'http://127.0.0.1:5173/checkout-success',
-      cancel_url: 'http://127.0.0.1:5173/cart',
+      success_url: `${process.env.BASE_URL}checkout-success`,
+      cancel_url: `${process.env.BASE_URL}cart`,
     });
 
     res.send({ url: session.url });
