@@ -13,6 +13,7 @@ const getAllProducts = async (page: number) => {
     const { data } = await axios.get(import.meta.env.VITE_APP_BASE_API + `products/?page=${page}&limit=9`, config)
     return data
 }
+
 const getAllProductsTwo = async () => {
     const { data } = await axios.get(import.meta.env.VITE_APP_BASE_API + `products/?limit=1000`, config)
     return data
@@ -87,6 +88,23 @@ const deleteProduct = async (token: IToken, productId: string) => {
     return data?.message
 }
 
+const getUserOrders = async () => {
+    const { data } = await axios.get(import.meta.env.VITE_APP_BASE_API + `orders`, config)
+    return data
+}
+
+const deleteOrder = async (token: IToken, orderId: string) => {
+    const authConfig = {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const { data } = await axios.delete(import.meta.env.VITE_APP_BASE_API + `delete-order/${orderId}`, authConfig)
+    toast.success(data.message as string, { autoClose: 1000 });
+    return data?.message
+}
+
 const productService = {
     getAllProducts,
     getAllProductsTwo,
@@ -97,7 +115,10 @@ const productService = {
     toggleSavedProduct,
     createProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+
+    getUserOrders,
+    deleteOrder
 }
 
 export default productService;

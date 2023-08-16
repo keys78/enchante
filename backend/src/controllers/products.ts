@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
 import ProductModel, { Product } from "../models/product";
 import UserModel from "../models/user";
+import OrderModel from '../models/order'
 import createHttpError from "http-errors";
 import mongoose, { Types } from "mongoose";
 import { paginateResults } from "../middlewares/pagination";
@@ -139,6 +140,48 @@ export const toggleSavedProduct: RequestHandler = async (req: AuthRequest, res, 
     next(error);
   }
 };
+
+
+export const getUserOrders: RequestHandler = async (req: AuthRequest, res, next) => {
+  const userId = req.user?.id;
+
+  try {
+    if (!Types.ObjectId.isValid(userId)) {
+      throw createHttpError(400, "Invalid user");
+    }
+
+    const userOrders = await OrderModel.find({ 'user.id': new Types.ObjectId(userId) })
+      .sort({ createdAt: -1 })
+      .exec();
+
+    res.status(200).json(userOrders);
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+export const deleteOrder: RequestHandler = async (req, res, next) => {
+  const orderId = req.params.id;
+
+  try {
+    if (!Types.ObjectId.isValid(orderId)) {
+      throw createHttpError(400, "Invalid order ID");
+    }
+
+    const deletedOrder = await OrderModel.findByIdAndDelete(orderId);
+
+    if (!deletedOrder) {
+      throw createHttpError(404, "Order not found");
+    }
+
+    res.status(200).json({ message: "Order deleted successfully" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
 
 
 

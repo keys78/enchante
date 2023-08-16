@@ -9,14 +9,16 @@ interface CheckoutButtonProps {
 
 const CheckoutButton = ({ cartItems }: CheckoutButtonProps) => {
     const cart = useAppSelector((state: RootState) => state.cart)
+    const { user } = useAppSelector(state => state.user)
 
-    const handleCheckout = () => {
-        axios.post(`${import.meta.env.VITE_APP_BASE_API}stripe/create-checkout-session`, {
-            cartItems: cartItems,
-            userId: '20201'
+    const handleCheckout = async () => {
+        await axios.post(`${import.meta.env.VITE_APP_BASE_API}stripe/create-checkout-session`, {
+            userId: user?._id,
+            cartItems: cartItems
         })
             .then((res) => {
                 if (res.data.url) {
+                     axios.post(`${import.meta.env.VITE_APP_BASE_API}stripe/webhook`).then((res) => {console.log('res:', res)}),
                     window.location.href = res.data.url;
                 }
             })
