@@ -51,8 +51,6 @@ interface GetAllProductsPayload {
 }
 
 
-
-
 const initialState: ProductsState = {
   products: [],
   filteredProducts: [],
@@ -183,6 +181,34 @@ export const deleteProduct = createAsyncThunk<any, any>(
 
     try {
       return await productService.deleteProduct(token, productId)
+    } catch (error: any) {
+      errorHandler(error, thunkAPI)
+    }
+  }
+)
+
+
+// Order Group
+
+export const getUserOrders = createAsyncThunk<any, any>(
+  '/getOrders',
+  async (thunkAPI) => {
+    try {
+      return await productService.getUserOrders();
+    } catch (error: any) {
+      errorHandler(error, thunkAPI);
+      throw error;
+    }
+  }
+);
+
+export const deleteOrder = createAsyncThunk<any, any>(
+  'order/delete-order',
+  async ({ orderId }, thunkAPI) => {
+    const token: IToken = token2 || (thunkAPI.getState() as { auth: Auth }).auth.token;
+
+    try {
+      return await productService.deleteOrder(token, orderId)
     } catch (error: any) {
       errorHandler(error, thunkAPI)
     }

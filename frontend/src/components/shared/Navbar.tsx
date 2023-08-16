@@ -32,6 +32,12 @@ const NavBar = () => {
     { label: 'Pants', value: 'pants', icon: <Pants /> },
   ];
 
+  // useEffect(() => {
+  //   if (!user) {
+  //     localStorage.removeItem('ent-token')
+  //   }
+  // }, [user])
+
   useEffect(() => {
     dispatch(getTotals());
     if (storedToken) {
@@ -148,7 +154,7 @@ const NavBar = () => {
                     animate="final"
                     exit="exit"
                     className="border-2-border-black absolute mt-[20px] -left-[220px]">
-                    <UserActionsPanel setShowUserCTA={setShowUserCTA}/>
+                    <UserActionsPanel setShowUserCTA={setShowUserCTA} />
                   </motion.div>
                 }
               </AnimatePresence>

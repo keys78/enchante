@@ -35,12 +35,12 @@ const AutoLogout: React.FC = () => {
     }, [secondsRemaining]);
 
     useEffect(() => {
-        localStorage.setItem('remainingSeconds', secondsRemaining.toString());
+        user?.username && localStorage.setItem('remainingSeconds', secondsRemaining.toString());
 
         if (secondsRemaining === 0) {
             logoutUser();
         }
-    }, [secondsRemaining, logoutUser]);
+    }, [secondsRemaining, logoutUser, user?.username]);
 
     return user?.username && secondsRemaining > 0 && secondsRemaining <= 10 ? (
         <div

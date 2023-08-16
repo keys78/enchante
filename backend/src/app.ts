@@ -6,7 +6,7 @@ import createHttpError, { isHttpError } from "http-errors";
 import authRoutes from "./routes/auth";
 import userRoutes from "./routes/user";
 import productRoutes from "./routes/products";
-import { checkout } from "./routes/stripe";
+import stripeRouter from "./routes/stripe"
 const app = express();
 app.use(cors());
 
@@ -23,7 +23,7 @@ app.use(
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
 app.use('/products', productRoutes);
-app.use("/stripe", checkout);
+app.use("/stripe", stripeRouter);
 
 app.get("/", (req, res) =>
     res.json({ success: true, message: "enchante api is running!" })
