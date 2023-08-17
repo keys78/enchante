@@ -7,7 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 interface Props {
     isSideBar?: boolean,
-    setIsSideBar?: ((arg0: boolean) => void) | undefined, // Provide a default value
+    setIsSideBar?: ((arg0: boolean) => void) | undefined,
     list_style: string,
     link_text_size: string,
     icon_size: number
@@ -36,16 +36,23 @@ const NavLinks = ({ isSideBar, setIsSideBar, list_style, link_text_size, icon_si
             <div>
                 {
                     filteredPagesList.map((val) => {
-                        const IconComponent = Icon[val.icon]; // Access the icon dynamically
+                        const IconComponent = Icon[val.icon]; // to Access the icon dynamically
+
+                        let isActiveLink = false;
+
+                        if (location.pathname === val.link) {
+                          isActiveLink = true;
+                        } else if (location.pathname.startsWith('/user/order/') && val.link === '/user/orders') {
+                          isActiveLink = true;
+                        }
                         return (
                             <li
                                 key={val.title}
                                 onClick={() => { navigate(val.link); setIsSideBar && setIsSideBar(!isSideBar) }}
-                                className={`py-3 px-4 hover:bg-frenchGray cursor-pointer mb-1 ${location.pathname === val.link ? 'bg-frenchGray text-orangeSkin' : ''
-                                    }`}
+                                className={`py-3 px-4 hover:bg-frenchGray cursor-pointer mb-1 ${ isActiveLink ? 'bg-frenchGray text-orangeSkin' : '' }`}
                             >
                                 <span className={`flex items-center ${link_text_size}`}>
-                                    <IconComponent size={icon_size} color={location.pathname === val.color} /> &nbsp;&nbsp;&nbsp; {val.title}
+                                    <IconComponent size={icon_size} /> &nbsp;&nbsp;&nbsp; {val.title}
                                 </span>
                             </li>
                         );

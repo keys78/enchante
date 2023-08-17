@@ -141,18 +141,16 @@ export const toggleSavedProduct: RequestHandler = async (req: AuthRequest, res, 
   }
 };
 
-
+// Orders
 export const getUserOrders: RequestHandler = async (req: AuthRequest, res, next) => {
   const userId = req.user?.id;
 
   try {
-    if (!Types.ObjectId.isValid(userId)) {
-      throw createHttpError(400, "Invalid user");
+    if (!userId) {
+      throw createHttpError(401, "Unauthorized");
     }
 
-    const userOrders = await OrderModel.find({ 'user.id': new Types.ObjectId(userId) })
-      .sort({ createdAt: -1 })
-      .exec();
+    const userOrders = await OrderModel.find({ userId: userId }).exec();
 
     res.status(200).json(userOrders);
   } catch (error) {
@@ -160,9 +158,30 @@ export const getUserOrders: RequestHandler = async (req: AuthRequest, res, next)
   }
 };
 
+export const getOrder: RequestHandler = async (req, res, next) => {
+  const orderId = req.params.orderId;
+
+  try {
+
+    if (!mongoose.isValidObjectId(orderId)) {
+      throw createHttpError(400, "invalid order id")
+    }
+
+    const order = await OrderModel.findById(orderId).exec();
+
+    if (!order) {
+      throw createHttpError(404, "Order not found");
+    }
+
+    res.status(200).json(order);
+  } catch (error) {
+    next(error);
+  }
+};
+
 
 export const deleteOrder: RequestHandler = async (req, res, next) => {
-  const orderId = req.params.id;
+  const orderId = req.params.orderId;
 
   try {
     if (!Types.ObjectId.isValid(orderId)) {

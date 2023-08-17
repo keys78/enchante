@@ -9,13 +9,14 @@ import useOnClickOutside from '../../components/hooks/useOnClickOutside';
 import EditProductModal from '../../components/Modals/EditProductModal';
 import Modal from '../../components/Modals/Modal';
 import DeleteWarningModal from '../../components/Modals/DeleteWarningModal';
+import Loader from '../../components/UI/Loader';
 
 const MyProducts = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState<any>('')
   const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false)
-  const { sellerProducts } = useAppSelector(state => state.products)
+  const { sellerProducts, isLoading } = useAppSelector(state => state.products)
   const [isEditModal, setIsEditModal] = useState<boolean>(false)
 
   const promptModalRef = useRef<HTMLDivElement>(null);
@@ -27,6 +28,10 @@ const MyProducts = () => {
   useEffect(() => {
     dispatch(getSellerProducts({}));
   }, [dispatch])
+
+  if (isLoading) {
+    return <div className="flex items-center justify-center w-full h-[100px]"> <Loader /></div>
+  }
 
   return (
     <section className='overflow-x-auto'>

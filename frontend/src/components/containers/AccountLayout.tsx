@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import AccountSidebar from "../sidebar/AccountSidebar";
 import { CaretRight } from "@phosphor-icons/react";
-import NewsLetter from "../home/NewsLetter";
 import Loader from "../UI/Loader";
 import { useAppSelector } from "../../network/hooks";
 import { ReactNode } from "react";
@@ -17,7 +16,7 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children, title }) => {
 
     return (
         <section className={`app-container w-full mt-[12px] s-1025:px-[80px] s-767:px-[40px] px-[16px] `}>
-            <div className='w-full'>
+            <div className='w-full sm:mb-[150px] mb-[60px]'>
                 <div className='s-480:pt-[30px] pt-[18px] pb-[18px] flex items-center space-x-2'>
                     <span className='flex items-center space-x-2' style={{ color: '#a6a4a4' }}><Link to={'/user/account'}>Accounts</Link> <CaretRight size={14} /> </span> <span className='font-medium'>{title}</span>
                 </div>
@@ -44,8 +43,6 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children, title }) => {
                     </div>
                 </div>
             </div>
-
-            <NewsLetter newsletter_extras={'s-480:pb-20 pb-10 s-767:pt-[144px] pt-[50px]'} />
         </section>
     )
 }

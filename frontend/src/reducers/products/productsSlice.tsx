@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-// import { products } from "../../utils/data";
-import { IToken, Product } from "../../types";
+import { emptyOrder, emptyProduct, IToken, Order, OrderDetails, Product } from "../../types";
 import errorHandler from "../../utils/errorHandler";
 import productService from "./productService";
 import { Auth } from "../auth/authSlice";
@@ -9,30 +8,14 @@ import { Auth } from "../auth/authSlice";
 const storedRecentlyViewed = localStorage.getItem("enchante-rv");
 const storedToken = typeof window !== 'undefined' ? localStorage.getItem('ent-token') : null;
 export const token2 = storedToken ? JSON.parse(storedToken) : '';
-// filterTerms: Record<string, string | null | number>;
 
-const emptyProduct: Product = {
-  _id: '',
-  category: '',
-  name: '',
-  image: '',
-  desc: '',
-  sizes: [],
-  price: 0,
-  color: '',
-  brand: '',
-  discount: false,
-  free_shipping: false,
-  new_product: false,
-  star_ratings: 0,
-  createdAt:'',
-  seller:{ id:'', username:''}
-};
 
 interface ProductsState {
   products: Product[];
   filteredProducts: Product[];
   sellerProducts: Product[];
+  userOrder: Order[];
+  orderDetails: OrderDetails;
   totalPages: number,
   totalResults: number,
   product: Product;
@@ -45,7 +28,7 @@ interface ProductsState {
 }
 
 interface GetAllProductsPayload {
-  results: Product[]; // Add the 'results' property
+  results: Product[];
   totalPages: number;
   totalResults: number;
 }
@@ -54,7 +37,9 @@ interface GetAllProductsPayload {
 const initialState: ProductsState = {
   products: [],
   filteredProducts: [],
-  sellerProducts:[],
+  sellerProducts: [],
+  userOrder: [],
+  orderDetails: emptyOrder,
   totalPages: 0,
   totalResults: 0,
   product: emptyProduct,
@@ -192,11 +177,25 @@ export const deleteProduct = createAsyncThunk<any, any>(
 
 export const getUserOrders = createAsyncThunk<any, any>(
   '/getOrders',
-  async (thunkAPI) => {
+  async (_, thunkAPI) => {
+    const token: IToken = token2 || (thunkAPI.getState() as { auth: Auth }).auth.token;
     try {
-      return await productService.getUserOrders();
+      return await productService.getUserOrders(token);
     } catch (error: any) {
       errorHandler(error, thunkAPI);
+      throw error;
+    }
+  }
+);
+
+export const getSingleOrder = createAsyncThunk<any, { orderId: string; }>(
+  'products/order/:orderId',
+  async ({ orderId }, thunkAPI) => {
+    const token: IToken = token2 || (thunkAPI.getState() as { auth: Auth }).auth.token;
+    try {
+      return await productService.getSingleOrder(token, orderId)
+    } catch (error: any) {
+      errorHandler(error, thunkAPI)
       throw error;
     }
   }
@@ -346,8 +345,8 @@ const productsSlice = createSlice({
         delete state.filterTerms.starNumberOfRatings;
       }
     },
-    
-    
+
+
 
     filterByFreeShipment: (state, action: PayloadAction<{ freeShipping: Product["free_shipping"] }>) => {
       const { freeShipping } = action.payload;
@@ -516,6 +515,7 @@ const productsSlice = createSlice({
         state.message = action.payload as string
       })
 
+
       .addCase(toggleSavedProducts.pending, (state) => {
         state.isLoading = true
       })
@@ -560,7 +560,42 @@ const productsSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string;
-      });
+      })
+
+
+      .addCase(getUserOrders.pending, (state) => {
+        state.isLoading = true
+      })
+
+      .addCase(getSingleOrder.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(getSingleOrder.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.orderDetails = action.payload
+      })
+      .addCase(getSingleOrder.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload as string
+      })
+
+      .addCase(getUserOrders.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.userOrder = action.payload
+      })
+
+      .addCase(getUserOrders.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload as string
+      })
+      .addCase(deleteOrder.pending, (state) => {
+        state.isLoading = true;
+      })
+
   }
 });
 
