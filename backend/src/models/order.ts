@@ -37,7 +37,7 @@ const orderSchema = new Schema<Order>({
       // sizes: [{ type: String }],
       // color: { type: String },
       // brand: { type: String },
-      // price: { type: Number },
+      price: { type: Number },
       cartQuantity: { type: Number },
     },
   ],

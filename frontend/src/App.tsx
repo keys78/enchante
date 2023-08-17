@@ -20,6 +20,7 @@ import Inbox from "./pages/user/Inbox";
 import MyProducts from "./pages/user/MyProducts";
 import ManageProducts from "./pages/admin/ManageProducts";
 import VerifyEmail from "./pages/user/VerifyEmail";
+import OrderDetails from "./pages/user/OrderDetails";
 
 
 interface RouteConfig {
@@ -33,6 +34,7 @@ function App() {
     { path: "account", title: 'Account', element: <Accounts /> },
     { path: "seller", title: 'Sell On enchanté', element: <SellerPanel /> },
     { path: "orders", title: 'Orders', element: <Orders /> },
+    { path: "order/:orderId", title: 'Orders Details', element: <OrderDetails /> },
     { path: "my-products", title: 'My Products', element: <MyProducts /> },
     { path: "inbox", title: 'Inbox', element: <Inbox /> },
     { path: "saved-items", title: 'Saved Items', element: <SavedItems /> },

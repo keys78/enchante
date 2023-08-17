@@ -88,8 +88,27 @@ const deleteProduct = async (token: IToken, productId: string) => {
     return data?.message
 }
 
-const getUserOrders = async () => {
-    const { data } = await axios.get(import.meta.env.VITE_APP_BASE_API + `orders`, config)
+
+// Orders
+const getUserOrders = async (token: IToken) => {
+    const authConfig = {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const { data } = await axios.get(import.meta.env.VITE_APP_BASE_API + `products/orders`, authConfig)
+    return data
+}
+
+const getSingleOrder = async (token: IToken, orderId: string) => {
+    const authConfig = {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const { data } = await axios.get(import.meta.env.VITE_APP_BASE_API + `products/order/${orderId}`, authConfig)
     return data
 }
 
@@ -100,7 +119,7 @@ const deleteOrder = async (token: IToken, orderId: string) => {
             Authorization: `Bearer ${token}`,
         },
     }
-    const { data } = await axios.delete(import.meta.env.VITE_APP_BASE_API + `delete-order/${orderId}`, authConfig)
+    const { data } = await axios.delete(import.meta.env.VITE_APP_BASE_API + `products/delete-order/${orderId}`, authConfig)
     toast.success(data.message as string, { autoClose: 1000 });
     return data?.message
 }
@@ -118,6 +137,7 @@ const productService = {
     deleteProduct,
 
     getUserOrders,
+    getSingleOrder,
     deleteOrder
 }
 

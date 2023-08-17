@@ -16,6 +16,7 @@ productsRouter.put('/update-product/:productId', protect, ProductsController.upd
 productsRouter.delete('/delete-product/:productId', protect, ProductsController.deleteProduct);
 
 productsRouter.get('/orders', protect, ProductsController.getUserOrders);
+productsRouter.get('/order/:orderId', protect, ProductsController.getOrder);
 productsRouter.delete('/delete-order/:orderId', protect, ProductsController.deleteOrder);
 
 export default productsRouter;
