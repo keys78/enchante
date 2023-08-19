@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AccountSidebar from "../sidebar/AccountSidebar";
 import { CaretRight } from "@phosphor-icons/react";
 import Loader from "../UI/Loader";
@@ -11,8 +11,19 @@ interface AccountLayoutProps {
 }
 
 
+
+
 const AccountLayout: React.FC<AccountLayoutProps> = ({ children, title }) => {
     const { isLoading, isError, message } = useAppSelector(state => state.user)
+    const navigate = useNavigate();
+
+    const refresh = () => {
+        localStorage.removeItem('ent-token')
+        localStorage.removeItem('remainingSeconds')
+
+        navigate('/')
+
+    }
 
     return (
         <section className={`app-container w-full mt-[12px] s-1025:px-[80px] s-767:px-[40px] px-[16px] `}>
@@ -33,7 +44,10 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children, title }) => {
                                 </div>
                             ) : isError ? (
                                 <div className='flex items-center justify-center my-200 text-red-400'>
-                                    An error has occurred: {message as string}
+                                    <div>
+                                        <p>An error has occurred: {message as string}</p> <br />
+                                        <button onClick={refresh} className="py-2 px-3 rounded-[5px] text-white bg-black flex items-center justify-center mx-auto">Refresh</button>
+                                    </div>
                                 </div>
                             ) : (
                                 children
