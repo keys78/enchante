@@ -8,7 +8,7 @@ const redisClient = new Redis({
 
 (async () => {
   try {
-    console.log('Redis client connected:', redisClient.status);
+    console.log('Redis client status:', redisClient.status);
 
     // console.log('Fetching from cache for key:', 'allProducts');
     // const cachedData = await getFromCache('allProducts');
