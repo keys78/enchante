@@ -150,7 +150,9 @@ export const getUserOrders: RequestHandler = async (req: AuthRequest, res, next)
       throw createHttpError(401, "Unauthorized");
     }
 
-    const userOrders = await OrderModel.find({ userId: userId }).exec();
+    const userOrders = await OrderModel.find({ userId: userId })
+    .sort({ createdAt: -1 })
+    .exec();
 
     res.status(200).json(userOrders);
   } catch (error) {

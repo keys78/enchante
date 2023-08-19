@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from '../../network/hooks';
 const AutoLogout: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const storedRemainingSeconds = parseInt(localStorage.getItem('remainingSeconds') || '518400', 10);
+    const storedRemainingSeconds = parseInt(localStorage.getItem('remainingSeconds') || '100000', 10);
     const [secondsRemaining, setSecondsRemaining] = useState(storedRemainingSeconds);
     const { user } = useAppSelector(state => state.user )
 

@@ -5,7 +5,7 @@ import { getSellerProducts } from "../../reducers/products/productsSlice"
 
 const Accounts = () => {
   const { user } = useAppSelector(state => state.user)
-  const { sellerProducts } = useAppSelector((state) => state.products)
+  const { sellerProducts, userOrder } = useAppSelector((state) => state.products)
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -43,11 +43,11 @@ const Accounts = () => {
         </div>
         <div className="bg-black text-white rounded-[5px] p-4 flex items-start justify-between w-full">
           <div>
-            <h1 className="s-767:text-[36px] text-[20px] ">0</h1>
-            <p className="s-480:text-[16px] text-[14px] pb-2">Orders</p>
+            <h1 className="s-767:text-[36px] text-[20px] ">{userOrder?.length}</h1>
+            <p className="s-480:text-[16px] text-[14px] pb-2">Order{userOrder?.length === 1 ? '' : 's'}</p>
             <div>
               <div className="flex items-center space-x-3">
-                <div className="flex items-center text-[#24f64e] s-480:text-[14px] text-[12px]"><TrendUp size={14} color="#24f64e" />&nbsp; 0% </div>
+                <div className="flex items-center text-[#24f64e] s-480:text-[14px] text-[12px]"><TrendUp size={14} color="#24f64e" />&nbsp; {(userOrder?.length * 2.3)?.toFixed(1)}% </div>
                 <p className="opacity-50 text-[14px] whitespace-nowrap">Since last month</p>
               </div>
             </div>
