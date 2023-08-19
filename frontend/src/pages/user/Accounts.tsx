@@ -1,7 +1,7 @@
 import { ArchiveBox, Package, Stack, TrendUp } from "@phosphor-icons/react"
 import { useAppDispatch, useAppSelector } from "../../network/hooks"
 import { useEffect } from "react"
-import { getSellerProducts } from "../../reducers/products/productsSlice"
+import { getSellerProducts, getUserOrders } from "../../reducers/products/productsSlice"
 
 const Accounts = () => {
   const { user } = useAppSelector(state => state.user)
@@ -10,6 +10,7 @@ const Accounts = () => {
 
   useEffect(() => {
     dispatch(getSellerProducts({}));
+    dispatch(getUserOrders({}));
   }, [dispatch])
 
   return (

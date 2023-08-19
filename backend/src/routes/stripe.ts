@@ -102,8 +102,6 @@ router.post('/create-checkout-session', async (req, res) => {
 
 const createOrder = async (customer, data) => {
   const items = JSON.parse(customer.metadata.cart)
-  console.log('items:', items)
-  console.log('items2:', customer.metadata.cart)
 
   const newOrder = new OrderModel({
     userId: customer.metadata.userId,
@@ -120,11 +118,13 @@ const createOrder = async (customer, data) => {
 
     const savedOrder = await newOrder.save()
 
-    console.log("saved_order:", savedOrder)
     await sendEmail({
       to: customer.email,
-      subject: "Purchase Order",
-      text: `here is your order details ${savedOrder}`
+      subject: `Your enchante Order ${customer.id} has been confirmed`,
+      text: `Dear ${customer.name},
+      Thank you for shopping on enchante! Your order ${customer.id} has been successfully confirmed.
+      It will be packaged and shipped as soon as possible. Once the item(s) is out for delivery or available for pick-up you will receive a notification from us.
+      Thank you for shopping on enchante. ${savedOrder}`
     })
   } catch (error) {
     console.log(error)
@@ -166,7 +166,6 @@ router.post('/webhook', express.raw({ type: 'application/json' }), (req, res) =>
   if (eventType === "checkout.session.completed") {
     stripe.customers.retrieve(data.customer)
       .then((customer) => {
-        console.log('Retrieved customer:', customer);
         createOrder(customer, data);
       })
       .catch(err => console.log(err.message));
